@@ -1,0 +1,1 @@
+export const app_base_url = "/bazar-gratis"

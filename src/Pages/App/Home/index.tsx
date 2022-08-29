@@ -1,13 +1,10 @@
 import React from "react";
-import {Container, Title} from "./styles";
-export const Home = ()=>{
-
-    return <Container>
-<Title>
-    Home
-</Title>
-
-    </Container>
-
-
-}
+import Sidebar from "../../../components/Layoult/Sidebar";
+import { Container, Title } from "./styles";
+export const Home = () => {
+  return (
+    <>
+      <div className="home">Home</div>
+    </>
+  );
+};

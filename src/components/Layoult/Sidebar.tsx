@@ -12,6 +12,7 @@ import { FiLogOut } from "react-icons/fi";
 import { SidebarData } from "./SidebarData";
 import SidebarLink from "./Submenu";
 import { Button } from "react-bootstrap";
+import { useShoppingCart } from "../../Context/ShoppingCartContext";
 
 const Nav = styled.div`
   display: flex;
@@ -19,6 +20,7 @@ const Nav = styled.div`
   align-items: center;
   height: 4rem;
   background: deeppink;
+  position: static;
 `;
 
 const SidebarNav = styled.div<{ sidebar: boolean }>`
@@ -72,6 +74,7 @@ const NavCart = styled(Link)`
   display: flex;
   align-items: center;
   height: 4rem;
+  width: 4rem;
   font-size: 2rem;
   position: absolute;
   margin-left: 110rem;
@@ -104,6 +107,7 @@ const Sidebar: FC = () => {
   const showSidebar = () => {
     setSidebar(!sidebar);
   };
+  const { openCart, cartQuantity } = useShoppingCart();
   return (
     <IconContext.Provider value={{ color: "white" }}>
       <Nav>
@@ -111,9 +115,24 @@ const Sidebar: FC = () => {
           <AiOutlineMenu />
         </NavIcon>
 
-        <NavCart to="#">
-          <AiOutlineShoppingCart />
-        </NavCart>
+        {cartQuantity > 0 && (
+          <NavCart className="rounded-circle" to="#" onClick={openCart}>
+            <AiOutlineShoppingCart />
+
+            <div
+              className="rounded-circle white d-flex justify-content-center align-items-center"
+              style={{
+                color: "white",
+                width: "0.3rem",
+                height: "0.5rem",
+                bottom: 1,
+                right: 0,
+              }}
+            >
+              {cartQuantity}
+            </div>
+          </NavCart>
+        )}
         <NavLeft to="#" onClick={showSidebar}>
           <FiLogOut />
         </NavLeft>

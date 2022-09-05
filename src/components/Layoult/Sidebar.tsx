@@ -16,7 +16,8 @@ import { useShoppingCart } from "../../Context/ShoppingCartContext";
 
 const Nav = styled.div`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  width: 100vw;
   align-items: center;
   height: 4rem;
   background: deeppink;
@@ -31,6 +32,7 @@ const SidebarNav = styled.div<{ sidebar: boolean }>`
   top: 0;
   left: ${({ sidebar }) => (sidebar ? "0" : "-100%")};
   transition: 350ms;
+  z-index: 1;
 `;
 
 const NavIcon = styled(Link)`
@@ -65,7 +67,6 @@ const Line = styled.span`
 const LittleLine = styled.span`
   border-left: 2px solid white;
   height: 4rem;
-  position: absolute;
   margin-left: 80rem;
   top: 0;
 `;
@@ -74,20 +75,16 @@ const NavCart = styled(Link)`
   display: flex;
   align-items: center;
   height: 4rem;
-  width: 4rem;
+  width: 40rem;
   font-size: 2rem;
-  position: absolute;
-  margin-left: 110rem;
 `;
 
 const NavLeft = styled(Link)`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  position: absolute;
   height: 4rem;
   font-size: 2rem;
-  margin-left: 115rem;
 `;
 
 const NavName = styled.span`
@@ -98,6 +95,13 @@ const NavName = styled.span`
   font-size: 1rem;
   margin-left: 100
   color: white;
+`;
+
+const HelperIcons = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width:${window.screen.width > window.screen.height?'10%' :'30%'};
 `;
 
 const SidebarWrap = styled.div``;
@@ -114,28 +118,29 @@ const Sidebar: FC = () => {
         <NavIcon to="#" onClick={showSidebar}>
           <AiOutlineMenu />
         </NavIcon>
+        <HelperIcons>
+          {cartQuantity > 0 && (
+            <NavCart className="rounded-circle" to="#" onClick={openCart}>
+              <AiOutlineShoppingCart />
 
-        {cartQuantity > 0 && (
-          <NavCart className="rounded-circle" to="#" onClick={openCart}>
-            <AiOutlineShoppingCart />
-
-            <div
-              className="rounded-circle white d-flex justify-content-center align-items-center"
-              style={{
-                color: "white",
-                width: "0.3rem",
-                height: "0.5rem",
-                bottom: 1,
-                right: 0,
-              }}
-            >
-              {cartQuantity}
-            </div>
-          </NavCart>
-        )}
-        <NavLeft to="#" onClick={showSidebar}>
-          <FiLogOut />
-        </NavLeft>
+              <div
+                className="rounded-circle white d-flex justify-content-center align-items-center"
+                style={{
+                  color: "white",
+                  width: "0.3rem",
+                  height: "0.5rem",
+                  bottom: 1,
+                  right: 0,
+                }}
+              >
+                {cartQuantity}
+              </div>
+            </NavCart>
+          )}
+          <NavLeft to="#" onClick={showSidebar}>
+            <FiLogOut />
+          </NavLeft>
+        </HelperIcons>
       </Nav>
 
       <SidebarNav sidebar={sidebar}>

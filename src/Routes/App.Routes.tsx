@@ -6,14 +6,16 @@ import {
   Routes,
   IndexRouteProps,
 } from "react-router-dom";
-import Sidebar from "../components/Layoult/Sidebar";
+import Sidebar from "../components/Layout/Sidebar";
 import { ShoppingCartProvider } from "../Context/ShoppingCartContext";
 import { Home } from "../Pages/App/Home";
+import {ProdutosProvider}from "../Context/ProdutosContext";
 
 import { app_base_url } from "../Utils/urls";
 
 const AppRoutes: FC = () => {
   return (
+    <ProdutosProvider>
     <ShoppingCartProvider>
       <Router>
         <Sidebar />
@@ -24,6 +26,7 @@ const AppRoutes: FC = () => {
         </Container>
       </Router>
     </ShoppingCartProvider>
+    </ProdutosProvider>
   );
 };
 

@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { ShoppingCart } from "../components/Loja/ShoppingCart";
 import { useLocalStorage } from "../Hooks/useLocalStorage";
-
+import {useProdutos} from "./ProdutosContext";
 type ShoppingCartProviderProps = {
   children: ReactNode;
 };
@@ -29,6 +29,8 @@ export function useShoppingCart() {
 }
 
 export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
+  const{produtos} = useProdutos();
+  
   const [cartItems, setCartItems] = useLocalStorage<CartItem[]>(
     "shopping-cart",
     []
@@ -40,19 +42,23 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
   }
 
   function increaseCartQuantity(id: number) {
+    if(produtos && produtos.length>0){
+    const item_focus = produtos.find((i) => i.id === id)
+    if(item_focus != undefined)
     setCartItems((currItems) => {
       if (currItems.find((item) => item.id === id) == null) {
         return [...currItems, { id, quantity: 1 }];
       } else {
         return currItems.map((item) => {
-          if (item.id === id) {
+          if (item.id === id && item.quantity < item_focus.quantidade ) {
+            
             return { ...item, quantity: item.quantity + 1 };
           } else {
             return item;
           }
         });
       }
-    });
+    });}
   }
 
   function decreaseCartQuantity(id: number) {

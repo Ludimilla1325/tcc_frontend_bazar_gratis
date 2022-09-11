@@ -15,10 +15,15 @@ interface IClienteContextData {
   logar: () => void;
 }
 
+interface ICliente{
+  
+}
+
 const ClienteContext = createContext({} as IClienteContextData);
 
 function ClienteProvider({ children }: IClienteProviderProps) {
   const [logado, setLogado] = useState(false);
+  const[cliente,setCliente] = useState();
   function logar() {
     setLogado(true);
   }

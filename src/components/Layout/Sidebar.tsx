@@ -13,7 +13,7 @@ import { SidebarData } from "./SidebarData";
 import SidebarLink from "./Submenu";
 import { Button } from "react-bootstrap";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
-
+import { useCliente } from "../../Hooks/cliente";
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
@@ -101,13 +101,14 @@ const HelperIcons = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
-  width:${window.screen.width > window.screen.height?'10%' :'30%'};
+  width: ${window.screen.width > window.screen.height ? "10%" : "30%"};
 `;
 
 const SidebarWrap = styled.div``;
 
 const Sidebar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
+  const { cliente } = useCliente();
   const showSidebar = () => {
     setSidebar(!sidebar);
   };
@@ -118,7 +119,12 @@ const Sidebar: FC = () => {
         <NavIcon to="#" onClick={showSidebar}>
           <AiOutlineMenu />
         </NavIcon>
+
         <HelperIcons>
+          <span>SALDO:{cliente.pontos}</span>
+
+          <span>{cliente.nome}</span>
+
           {cartQuantity > 0 && (
             <NavCart className="rounded-circle" to="#" onClick={openCart}>
               <AiOutlineShoppingCart />
@@ -137,6 +143,7 @@ const Sidebar: FC = () => {
               </div>
             </NavCart>
           )}
+
           <NavLeft to="#" onClick={showSidebar}>
             <FiLogOut />
           </NavLeft>

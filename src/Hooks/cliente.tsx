@@ -40,7 +40,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       setCliente(data);
       setLogado(true);
     } catch (error) {
-      
+      console.log(error);
     }
 
   }
@@ -48,6 +48,11 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   useEffect(() => {
     logar()
   },[])
+
+  useEffect(() => {
+    console.log(cliente)
+    //window.alert(JSON.stringify(cliente))
+  },[cliente])
   return (
     <ClienteContext.Provider
       value={{

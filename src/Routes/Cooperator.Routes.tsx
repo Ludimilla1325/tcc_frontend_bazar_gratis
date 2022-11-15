@@ -13,6 +13,7 @@ import {ProdutosProvider}from "../Context/ProdutosContext";
 
 import { app_base_url } from "../Utils/urls";
 import { Cooperators } from "../Pages/App/Cooperator/Cooperators";
+import { Products } from "../Pages/App/Cooperator/Products";
 
 const AppRoutes: FC = () => {
   return (
@@ -27,6 +28,11 @@ const AppRoutes: FC = () => {
           <Routes>
             <Route path={`${app_base_url}/cooperators`} element={<Cooperators />}></Route>
           </Routes>
+          <Routes>
+            <Route path={`${app_base_url}/products`} element={<Products />}></Route>
+          </Routes>
+
+          
           
         </Container>
       </Router>

@@ -48,7 +48,7 @@ export const CooperatorLogin = () => {
             setLoading(false);
           }
 
-          navigate(`${app_base_url}/cooperators`);
+          navigate(`${app_base_url}/products`);
         }}
       >
         Logar no Sistema

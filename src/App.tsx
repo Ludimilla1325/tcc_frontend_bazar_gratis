@@ -1,15 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 import GlobalStyles from "./Styles/golbal";
-import {Routes} from "./Routes/Index.routes"
-import { ClienteProvider } from './Hooks/cliente';
+import { Routes } from "./Routes/Index.routes";
+import { ClienteProvider } from "./Hooks/cliente";
+import { CooperatorProvider } from "./Hooks/cooperator";
 function App() {
   return (
     <div className="App">
       <ClienteProvider>
-      <GlobalStyles />
-      <Routes/>
+        <CooperatorProvider>
+          <GlobalStyles />
+          <Routes />
+        </CooperatorProvider>
       </ClienteProvider>
     </div>
   );

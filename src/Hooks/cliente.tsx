@@ -13,52 +13,56 @@ interface IClienteProviderProps {
 
 interface IClienteContextData {
   logado: boolean;
-  logar: () => void;
-  cliente:ICliente;
+  logar: (email: string, senha: string) => Promise<void>;
+  cliente: ICliente;
 }
 
-interface ICliente{
-  id:number;
-  nome:string;
-  email:string;
-  telefone:string;
-  cpf:string;
-  cep:string;
-  lojaId:number;
-  senha:string;
-  pontos:number;
+interface ICliente {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  cpf: string;
+  cep: string;
+  storeId: number;
+  password: string;
+  points: number;
 }
 
 const ClienteContext = createContext({} as IClienteContextData);
 
 function ClienteProvider({ children }: IClienteProviderProps) {
   const [logado, setLogado] = useState(false);
-  const[cliente,setCliente] = useState({} as ICliente);
-  async function  logar() {
+  const [cliente, setCliente] = useState({} as ICliente);
+  async function logar(email: string, password: string) {
     try {
-      const {data} = await api.post("/cliente/login",{email:"ricardinhogiasson16@gmail.com"});
-      setCliente(data);
-      setLogado(true);
+      const { data } = await api.post("/client/login", { email, password });
+
+      if (data.sucess) {
+        setCliente(data);
+        setLogado(true);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+      window.alert(JSON.stringify(data.data));
     } catch (error) {
       console.log(error);
     }
-
   }
 
-  useEffect(() => {
-    logar()
-  },[])
+  useEffect(() => {}, []);
 
   useEffect(() => {
-    console.log(cliente)
+    console.log(cliente);
     //window.alert(JSON.stringify(cliente))
-  },[cliente])
+  }, [cliente]);
   return (
     <ClienteContext.Provider
       value={{
         logado,
         logar,
-        cliente
+        cliente,
       }}
     >
       <>{children}</>

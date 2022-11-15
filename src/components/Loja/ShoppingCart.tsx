@@ -27,7 +27,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   async function finalizarCompra() {
     if (cartItems.length > 0)
       try {
-        if (cliente.pontos < verificaValorFinal()) {
+        if (cliente.points < verificaValorFinal()) {
           window.alert("Saldo indisponível para realizar esta compra!");
           return;
         }
@@ -51,7 +51,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
             cartItems.forEach((element) => {
               removeFromCart(element.id);
             });
-            logar();
+            
           }
         }
       } catch (e) {

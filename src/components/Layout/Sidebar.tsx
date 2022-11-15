@@ -121,9 +121,9 @@ const Sidebar: FC = () => {
         </NavIcon>
 
         <HelperIcons>
-          <span>SALDO:{cliente.pontos}</span>
+          <span>SALDO:{cliente.points}</span>
 
-          <span>{cliente.nome}</span>
+          <span>{cliente.name}</span>
 
           {cartQuantity > 0 && (
             <NavCart className="rounded-circle" to="#" onClick={openCart}>

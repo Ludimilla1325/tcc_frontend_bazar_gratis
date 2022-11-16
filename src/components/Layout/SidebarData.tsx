@@ -45,3 +45,39 @@ export const SidebarData: SidebarItem[] = [
     ],
   },
 ];
+
+
+export const SidebarDataCooperator: SidebarItem[] = [
+  {
+    title: "Perfil",
+    path: "/perfil",
+    icon: <AiOutlineUser />,
+  },
+  {
+    title: "Loja",
+    path: "/loja",
+    icon: <AiOutlineHome />,
+  },
+  {
+    title: "Produtos",
+    path: "/produtos",
+    icon: <MdOutlineLocalGroceryStore />,
+  },
+  {
+    title: "Colaboradores",
+    path: "/colaboradores",
+    icon: <TbFilePlus />,
+  },
+  {
+    title: "Historico de compras",
+    path: "/loja",
+    icon: <RiHistoryFill />,
+    iconOpened: <AiFillCaretUp />,
+    iconClosed: <AiFillCaretDown />,
+
+    subnav: [
+      { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
+      { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
+    ],
+  },
+];

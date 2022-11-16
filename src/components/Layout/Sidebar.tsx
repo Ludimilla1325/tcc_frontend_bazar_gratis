@@ -9,11 +9,12 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-import { SidebarData } from "./SidebarData";
+import { SidebarData, SidebarDataCooperator } from "./SidebarData";
 import SidebarLink from "./Submenu";
 import { Button } from "react-bootstrap";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { useCliente } from "../../Hooks/cliente";
+import { useCooperator } from "../../Hooks/cooperator";
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
@@ -109,6 +110,7 @@ const SidebarWrap = styled.div``;
 const Sidebar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
   const { cliente } = useCliente();
+  const { cooperator } = useCooperator();
   const showSidebar = () => {
     setSidebar(!sidebar);
   };
@@ -124,24 +126,29 @@ const Sidebar: FC = () => {
           <span>SALDO:{cliente.points}</span>
 
           <span>{cliente.name}</span>
+          {cliente.id ? (
+            <>
+              {cartQuantity > 0 && (
+                <NavCart className="rounded-circle" to="#" onClick={openCart}>
+                  <AiOutlineShoppingCart />
 
-          {cartQuantity > 0 && (
-            <NavCart className="rounded-circle" to="#" onClick={openCart}>
-              <AiOutlineShoppingCart />
-
-              <div
-                className="rounded-circle white d-flex justify-content-center align-items-center"
-                style={{
-                  color: "white",
-                  width: "0.3rem",
-                  height: "0.5rem",
-                  bottom: 1,
-                  right: 0,
-                }}
-              >
-                {cartQuantity}
-              </div>
-            </NavCart>
+                  <div
+                    className="rounded-circle white d-flex justify-content-center align-items-center"
+                    style={{
+                      color: "white",
+                      width: "0.3rem",
+                      height: "0.5rem",
+                      bottom: 1,
+                      right: 0,
+                    }}
+                  >
+                    {cartQuantity}
+                  </div>
+                </NavCart>
+              )}
+            </>
+          ) : (
+            ""
           )}
 
           <NavLeft to="#" onClick={showSidebar}>
@@ -157,9 +164,19 @@ const Sidebar: FC = () => {
           </NavIcon>
           <SidebarTitle>MCGI FREE STORE</SidebarTitle>
           <Line></Line>
-          {SidebarData.map((item: any, index) => {
+          {
+            cliente.id?
+          <>
+        
+         { SidebarData.map((item: any, index) => {
             return <SidebarLink item={item} key={index} />;
           })}
+            </>: <>
+        
+        { SidebarDataCooperator.map((item: any, index) => {
+           return <SidebarLink item={item} key={index} />;
+         })}
+           </>}
         </SidebarWrap>
       </SidebarNav>
     </IconContext.Provider>

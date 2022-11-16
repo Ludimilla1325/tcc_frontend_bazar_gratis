@@ -26,10 +26,10 @@ const AppRoutes: FC = () => {
             <Route path={`${app_base_url}/Home`} element={<Home />}></Route>
           </Routes>
           <Routes>
-            <Route path={`${app_base_url}/cooperators`} element={<Cooperators />}></Route>
+            <Route path={`${app_base_url}/colaboradores`} element={<Cooperators />}></Route>
           </Routes>
           <Routes>
-            <Route path={`${app_base_url}/products`} element={<Products />}></Route>
+            <Route path={`${app_base_url}/produtos`} element={<Products />}></Route>
           </Routes>
 
           

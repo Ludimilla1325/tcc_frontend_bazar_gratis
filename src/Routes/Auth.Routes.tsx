@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import { ClientLogin } from "../Pages/Auth/ClientLogin";
 import { CooperatorLogin } from "../Pages/Auth/CooperatorLogin";
+import { MasterLogin } from "../Pages/Auth/MasterLogin";
 import { app_base_url } from "../Utils/urls";
 
 export function AuthRoutes() {
@@ -17,6 +18,9 @@ export function AuthRoutes() {
       </Routes>
       <Routes>
         <Route path={`${app_base_url}/cooperator-login`} element={<CooperatorLogin />}></Route>
+      </Routes>
+      <Routes>
+        <Route path={`${app_base_url}/master-login`} element={<MasterLogin />}></Route>
       </Routes>
     </Router>
   );

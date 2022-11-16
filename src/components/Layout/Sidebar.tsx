@@ -9,12 +9,13 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-import { SidebarData, SidebarDataCooperator } from "./SidebarData";
+import { SidebarData, SidebarDataCooperator, SidebarMaster } from "./SidebarData";
 import SidebarLink from "./Submenu";
 import { Button } from "react-bootstrap";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { useCliente } from "../../Hooks/cliente";
 import { useCooperator } from "../../Hooks/cooperator";
+import { useMaster } from "../../Hooks/master";
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
@@ -111,6 +112,7 @@ const Sidebar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
   const { cliente } = useCliente();
   const { cooperator } = useCooperator();
+  const { master } = useMaster();
   const showSidebar = () => {
     setSidebar(!sidebar);
   };
@@ -171,12 +173,20 @@ const Sidebar: FC = () => {
          { SidebarData.map((item: any, index) => {
             return <SidebarLink item={item} key={index} />;
           })}
-            </>: <>
+            </>:""} {cooperator.id?<>
         
         { SidebarDataCooperator.map((item: any, index) => {
            return <SidebarLink item={item} key={index} />;
          })}
-           </>}
+           </>:""}
+           
+           {master.id?<>
+        
+        { SidebarMaster.map((item: any, index) => {
+           return <SidebarLink item={item} key={index} />;
+         })}
+           </>:""}
+           SidebarMaster
         </SidebarWrap>
       </SidebarNav>
     </IconContext.Provider>

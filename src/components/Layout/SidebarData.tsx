@@ -81,3 +81,19 @@ export const SidebarDataCooperator: SidebarItem[] = [
     ],
   },
 ];
+
+
+export const SidebarMaster: SidebarItem[] = [
+  {
+    title: "Perfil",
+    path: "/perfil",
+    icon: <AiOutlineUser />,
+  },
+  {
+    title: "Lojas",
+    path: "/lojas",
+    icon: <AiOutlineHome />,
+  },
+];
+
+

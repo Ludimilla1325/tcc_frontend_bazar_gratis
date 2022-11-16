@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCooperator } from "../../../../Hooks/cooperator";
 import api from "../../../../Services/api";
-
+import {Container,Header,Table, THead,Title,Body,TBody} from "./styles";
 export interface ICooperator {
   id: number;
   name: string;
@@ -18,7 +18,7 @@ export const Cooperators = () => {
     try {
       const { data } = await api.get(`/cooperator/loja/${cooperator.storeId}`);
       if (data.sucess) {
-        window.alert(data.data);
+       // window.alert(data.data);
         setCooperators(data.data);
       } else {
         window.alert(data.message);
@@ -35,31 +35,34 @@ export const Cooperators = () => {
     if (cooperators && cooperators.length > 0) {
       return cooperators.map((item) => {
         return (
-          <tr>
-            <td>{item.id}</td>
-            <td>{item.name}</td>
-            <td>{item.email}</td>
-            <td>{item.cpf}</td>
-            <td>{item.active ? "A" : "I"}</td>
-          </tr>
+          <Body onClick={()=>{
+            window.alert("MODAL DE EDITAR AINDA NAO CRIADO")
+          }}>
+            <TBody>{item.id}</TBody>
+            <TBody>{item.name}</TBody>
+            <TBody>{item.email}</TBody>
+            <TBody>{item.cpf}</TBody>
+            <TBody>{item.active ? "A" : "I"}</TBody>
+          </Body>
         );
       });
     }
   }
 
   return (
-    <div>
-      <table>
-          <tr>
-              <th>CÓDIGO</th>
-              <th>NOME</th>
-              <th>EMAIL</th>
-              <th>CPF</th>
-              <th>ATIVO</th>
+    <Container>
+      <Title>Operadores</Title>
+      <Table>
+          <Header>
+              <THead>CÓDIGO</THead>
+              <THead>NOME</THead>
+              <THead>EMAIL</THead>
+              <THead>CPF</THead>
+              <THead>ATIVO</THead>
               
-          </tr>
+          </Header>
           {renderData()}
-          </table>
-    </div>
+          </Table>
+    </Container>
   );
 };

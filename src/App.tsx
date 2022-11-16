@@ -7,7 +7,7 @@ import { ClienteProvider } from "./Hooks/cliente";
 import { CooperatorProvider } from "./Hooks/cooperator";
 function App() {
   return (
-    <div className="App">
+    <div >
       <ClienteProvider>
         <CooperatorProvider>
           <GlobalStyles />

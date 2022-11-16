@@ -11,7 +11,7 @@ export default createGlobalStyle`
   }
   body, input, button{
     font: 14px Poppis, sans-serif;
-    background-color: ${theme.colors.dark};
+   
   }
   button {
     cursor: pointer;

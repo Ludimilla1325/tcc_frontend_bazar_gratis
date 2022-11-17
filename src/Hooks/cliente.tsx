@@ -40,7 +40,8 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       const { data } = await api.post("/client/login", { email, password });
      
       if (data.sucess) {
-        setCliente(data.data);
+        setCliente(data.data.user);
+        api.defaults.headers.common["Authorization"] = `Bearer ${data.data.token}`;
         setLogado(true);
       } else {
         errorMessage = data.message

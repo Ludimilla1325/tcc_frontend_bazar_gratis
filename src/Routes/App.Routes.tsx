@@ -12,6 +12,7 @@ import { Home } from "../Pages/App/Home";
 import {ProdutosProvider}from "../Context/ProdutosContext";
 
 import { app_base_url } from "../Utils/urls";
+import { PurchasesHistoric } from "../Pages/App/Client/PurchasesHistoric";
 
 const AppRoutes: FC = () => {
   return (
@@ -21,8 +22,14 @@ const AppRoutes: FC = () => {
         <Sidebar />
         <Container className="mb-4">
           <Routes>
-            <Route path={`${app_base_url}/Home`} element={<Home />}></Route>
+            <Route path={`${app_base_url}/loja`} element={<Home />}></Route>
           </Routes>
+
+          <Routes>
+            <Route path={`${app_base_url}/historico-de-compras`} element={<PurchasesHistoric />}></Route>
+          </Routes>
+
+          
         </Container>
       </Router>
     </ShoppingCartProvider>

@@ -34,15 +34,13 @@ export const SidebarData: SidebarItem[] = [
   },
   {
     title: "Historico de compras",
-    path: "/loja",
+    path: "/historico-de-compras",
     icon: <RiHistoryFill />,
-    iconOpened: <AiFillCaretUp />,
-    iconClosed: <AiFillCaretDown />,
 
-    subnav: [
-      { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
-      { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
-    ],
+    // subnav: [
+    //   { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
+    //   { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
+    // ],
   },
 ];
 
@@ -75,10 +73,10 @@ export const SidebarDataCooperator: SidebarItem[] = [
     iconOpened: <AiFillCaretUp />,
     iconClosed: <AiFillCaretDown />,
 
-    subnav: [
-      { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
-      { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
-    ],
+    // subnav: [
+    //   { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
+    //   { title: "Historico de compras", path: "/loja", icon: <RiHistoryFill /> },
+    // ],
   },
 ];
 

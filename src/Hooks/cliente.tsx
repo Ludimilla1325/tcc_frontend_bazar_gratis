@@ -45,19 +45,25 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   const [cliente, setCliente] = useState({} as ICliente);
 
   async function logar(email: string, password: string) {
+    let errorMessage = '';
     try {
       const { data } = await api.post("/client/login", { email, password });
-
+     
       if (data.sucess) {
-        setCliente(data);
+        setCliente(data.data.user);
+        api.defaults.headers.common["Authorization"] = `Bearer ${data.data.token}`;
         setLogado(true);
       } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
+        errorMessage = data.message
       }
-      window.alert(JSON.stringify(data.data));
+      //window.alert(JSON.stringify(data));
     } catch (error) {
       console.log(error);
+      throw "Não foi possível efeturar o login!";
+    }finally{
+      if(errorMessage){
+        throw errorMessage
+      }
     }
   }
 

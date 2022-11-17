@@ -9,6 +9,8 @@ import { AiFillExperiment } from "react-icons/ai";
 import { Prev } from "react-bootstrap/esm/PageItem";
 import { StoreItemProps } from "../../../Context/ProdutosContext";
 import {useProdutos} from "../../../Context/ProdutosContext";
+import { useCliente } from "../../../Hooks/cliente";
+
 
 interface IHandleProdutoCard {
   categoria: string;
@@ -16,7 +18,7 @@ interface IHandleProdutoCard {
 }
 
 export const Home = () => {
-  
+  const{cliente} = useCliente(); 
 const{produtos,handleData} = useProdutos();
   const [handleCard, setHandleCard] = useState([] as IHandleProdutoCard[]);
 
@@ -86,7 +88,7 @@ const{produtos,handleData} = useProdutos();
         return handleCard.map((item) => {
           return (
             <>
-              <h2>{item.categoria}</h2>
+              <h2>{item.categoria} </h2>
               <Row md={2} xs={1} lg={4} className="g-3">
                 {renderItens(item.produtos)}
               </Row>
@@ -97,5 +99,7 @@ const{produtos,handleData} = useProdutos();
     }
   }
 
-  return <>{renderRows()}</>;
+  return <>
+ {
+    renderRows()}</>;
 };

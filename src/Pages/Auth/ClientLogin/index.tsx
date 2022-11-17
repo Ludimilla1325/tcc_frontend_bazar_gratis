@@ -7,27 +7,33 @@ import {
   Span,
   LoginButton,
   Subtitle,
-} from "./styles";
+  SpanLabel
+} from "../AuthStyles";
 import { useCliente } from "../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../Utils/urls";
+import { Alert } from "../../../components/Modals/Alert";
 export const ClientLogin = () => {
   const navigate = useNavigate();
   const { logar } = useCliente();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const[error, setError] = useState({title:"", message:""});
+
   return (
     <Container>
       <Title>Login</Title>
       <Subtitle>Faça seu login para escolher os produtos</Subtitle>
       <Label>
-        Email
-        <Input value={email} onChange={(ev) => setEmail(ev.target.value)} />
+       <SpanLabel> Email</SpanLabel>
+        <Input value={email} onChange={(ev) => setEmail(ev.target.value)} 
+        placeholder="Digite seu email!"
+        />
       </Label>
       <Label>
-        Senha
-        <Input value={password} onChange={(ev) => setPassword(ev.target.value)} />
+      <SpanLabel> Senha</SpanLabel>
+        <Input value={password} onChange={(ev) => setPassword(ev.target.value)} placeholder="Digite sua senha!"/>
       </Label>
 
       <Span>Esqueceu a Senha?</Span>
@@ -36,14 +42,15 @@ export const ClientLogin = () => {
         onClick={async() => {
           try {
             setLoading(true);
-            await logar(email, password);
+           await logar(email, password);
+           navigate(`${app_base_url}/home`);
           } catch (error) {
-            //MODAL CONFIMAÇÃO
+            setError({title:"Ops", message:String(error)})
           }finally{
             setLoading(false);
           }
     
-          //navigate(`${app_base_url}/home`);
+      
         }}
       >
         Logar
@@ -55,8 +62,13 @@ export const ClientLogin = () => {
          // navigate(`${app_base_url}/home`);
         }}
       >
-        Cadastrar-se
+        Cadastrar
       </LoginButton>
+
+        <Alert open={error.message.length > 0} onClose={()=>{setError({title:"", message:""})}}
+          error={error}
+        
+        />
     </Container>
   );
 };

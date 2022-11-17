@@ -19,7 +19,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
     let valor_final = 0;
     cartItems.forEach((element) => {
       const item = produtos.find((i) => i.id === element.id);
-      if (item) valor_final += element.quantity * item?.valor;
+      if (item) valor_final += element.quantity * item?.value;
     });
     return valor_final;
   }
@@ -82,7 +82,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
                 if (produtos) {
                   if (produtos.length > 0) {
                     const item = produtos.find((i) => i.id === cartItem.id);
-                    return total + (item?.valor || 0) * cartItem.quantity;
+                    return total + (item?.value || 0) * cartItem.quantity;
                   }
                 }
                 return 0;

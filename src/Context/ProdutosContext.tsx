@@ -12,20 +12,19 @@ type CartItem = {
 };
 
 type ProdutosContext = {
- produtos:StoreItemProps[]
- handleData:()=>Promise<void>;
+  produtos: StoreItemProps[];
+  handleData: () => Promise<void>;
 };
 
 export type StoreItemProps = {
-    id:number;
-    categoria:string;
-    nome:string;
-    descricao:string;
-    foto:string;
-    categoria_id:number;
-    valor:number;
-    quantidade:number;
-    lojaId:number;
+  id: number;
+  name: string;
+  photo: string;
+  categoryId:number;
+  value: number;
+  quantity: number;
+  storeId: number;
+  categoria: string;
 };
 
 const ProdutosContext = createContext({} as ProdutosContext);
@@ -37,28 +36,25 @@ export function useProdutos() {
 export function ProdutosProvider({ children }: ShoppingCartProviderProps) {
   const [produtos, setProdutos] = useState({} as StoreItemProps[]);
 
-
   async function handleData() {
     try {
-      const { data } = await api.get("/produto/1");
+      const { data } = await api.get("/product/1");
 
-      setProdutos(data);
+      setProdutos(data.data);
     } catch (e) {
       window.alert(e);
       console.log(e);
     }
   }
- 
 
   return (
     <ProdutosContext.Provider
       value={{
-       produtos,
-       handleData
+        produtos,
+        handleData,
       }}
     >
       {children}
-     
     </ProdutosContext.Provider>
   );
 }

@@ -29,12 +29,12 @@ export function CartItem({ id, quantity }: CartItemProps) {
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
-        src={item.foto}
+        src={item.photo}
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
       />
       <div className="me-auto">
         <div>
-          {item.nome}{" "}
+          {item.name}{" "}
           {quantity > 1 && (
             <span className="text-muted" style={{ fontSize: ".65rem" }}>
               X{quantity}
@@ -42,11 +42,11 @@ export function CartItem({ id, quantity }: CartItemProps) {
           )}
         </div>
         <div className="text-muted" style={{ fontSize: ".75rem" }}>
-          {formatarDinheiro(item.valor)}
+          {formatarDinheiro(item.value)}
         </div>
       </div>
       <div>
-        {formatarDinheiro(item.valor * quantity)}
+        {formatarDinheiro(item.value * quantity)}
         <Button
           variant="outline-danger"
           size="sm"

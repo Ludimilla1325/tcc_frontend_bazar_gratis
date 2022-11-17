@@ -5,6 +5,7 @@ export default {
     light: "#FFFFFF",
     dark: "#D0D0D0",
     fullDark: "#000",
+    attention:"#FF0000"
   },
 
   fonts: {},

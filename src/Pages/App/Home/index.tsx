@@ -25,7 +25,7 @@ const{produtos,handleData} = useProdutos();
   
 
   useEffect(() => {
-    //handleData();
+    handleData();
   }, []);
 
   function auxAddCategoria(categoria: string) {
@@ -100,6 +100,6 @@ const{produtos,handleData} = useProdutos();
   }
 
   return <>
-  <h1>Aqui-{cliente.name}</h1>{
+ {
     renderRows()}</>;
 };

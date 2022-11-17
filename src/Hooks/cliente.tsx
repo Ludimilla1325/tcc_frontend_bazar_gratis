@@ -14,6 +14,15 @@ interface IClienteProviderProps {
 interface IClienteContextData {
   logado: boolean;
   logar: (email: string, senha: string) => Promise<void>;
+  register: (
+    name: string,
+    email: string,
+    phone: string,
+    cpf: string,
+    cep: string,
+    storeId: number,
+    password: string
+  ) => Promise<void>;
   cliente: ICliente;
 }
 
@@ -34,9 +43,36 @@ const ClienteContext = createContext({} as IClienteContextData);
 function ClienteProvider({ children }: IClienteProviderProps) {
   const [logado, setLogado] = useState(false);
   const [cliente, setCliente] = useState({} as ICliente);
+
   async function logar(email: string, password: string) {
     try {
       const { data } = await api.post("/client/login", { email, password });
+
+      if (data.sucess) {
+        setCliente(data);
+        setLogado(true);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+      window.alert(JSON.stringify(data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function register(client: any) {
+    try {
+      const { name, email, phone, cpf, cep, storeId, password } = client;
+      const { data } = await api.post("/client/", {
+        name,
+        email,
+        phone,
+        cpf,
+        cep,
+        storeId,
+        password,
+      });
 
       if (data.sucess) {
         setCliente(data);
@@ -62,6 +98,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       value={{
         logado,
         logar,
+        register,
         cliente,
       }}
     >

@@ -4,6 +4,7 @@ export default {
     secondary: "#EB448C",
     light: "#FFFFFF",
     dark: "#D0D0D0",
+    fullDark: "#000",
   },
 
   fonts: {},

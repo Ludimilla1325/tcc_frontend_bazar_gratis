@@ -33,6 +33,7 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   const [logado, setLogado] = useState(false);
   const [cooperator, setCooperator] = useState({} as ICooperator);
   async function logar(email: string, password: string) {
+    let errorMessage = '';
     try {
       const { data } = await api.post("/cooperator/login", { email, password });
 
@@ -41,13 +42,16 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         api.defaults.headers.common["Authorization"] = `Bearer ${data.data.token}`;
         setLogado(true);
       } else {
-        //MENSSAGEM DE ERRO
-        
+        errorMessage = data.message
       }
-      console.log(data);
-      window.alert(JSON.stringify(data.data));
+      //window.alert(JSON.stringify(data));
     } catch (error) {
       console.log(error);
+      throw "Não foi possível efeturar o login!";
+    }finally{
+      if(errorMessage){
+        throw errorMessage
+      }
     }
   }
 

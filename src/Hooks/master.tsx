@@ -29,6 +29,7 @@ function MasterProvider({ children }: IMasterProviderProps) {
   const [logado, setLogado] = useState(false);
   const [master, setMaster] = useState({} as IMaster);
   async function logar(email: string, password: string) {
+    let errorMessage = '';
     try {
       const { data } = await api.post("/master/login", { email, password });
 
@@ -36,14 +37,17 @@ function MasterProvider({ children }: IMasterProviderProps) {
         setMaster(data.data.user);
         api.defaults.headers.common["Authorization"] = `Bearer ${data.data.token}`;
         setLogado(true);
-      } else {
-        //MENSSAGEM DE ERRO
-        
+        } else {
+        errorMessage = data.message
       }
-      console.log(data);
-      window.alert(JSON.stringify(data.data));
+      //window.alert(JSON.stringify(data));
     } catch (error) {
       console.log(error);
+      throw "Não foi possível efeturar o login!";
+    }finally{
+      if(errorMessage){
+        throw errorMessage
+      }
     }
   }
 

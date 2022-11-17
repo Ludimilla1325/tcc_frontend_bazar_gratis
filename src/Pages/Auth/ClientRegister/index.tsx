@@ -7,7 +7,8 @@ import {
   Span,
   LoginButton,
   Subtitle,
-} from "./styles";
+  SpanLabel,
+} from "../AuthStyles";
 import { useCliente } from "../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../Utils/urls";
@@ -27,10 +28,10 @@ export const ClientRegister = () => {
     confirmPass: "",
   });
 
-  const handleChangeForm = (event: any) => {
+  const handleChangeForm = (name: string, event: any) => {
     setFormValue({
       ...formValue,
-      [event.target.name]: event.target.value,
+      [name]: event.target.value,
     });
   };
 
@@ -40,41 +41,66 @@ export const ClientRegister = () => {
       <Subtitle>Crie sua conta gratuitamente</Subtitle>
       <Label>
         Nome completo
-        <Input value={formValue.name} onChange={handleChangeForm} />
+        <Input
+          value={formValue.name}
+          onChange={(ev) => handleChangeForm("name", ev)}
+        />
       </Label>
       <Label>
         Email
-        <Input value={formValue.email} onChange={handleChangeForm} />
+        <Input
+          value={formValue.email}
+          onChange={(ev) => handleChangeForm("email", ev)}
+        />
       </Label>
       <Label>
         Telefone
-        <Input value={formValue.phone} onChange={handleChangeForm} />
+        <Input
+          value={formValue.phone}
+          onChange={(ev) => handleChangeForm("phone", ev)}
+        />
       </Label>
       <Label>
         CPF
-        <Input value={formValue.cpf} onChange={handleChangeForm} />
+        <Input
+          value={formValue.cpf}
+          onChange={(ev) => handleChangeForm("cpf", ev)}
+        />
       </Label>
       <Label>
         CEP
-        <Input value={formValue.cep} onChange={handleChangeForm} />
+        <Input
+          value={formValue.cep}
+          onChange={(ev) => handleChangeForm("cep", ev)}
+        />
       </Label>
       <Label>
         Selecionar Loja
-        <Input value={formValue.store} onChange={handleChangeForm} />
+        <Input
+          value={formValue.store}
+          onChange={(ev) => handleChangeForm("store", ev)}
+        />
       </Label>
 
       <Label>
         Senha
-        <Input value={formValue.password} onChange={handleChangeForm} />
+        <Input
+          value={formValue.password}
+          onChange={(ev) => handleChangeForm("password", ev)}
+        />
       </Label>
       <Label>
         Confirmar Senha
-        <Input value={formValue.confirmPass} onChange={handleChangeForm} />
+        <Input
+          value={formValue.confirmPass}
+          onChange={(ev) => handleChangeForm("confirmPass", ev)}
+        />
       </Label>
       <LoginButton
         onClick={async () => {
           try {
             setLoading(true);
+            console.log("formValue", formValue);
 
             if (formValue.password === formValue.confirmPass) {
               await register(

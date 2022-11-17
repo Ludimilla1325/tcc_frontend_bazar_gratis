@@ -24,6 +24,7 @@ interface IClienteContextData {
     password: string
   ) => Promise<void>;
   cliente: ICliente;
+  updatePassword: (oldPass: string, newPass: string) => Promise<void>;
 }
 
 interface ICliente {
@@ -45,31 +46,40 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   const [cliente, setCliente] = useState({} as ICliente);
 
   async function logar(email: string, password: string) {
-    let errorMessage = '';
+    let errorMessage = "";
     try {
       const { data } = await api.post("/client/login", { email, password });
-     
+
       if (data.sucess) {
         setCliente(data.data.user);
-        api.defaults.headers.common["Authorization"] = `Bearer ${data.data.token}`;
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${data.data.token}`;
         setLogado(true);
       } else {
-        errorMessage = data.message
+        errorMessage = data.message;
       }
       //window.alert(JSON.stringify(data));
     } catch (error) {
       console.log(error);
       throw "Não foi possível efeturar o login!";
-    }finally{
-      if(errorMessage){
-        throw errorMessage
+    } finally {
+      if (errorMessage) {
+        throw errorMessage;
       }
     }
   }
 
-  async function register(client: any) {
+  async function register(
+    name: string,
+    email: string,
+    phone: string,
+    cpf: string,
+    cep: string,
+    storeId: number,
+    password: string
+  ) {
     try {
-      const { name, email, phone, cpf, cep, storeId, password } = client;
       const { data } = await api.post("/client/", {
         name,
         email,
@@ -93,6 +103,26 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     }
   }
 
+  async function updatePassword(oldPassword: string, newPassword: string) {
+    const email = cliente.email;
+    try {
+      const { data } = await api.put("/client/pass", {
+        email,
+        oldPassword,
+        newPassword,
+      });
+
+      if (data.sucess) {
+        window.alert(JSON.stringify("Atualizado com sucesso"));
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {}, []);
 
   useEffect(() => {
@@ -106,6 +136,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         logar,
         register,
         cliente,
+        updatePassword,
       }}
     >
       <>{children}</>

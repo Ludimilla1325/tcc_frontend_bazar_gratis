@@ -6,7 +6,7 @@ import {
   Routes,
   IndexRouteProps,
 } from "react-router-dom";
-import Sidebar from "../components/Layout/Sidebar";
+import Sidebar from "../components/Layout/Sidebar/Sidebar";
 import { ShoppingCartProvider } from "../Context/ShoppingCartContext";
 import { Home } from "../Pages/App/Home";
 import { ProdutosProvider } from "../Context/ProdutosContext";

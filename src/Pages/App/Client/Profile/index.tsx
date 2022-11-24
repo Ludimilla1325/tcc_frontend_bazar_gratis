@@ -10,10 +10,10 @@ import {
   SpanLabel,
   RegisterButton,
 } from "./styles";
-import { useCliente } from "../../../Hooks/cliente";
+import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
-import { app_base_url } from "../../../Utils/urls";
-export const ClientRegister = () => {
+import { app_base_url } from "../../../../Utils/urls";
+export const Profile = () => {
   const navigate = useNavigate();
   const { register } = useCliente();
   const [loading, setLoading] = useState(false);
@@ -38,8 +38,7 @@ export const ClientRegister = () => {
 
   return (
     <Container>
-      <Title>Cadastrar</Title>
-      <Subtitle>Crie sua conta gratuitamente</Subtitle>
+      <Title>Perfil</Title>
       <Label>
         Nome completo
         <Input
@@ -82,21 +81,6 @@ export const ClientRegister = () => {
           onChange={(ev) => handleChangeForm("store", ev)}
         />
       </Label>
-
-      <Label>
-        Senha
-        <Input
-          value={formValue.password}
-          onChange={(ev) => handleChangeForm("password", ev)}
-        />
-      </Label>
-      <Label>
-        Confirmar Senha
-        <Input
-          value={formValue.confirmPass}
-          onChange={(ev) => handleChangeForm("confirmPass", ev)}
-        />
-      </Label>
       <RegisterButton
         onClick={async () => {
           try {
@@ -122,16 +106,15 @@ export const ClientRegister = () => {
           }
         }}
       >
-        Cadastrar
+        Editar Dados
       </RegisterButton>
-      <Span>Já possui cadastro?</Span>
       <LoginButton
         onClick={() => {
           //   logar();
           navigate(`${app_base_url}/login`);
         }}
       >
-        Login
+        Editar Senha
       </LoginButton>
     </Container>
   );

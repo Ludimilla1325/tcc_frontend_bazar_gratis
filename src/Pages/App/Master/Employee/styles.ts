@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import theme from "../../Styles/theme";
+import theme from "./../../../../Styles/theme";
 
 export const Container = styled.div`
   display: flex;
@@ -9,11 +9,11 @@ export const Container = styled.div`
 
   width: 100%;
 `;
-export const Title = styled.h1`
+export const Title = styled.h2`
   color: ${theme.colors.primary};
   font-size: max(2.5vw, 25px);
   font-weight: bold;
-  margin-top: 10vh;
+  margin-top: 6vh;
 `;
 export const Subtitle = styled.h2`
   color: ${theme.colors.primary};
@@ -34,18 +34,19 @@ export const Input = styled.input`
   font-size: max(1vw, 10px);
   padding: 0.4vw;
 
-  min-width: 20vw;
+  min-width: 26vw;
+  min-height: 2vw;
   margin-bottom: 1vh;
 `;
 export const Span = styled.div`
   color: ${theme.colors.primary};
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: center;
   width: 15%;
   font-size: max(0.8vw, 8px);
 `;
-export const LoginButton = styled.button`
+export const Button = styled.button`
   background-color: ${theme.colors.secondary};
   color: ${theme.colors.light};
   min-width: 20vw;
@@ -53,6 +54,18 @@ export const LoginButton = styled.button`
   border-radius: 0.25rem;
   margin-bottom: 2vh;
   font-size: max(1.2vw, 12px);
+  margin-top: 2ch;
+`;
+
+export const BackButton = styled.button`
+  background-color: ${theme.colors.blue};
+  color: ${theme.colors.light};
+  min-width: 20vw;
+  padding: 0.6vw;
+  border-radius: 0.25rem;
+  margin-bottom: 2vh;
+  font-size: max(1.2vw, 12px);
+  margin-top: 1ch;
 `;
 
 export const SpanLabel = styled.span`

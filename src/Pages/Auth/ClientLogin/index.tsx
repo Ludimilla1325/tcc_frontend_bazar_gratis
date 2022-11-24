@@ -63,7 +63,7 @@ export const ClientLogin = () => {
       <LoginButton
         onClick={() => {
           //logar();
-          // navigate(`${app_base_url}/home`);
+          navigate(`${app_base_url}/register`);
         }}
       >
         Cadastrar

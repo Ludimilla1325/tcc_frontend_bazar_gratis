@@ -5,10 +5,11 @@ import {
   Label,
   Input,
   Span,
-  LoginButton,
+  BackButton,
   Subtitle,
   SpanLabel,
-} from "../../../Auth/AuthStyles";
+  EditButton,
+} from "./styles";
 import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
@@ -50,7 +51,7 @@ export const EditPass = () => {
         />
       </Label>
 
-      <LoginButton
+      <EditButton
         onClick={async () => {
           try {
             if (password === confirmPass) {
@@ -64,15 +65,15 @@ export const EditPass = () => {
         }}
       >
         Editar Senha
-      </LoginButton>
+      </EditButton>
 
-      <LoginButton
+      <BackButton
         onClick={async () => {
           navigate(`${app_base_url}/home`);
         }}
       >
         Voltar
-      </LoginButton>
+      </BackButton>
     </Container>
   );
 };

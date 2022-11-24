@@ -35,7 +35,7 @@ export const Input = styled.input`
   border-radius:0.25rem;
   color:${theme.colors.light};
   font-size: max(1vw,10px);
-  padding:0.4vw;
+  padding:max(0.4vw,8px);
 
   min-width:20vw;
   margin-bottom:1vh;

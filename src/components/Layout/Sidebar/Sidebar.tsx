@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Title } from "../../Pages/App/Home/styles";
+import { Title } from "../../../Pages/App/Home/styles";
 import { IconContext } from "react-icons";
 import {
   AiOutlineMenu,
@@ -9,13 +9,18 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
-import { SidebarData, SidebarDataCooperator, SidebarMaster } from "./SidebarData";
+import {
+  SidebarData,
+  SidebarDataCooperator,
+  SidebarMaster,
+} from "./SidebarData";
 import SidebarLink from "./Submenu";
 import { Button } from "react-bootstrap";
-import { useShoppingCart } from "../../Context/ShoppingCartContext";
-import { useCliente } from "../../Hooks/cliente";
-import { useCooperator } from "../../Hooks/cooperator";
-import { useMaster } from "../../Hooks/master";
+import { useShoppingCart } from "../../../Context/ShoppingCartContext";
+import { useCliente } from "../../../Hooks/cliente";
+import { useCooperator } from "../../../Hooks/cooperator";
+import { useMaster } from "../../../Hooks/master";
+import Navbar from "../Navbar/Navbar";
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
@@ -95,7 +100,7 @@ const NavName = styled.span`
   align-items: center;
   height: 4rem;
   font-size: 1rem;
-  margin-left: 100
+  margin-left: 100;
   color: white;
 `;
 
@@ -166,27 +171,34 @@ const Sidebar: FC = () => {
           </NavIcon>
           <SidebarTitle>MCGI FREE STORE</SidebarTitle>
           <Line></Line>
-          {
-            cliente.id?
-          <>
-        
-         { SidebarData.map((item: any, index) => {
-            return <SidebarLink item={item} key={index} />;
-          })}
-            </>:""} {cooperator.id?<>
-        
-        { SidebarDataCooperator.map((item: any, index) => {
-           return <SidebarLink item={item} key={index} />;
-         })}
-           </>:""}
-           
-           {master.id?<>
-        
-        { SidebarMaster.map((item: any, index) => {
-           return <SidebarLink item={item} key={index} />;
-         })}
-           </>:""}
-           SidebarMaster
+          {cliente.id ? (
+            <>
+              {SidebarData.map((item: any, index: any) => {
+                return <SidebarLink item={item} key={index} />;
+              })}
+            </>
+          ) : (
+            ""
+          )}{" "}
+          {cooperator.id ? (
+            <>
+              {SidebarDataCooperator.map((item: any, index: any) => {
+                return <SidebarLink item={item} key={index} />;
+              })}
+            </>
+          ) : (
+            ""
+          )}
+          {master.id ? (
+            <>
+              {SidebarMaster.map((item: any, index: any) => {
+                return <SidebarLink item={item} key={index} />;
+              })}
+            </>
+          ) : (
+            ""
+          )}
+          SidebarMaster
         </SidebarWrap>
       </SidebarNav>
     </IconContext.Provider>

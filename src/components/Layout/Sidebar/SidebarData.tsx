@@ -1,5 +1,5 @@
 import React from "react";
-import { SidebarItem } from "../../models/SidebarItem";
+import { SidebarItem } from "../../../models/SidebarItem";
 
 import {
   AiFillCaretDown,
@@ -14,7 +14,7 @@ import { RiHistoryFill } from "react-icons/ri";
 export const SidebarData: SidebarItem[] = [
   {
     title: "Perfil",
-    path: "/loja",
+    path: "/profile",
     icon: <AiOutlineUser />,
   },
   {
@@ -29,7 +29,7 @@ export const SidebarData: SidebarItem[] = [
   },
   {
     title: "Solicitar pontos",
-    path: "/loja",
+    path: "/pointsSolicitation",
     icon: <TbFilePlus />,
   },
   {
@@ -43,7 +43,6 @@ export const SidebarData: SidebarItem[] = [
     // ],
   },
 ];
-
 
 export const SidebarDataCooperator: SidebarItem[] = [
   {
@@ -59,6 +58,11 @@ export const SidebarDataCooperator: SidebarItem[] = [
   {
     title: "Produtos",
     path: "/produtos",
+    icon: <MdOutlineLocalGroceryStore />,
+  },
+  {
+    title: "Criar Produtos",
+    path: "/create-products",
     icon: <MdOutlineLocalGroceryStore />,
   },
   {
@@ -80,11 +84,15 @@ export const SidebarDataCooperator: SidebarItem[] = [
   },
 ];
 
-
 export const SidebarMaster: SidebarItem[] = [
   {
     title: "Perfil",
     path: "/perfil",
+    icon: <AiOutlineUser />,
+  },
+  {
+    title: "Criar Cooperador",
+    path: "/create-cooperator",
     icon: <AiOutlineUser />,
   },
   {
@@ -93,5 +101,3 @@ export const SidebarMaster: SidebarItem[] = [
     icon: <AiOutlineHome />,
   },
 ];
-
-

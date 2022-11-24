@@ -17,7 +17,9 @@ export const Title = styled.h1`
   font-weight:bold;
 `;
 
-export const Table = styled.table``;
+export const Table = styled.table`
+  
+`;
 
 export const Header = styled.tr`
   font-size: max(1.2vw, 12px);

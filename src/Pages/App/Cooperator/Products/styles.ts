@@ -33,7 +33,7 @@ export const ProductContainer = styled.div`
   justify-content: center;
   flex-direction: column;
 
-  width: 15vw;
+  width: max(15vw,150px);
   height: 20vh;
 
   margin: 1vw;
@@ -44,7 +44,8 @@ export const ProductContainer = styled.div`
 `;
 
 export const ProductImage = styled.img`
-  width: max(5vw, 50px);
+  width: max(5vw, 80px);
+
 `;
 
 export const ProdutctFooter = styled.div`

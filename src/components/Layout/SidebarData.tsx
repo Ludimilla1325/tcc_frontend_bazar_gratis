@@ -67,8 +67,8 @@ export const SidebarDataCooperator: SidebarItem[] = [
     icon: <TbFilePlus />,
   },
   {
-    title: "Historico de compras",
-    path: "/loja",
+    title: "Pedidos",
+    path: "/pedidos",
     icon: <RiHistoryFill />,
     iconOpened: <AiFillCaretUp />,
     iconClosed: <AiFillCaretDown />,

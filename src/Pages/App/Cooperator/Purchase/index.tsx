@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { AppointmentDetails } from "../../../../components/Modals/AppointmentDetails";
 import { useCooperator } from "../../../../Hooks/cooperator";
 import api from "../../../../Services/api";
 import theme from "../../../../Styles/theme";
@@ -27,6 +28,7 @@ export const Purchase = () => {
   const [appointements, setAppointements] = useState({} as IAppointement[]);
   const [statusList, setStatusList] = useState(1 as 1 | 2);
   const { cooperator } = useCooperator();
+  const [appointementsFocus, setAppointementFocus]= useState({} as IAppointement);
   async function handleData() {
     try {
       const { data } = await api.get(`/appointment-client`);
@@ -51,7 +53,7 @@ export const Purchase = () => {
         return (
           <Body
             onClick={() => {
-              window.alert("MODAL DE EDITAR AINDA NAO CRIADO");
+              setAppointementFocus(item);
             }}
           >
             <TBody>{item.id}</TBody>
@@ -108,6 +110,10 @@ export const Purchase = () => {
           </Table>
         </TableContainer>
       </HandlerDiv>
+      <AppointmentDetails  open={!!appointementsFocus.id} 
+      onClose={()=>setAppointementFocus({} as IAppointement) }
+      appointementFocus={appointementsFocus}
+      />
     </Container>
   );
 };

@@ -126,10 +126,14 @@ export function AppointmentDetails({
           <OperationButton onClick={() =>onClose()}>
               VOLTAR
           </OperationButton>
-
-          <OperationButton>
+{appointementFocus.delivered?"": <OperationButton  onClick={async() =>{
+            //window.alert(appointementFocus.id)
+            const {data} = await api.patch(`/appointment-client/${appointementFocus.id}`)
+            onClose();
+          }}>
               CONFIRMAR ENTREGA
-          </OperationButton>
+          </OperationButton>}
+         
       </Footer>
     </Modal>
   );

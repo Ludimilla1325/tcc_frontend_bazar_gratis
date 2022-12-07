@@ -36,9 +36,14 @@ const customStyles = {
 interface Props {
   open: boolean;
   onClose(): void;
+  handleSetAgendamentoId(id: number): void;
 }
 
-export function AppointmentDates({ open, onClose }: Props) {
+export function AppointmentDates({
+  open,
+  onClose,
+  handleSetAgendamentoId,
+}: Props) {
   const [appointmentDate, setAppointmentDate] = useState(new Date());
   const [dates, setDates] = useState(["2022-12-5"]);
   const [appointments, setAppointments] = useState({} as IAppointment[]);
@@ -117,7 +122,29 @@ export function AppointmentDates({ open, onClose }: Props) {
           />
         </Label>
 
-        <Button>Confirmar</Button>
+        <Button
+          onClick={async () => {
+            const { data } = await api.post(`/appointment-client/`, {
+              appointmentId: appointments.filter(
+                (item) =>
+                  `${new Date(item.appointment_date).getFullYear()}-${
+                    new Date(item.appointment_date).getMonth() + 1
+                  }-${new Date(item.appointment_date).getDate()}` ==
+                  `${appointmentDate.getFullYear()}-${
+                    appointmentDate.getMonth() + 1
+                  }-${appointmentDate.getDate()}`
+              )[0].id,
+              clientId: cliente.id,
+            });
+            if (data.sucess) {
+              handleSetAgendamentoId(data.data.id);
+            } else {
+              window.alert(data.message);
+            }
+          }}
+        >
+          Confirmar
+        </Button>
       </Container>
     </Modal>
   );

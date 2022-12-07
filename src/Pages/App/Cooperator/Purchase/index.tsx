@@ -44,7 +44,7 @@ export const Purchase = () => {
   }
   useEffect(() => {
     handleData();
-  }, []);
+  }, [appointementsFocus]);
 
   function renderData() {
     if (appointements && appointements.length > 0) {

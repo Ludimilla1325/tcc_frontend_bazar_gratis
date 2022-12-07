@@ -17,6 +17,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const { closeCart, cartItems, removeFromCart } = useShoppingCart();
   const { produtos } = useProdutos();
   const { cliente, logar } = useCliente();
+  const[agendamentoId,setAgendamentoId] = useState(0);
   const [appointmentModal, setAppointmentModal] = useState(false);
 
   function verificaValorFinal() {
@@ -28,7 +29,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
     return valor_final;
   }
 
-  async function finalizarCompra() {
+  async function finalizarCompra(appointmentId:number) {
     if (cartItems.length > 0)
       try {
         if (cliente.points < verificaValorFinal()) {
@@ -36,19 +37,15 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
           return;
         }
 
-        const { data } = await api.post("/agendamento-cliente/", {
-          agendamentoId: 1,
-          clienteId: 2,
-          entregue: false,
-        });
+       
 
         for (let index = 0; index < cartItems.length; index++) {
           const item = cartItems[index];
-
-          await api.post("/compra", {
-            agendamentoId: 1,
-            produtoId: item.id,
-            quantidade: item.quantity,
+window.alert(item.quantity)
+          await api.post("/purchase", {
+            client_AppointmentId: appointmentId,
+            productId: item.id,
+            quantity: item.quantity,
           });
 
           if (index == cartItems.length - 1) {
@@ -68,6 +65,8 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
     <AppointmentDates
       open={appointmentModal}
       onClose={() => setAppointmentModal(false)}
+      handleSetAgendamentoId={(id:number)=>finalizarCompra(id)}
+      
     />
   ) : (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">

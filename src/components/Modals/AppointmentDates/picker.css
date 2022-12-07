@@ -1,0 +1,9 @@
+input{
+    border:none;
+    font-size: max(12px,1.2vw);
+    text-align: center;
+    background:#245285;
+    border-radius: 0.25rem;
+    padding:0.3vw;
+    cursor: pointer;
+}

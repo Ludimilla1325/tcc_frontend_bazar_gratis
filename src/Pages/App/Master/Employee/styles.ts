@@ -72,3 +72,67 @@ export const SpanLabel = styled.span`
   margin-left: 0.8vw;
   padding-bottom: 0.2vh;
 `;
+
+export const Switch = styled.div`
+  position: relative;
+  width: 60px;
+  height: 28px;
+  background: #b3b3b3;
+  border-radius: 32px;
+  padding: 4px;
+  transition: 300ms all;
+
+  &:before {
+    transition: 300ms all;
+    content: "";
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 35px;
+    top: 50%;
+    left: 4px;
+    background: white;
+    transform: translate(0, -50%);
+  }
+`;
+
+export const InpuToggle = styled.input`
+  opacity: 0;
+  position: absolute;
+
+  &:checked + ${Switch} {
+    background: green;
+
+    &:before {
+      transform: translate(32px, -50%);
+    }
+  }
+`;
+
+export const LabelToggle = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+`;
+
+export const Select = styled.select`
+  background-color: ${theme.colors.primary};
+  border: none;
+  border-radius: 0.25rem;
+  color: ${theme.colors.light};
+  font-size: max(1vw, 10px);
+  padding: 0.4vw;
+
+  min-width: 26vw;
+  min-height: 2vw;
+  margin-bottom: 1vh;
+
+  option {
+    background-color: ${theme.colors.primary};
+    display: flex;
+    white-space: pre;
+    min-height: 20px;
+    padding: 0px 2px 1px;
+  }
+`;

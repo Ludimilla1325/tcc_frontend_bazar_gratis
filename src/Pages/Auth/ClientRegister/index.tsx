@@ -9,14 +9,21 @@ import {
   Subtitle,
   SpanLabel,
   RegisterButton,
+  Select,
 } from "./styles";
 import { useCliente } from "../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../Utils/urls";
+import { useGeral } from "../../../Hooks/geral";
 export const ClientRegister = () => {
   const navigate = useNavigate();
   const { register } = useCliente();
+  const { stores } = useGeral();
   const [loading, setLoading] = useState(false);
+
+  const storeList = stores.map((store) => {
+    return <option value={store.id}>{store.name}</option>;
+  });
 
   const [formValue, setFormValue] = useState({
     name: "",
@@ -77,10 +84,10 @@ export const ClientRegister = () => {
       </Label>
       <Label>
         Selecionar Loja
-        <Input
-          value={formValue.store}
-          onChange={(ev) => handleChangeForm("store", ev)}
-        />
+        <Select onChange={(ev) => handleChangeForm("store", ev)}>
+          <option value="" hidden></option>
+          {storeList}
+        </Select>
       </Label>
 
       <Label>

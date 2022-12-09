@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Title,
@@ -9,24 +9,31 @@ import {
   Subtitle,
   SpanLabel,
   RegisterButton,
+  Select,
 } from "./styles";
 import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
+import { useGeral } from "../../../../Hooks/geral";
 export const Profile = () => {
   const navigate = useNavigate();
-  const { register } = useCliente();
+  const { stores } = useGeral();
+  const { getProfile, clienteStore } = useCliente();
   const [loading, setLoading] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
 
   const [formValue, setFormValue] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    cpf: "",
-    cep: "",
+    name: clienteStore.name,
+    phone: clienteStore.phone,
+    cpf: clienteStore.cpf,
+    cep: clienteStore.cep,
     store: 0,
     password: "",
     confirmPass: "",
+  });
+
+  const storeList = stores.map((store) => {
+    return <option value={store.id}>{store.name}</option>;
   });
 
   const handleChangeForm = (name: string, event: any) => {
@@ -36,6 +43,8 @@ export const Profile = () => {
     });
   };
 
+  const store = `${clienteStore.Store.name}, ${clienteStore.Store.localization}`;
+
   return (
     <Container>
       <Title>Perfil</Title>
@@ -44,13 +53,7 @@ export const Profile = () => {
         <Input
           value={formValue.name}
           onChange={(ev) => handleChangeForm("name", ev)}
-        />
-      </Label>
-      <Label>
-        Email
-        <Input
-          value={formValue.email}
-          onChange={(ev) => handleChangeForm("email", ev)}
+          disabled={!isEdit}
         />
       </Label>
       <Label>
@@ -58,6 +61,7 @@ export const Profile = () => {
         <Input
           value={formValue.phone}
           onChange={(ev) => handleChangeForm("phone", ev)}
+          disabled={!isEdit}
         />
       </Label>
       <Label>
@@ -65,6 +69,7 @@ export const Profile = () => {
         <Input
           value={formValue.cpf}
           onChange={(ev) => handleChangeForm("cpf", ev)}
+          disabled={true}
         />
       </Label>
       <Label>
@@ -72,50 +77,43 @@ export const Profile = () => {
         <Input
           value={formValue.cep}
           onChange={(ev) => handleChangeForm("cep", ev)}
+          disabled={!isEdit}
         />
       </Label>
       <Label>
         Selecionar Loja
-        <Input
-          value={formValue.store}
-          onChange={(ev) => handleChangeForm("store", ev)}
-        />
+        {!isEdit ? (
+          <Input value={store} disabled={!isEdit} />
+        ) : (
+          <Select onChange={(ev) => handleChangeForm("store", ev)}>
+            <option value="" hidden>
+              {store}
+            </option>
+            {storeList}
+          </Select>
+        )}
       </Label>
-      <RegisterButton
-        onClick={async () => {
-          try {
-            setLoading(true);
-            console.log("formValue", formValue);
 
-            if (formValue.password === formValue.confirmPass) {
-              await register(
-                formValue.name,
-                formValue.email,
-                formValue.phone,
-                formValue.cpf,
-                formValue.cep,
-                formValue.store,
-                formValue.password
-              );
-            }
-            navigate(`${app_base_url}/home`);
-          } catch (error) {
-            window.alert(JSON.stringify("Erro ao cadastrar!"));
-          } finally {
-            setLoading(false);
-          }
-        }}
-      >
-        Editar Dados
-      </RegisterButton>
-      <LoginButton
-        onClick={() => {
-          //   logar();
-          navigate(`${app_base_url}/login`);
-        }}
-      >
-        Editar Senha
-      </LoginButton>
+      {isEdit ? (
+        <RegisterButton>Salvar</RegisterButton>
+      ) : (
+        <>
+          <RegisterButton
+            onClick={() => {
+              setIsEdit(true);
+            }}
+          >
+            Editar Dados
+          </RegisterButton>
+          <LoginButton
+            onClick={() => {
+              navigate(`${app_base_url}/editPass`);
+            }}
+          >
+            Editar Senha
+          </LoginButton>
+        </>
+      )}
     </Container>
   );
 };

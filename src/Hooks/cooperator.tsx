@@ -40,6 +40,7 @@ const CooperatorContext = createContext({} as ICooperatorContextData);
 function CooperatorProvider({ children }: ICooperatorProviderProps) {
   const [logado, setLogado] = useState(false);
   const [cooperator, setCooperator] = useState({} as ICooperator);
+
   async function logar(email: string, password: string) {
     let errorMessage = "";
     try {

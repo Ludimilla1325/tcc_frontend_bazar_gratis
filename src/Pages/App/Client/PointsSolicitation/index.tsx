@@ -22,48 +22,64 @@ import {
 } from "./styles";
 export const PointsSolicitation = () => {
   const navigate = useNavigate();
+  const { pointsSolicitationList, cliente, clienteStore, pointsSolicitation } =
+    useCliente();
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [cpf, setCpf] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [justification, setJustification] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ title: "", message: "" });
+
+  function renderData() {
+    if (pointsSolicitationList && pointsSolicitationList.length > 0) {
+      return pointsSolicitationList.map((item: any) => {
+        return (
+          <Body>
+            <TBody>{item.request_date}</TBody>
+            <TBody>{item.quantity}</TBody>
+            <TBody>{item.status}</TBody>
+          </Body>
+        );
+      });
+    }
+  }
 
   return (
     <Container>
       <Title>Solicitar Novos pontos</Title>
       <Label>
         <SpanLabel>Nome</SpanLabel>
-        <Input value={name} onChange={(ev) => setName(ev.target.value)} />
+        <Input value={clienteStore.name} disabled={true} />
       </Label>
       <Label>
         <SpanLabel> Pontos</SpanLabel>
         <Input
-          value={email}
-          onChange={(ev) => setEmail(ev.target.value)}
+          type="number"
+          value={quantity}
+          onChange={(ev) => setQuantity(ev.target.value)}
           placeholder="Digite os pontos"
         />
       </Label>
       <Label>
         <SpanLabel>Justificativa</SpanLabel>
         <InputJustification
-          value={cpf}
-          onChange={(ev) => setCpf(ev.target.value)}
+          value={justification}
+          onChange={(ev) => setJustification(ev.target.value)}
           placeholder="Digite uma justificativa!"
         />
       </Label>
 
       <LoginButton
-      // onClick={async () => {
-      //   try {
-      //     setLoading(true);
-      //     await logar(email, password);
-      //     navigate(`${app_base_url}/editPass`);
-      //   } catch (error) {
-      //     setError({ title: "Ops", message: String(error) });
-      //   } finally {
-      //     setLoading(false);
-      //   }
-      // }}
+        onClick={async () => {
+          try {
+            setLoading(true);
+            await pointsSolicitation(quantity, justification);
+          } catch (error) {
+            setError({ title: "Ops", message: String(error) });
+          } finally {
+            setLoading(false);
+          }
+        }}
       >
         Solicitar
       </LoginButton>
@@ -76,11 +92,7 @@ export const PointsSolicitation = () => {
           <THead>Status</THead>
         </Header>
 
-        <Body>
-          <TBody>13/01/2022</TBody>
-          <TBody>100</TBody>
-          <TBody>ACEITO</TBody>
-        </Body>
+        {renderData()}
       </Table>
     </Container>
   );

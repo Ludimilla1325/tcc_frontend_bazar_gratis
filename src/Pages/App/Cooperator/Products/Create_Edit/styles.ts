@@ -72,3 +72,24 @@ export const SpanLabel = styled.span`
   margin-left: 0.8vw;
   padding-bottom: 0.2vh;
 `;
+
+export const Select = styled.select`
+  background-color: ${theme.colors.primary};
+  border: none;
+  border-radius: 0.25rem;
+  color: ${theme.colors.light};
+  font-size: max(1vw, 10px);
+  padding: 0.4vw;
+
+  min-width: 26vw;
+  min-height: 2vw;
+  margin-bottom: 1vh;
+
+  option {
+    background-color: ${theme.colors.primary};
+    display: flex;
+    white-space: pre;
+    min-height: 20px;
+    padding: 0px 2px 1px;
+  }
+`;

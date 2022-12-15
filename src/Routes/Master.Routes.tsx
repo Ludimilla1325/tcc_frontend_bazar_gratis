@@ -52,6 +52,17 @@ const MasterRoutes: FC = () => {
                 element={<Stores />}
               ></Route>
             </Routes>
+
+            <Routes>
+            <Route path={`${app_base_url}/funcionarios/:storeId`} element={<Cooperators />}></Route>
+          </Routes>
+
+          <Routes>
+              <Route
+                path={`${app_base_url}/produtos/:storeId`}
+                element={<Products />}
+              ></Route>
+            </Routes>
           </Container>
         </Router>
       </ShoppingCartProvider>

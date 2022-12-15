@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { useCooperator } from "../../../../Hooks/cooperator";
 import api from "../../../../Services/api";
 import {Container,Header,Table, THead,Title,Body,TBody} from "./styles";
@@ -14,9 +15,11 @@ export interface ICooperator {
 export const Cooperators = () => {
   const [cooperators, setCooperators] = useState({} as ICooperator[]);
   const { cooperator } = useCooperator();
+  const { storeId } = useParams();
   async function handleData() {
     try {
-      const { data } = await api.get(`/cooperator/loja/${cooperator.storeId}`);
+
+      const { data } = await api.get(`/cooperator/store/${storeId?storeId:cooperator.storeId}`);
       if (data.sucess) {
        // window.alert(data.data);
         setCooperators(data.data);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useCooperator } from "../../../../Hooks/cooperator";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
+import {useParams} from "react-router-dom"
 import {
   Container,
   Title,
@@ -35,9 +36,10 @@ export const Products = () => {
   const [categories, setCategories] = useState([] as Array<string>);
   const navigate = useNavigate();
   const { cooperator } = useCooperator();
+  const { storeId } = useParams();
   async function handleData() {
     try {
-      const { data } = await api.get(`/product/${cooperator.storeId}`);
+      const { data } = await api.get(`/product/${storeId?storeId:cooperator.storeId}`);
       if (data.sucess) {
         setProducts(data.data);
       } else {

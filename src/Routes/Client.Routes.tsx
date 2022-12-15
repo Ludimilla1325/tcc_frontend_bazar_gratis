@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Container } from "react-bootstrap";
 import {
   BrowserRouter as Router,
@@ -7,17 +7,15 @@ import {
   IndexRouteProps,
 } from "react-router-dom";
 import Sidebar from "../components/Layout/Sidebar/Sidebar";
-import { ShoppingCartProvider } from "../Context/ShoppingCartContext";
-import { Home } from "../Pages/App/Cooperator/Home";
 import { ProdutosProvider } from "../Context/ProdutosContext";
-
+import { ShoppingCartProvider } from "../Context/ShoppingCartContext";
+import { EditPass } from "../Pages/App/Client/EditPass";
+import { Home } from "../Pages/App/Client/Home";
+import { PointsSolicitation } from "../Pages/App/Client/PointsSolicitation";
+import { Profile } from "../Pages/App/Client/Profile";
 import { app_base_url } from "../Utils/urls";
-import { Cooperators } from "../Pages/App/Cooperator/Cooperators";
-import { Products } from "../Pages/App/Cooperator/Products";
-import { Stores } from "../Pages/App/Master/Stores";
-import { CooperatorRegister } from "../Pages/App/Master/Employee";
 
-const MasterRoutes: FC = () => {
+const ClientRoutes: FC = () => {
   return (
     <ProdutosProvider>
       <ShoppingCartProvider>
@@ -29,27 +27,20 @@ const MasterRoutes: FC = () => {
             </Routes>
             <Routes>
               <Route
-                path={`${app_base_url}/colaboradores`}
-                element={<Cooperators />}
+                path={`${app_base_url}/editPass`}
+                element={<EditPass />}
               ></Route>
             </Routes>
             <Routes>
               <Route
-                path={`${app_base_url}/create-cooperator`}
-                element={<CooperatorRegister />}
+                path={`${app_base_url}/pointsSolicitation`}
+                element={<PointsSolicitation />}
               ></Route>
             </Routes>
             <Routes>
               <Route
-                path={`${app_base_url}/produtos`}
-                element={<Products />}
-              ></Route>
-            </Routes>
-
-            <Routes>
-              <Route
-                path={`${app_base_url}/lojas`}
-                element={<Stores />}
+                path={`${app_base_url}/profile`}
+                element={<Profile />}
               ></Route>
             </Routes>
           </Container>
@@ -59,4 +50,4 @@ const MasterRoutes: FC = () => {
   );
 };
 
-export default MasterRoutes;
+export default ClientRoutes;

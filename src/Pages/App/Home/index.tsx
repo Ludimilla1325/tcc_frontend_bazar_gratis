@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import Sidebar from "../../../components/Layout/Sidebar";
+import Sidebar from "../../../components/Layout/Sidebar/Sidebar";
 import { Container, Title } from "./styles";
 import storeItems from "../../../Data/items.json";
 import { StoreItem } from "../../../components/Loja/StoreItem";
@@ -8,9 +8,8 @@ import api from "../../../Services/api";
 import { AiFillExperiment } from "react-icons/ai";
 import { Prev } from "react-bootstrap/esm/PageItem";
 import { StoreItemProps } from "../../../Context/ProdutosContext";
-import {useProdutos} from "../../../Context/ProdutosContext";
+import { useProdutos } from "../../../Context/ProdutosContext";
 import { useCliente } from "../../../Hooks/cliente";
-
 
 interface IHandleProdutoCard {
   categoria: string;
@@ -18,19 +17,17 @@ interface IHandleProdutoCard {
 }
 
 export const Home = () => {
-  const{cliente} = useCliente(); 
-const{produtos,handleData} = useProdutos();
+  const { cliente } = useCliente();
+  const { produtos, handleData } = useProdutos();
   const [handleCard, setHandleCard] = useState([] as IHandleProdutoCard[]);
-
-  
 
   useEffect(() => {
     handleData();
   }, []);
 
   function auxAddCategoria(categoria: string) {
-    if(produtos){
-      if(produtos.length > 0){
+    if (produtos) {
+      if (produtos.length > 0) {
         const itens = produtos.filter((item) => item.categoria == categoria);
         return {
           categoria: categoria,
@@ -66,9 +63,7 @@ const{produtos,handleData} = useProdutos();
     }
   }, [produtos.length]);
 
-  useEffect(() => {
-   
-  }, [handleCard]);
+  useEffect(() => {}, [handleCard]);
 
   function renderItens(params: StoreItemProps[]) {
     if (params) {
@@ -99,7 +94,5 @@ const{produtos,handleData} = useProdutos();
     }
   }
 
-  return <>
- {
-    renderRows()}</>;
+  return <>{renderRows()}</>;
 };

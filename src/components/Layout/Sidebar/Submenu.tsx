@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { SidebarItem } from "../../models/SidebarItem";
-import { app_base_url } from "../../Utils/urls";
+import { SidebarItem } from "../../../models/SidebarItem";
+import { app_base_url } from "../../../Utils/urls";
 
 type SidebarLinkProps = {
   item: SidebarItem;
@@ -62,7 +62,7 @@ const Submenu: FC<SidebarLinkProps> = ({ item }) => {
       {subnav &&
         item?.subnav?.map((subnavItem, index) => {
           return (
-            <DropdownLink key={index} to={app_base_url  + subnavItem.path}>
+            <DropdownLink key={index} to={app_base_url + subnavItem.path}>
               {subnavItem.icon}
               <SidebarLabel>{subnavItem.title}</SidebarLabel>
             </DropdownLink>

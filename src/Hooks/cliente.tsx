@@ -14,7 +14,24 @@ interface IClienteProviderProps {
 interface IClienteContextData {
   logado: boolean;
   logar: (email: string, senha: string) => Promise<void>;
+  register: (
+    name: string,
+    email: string,
+    phone: string,
+    cpf: string,
+    cep: string,
+    storeId: number,
+    password: string
+  ) => Promise<void>;
   cliente: ICliente;
+  updatePassword: (oldPass: string, newPass: string) => Promise<void>;
+  getProfile: () => Promise<ICliente>;
+  clienteStore: any;
+  pointsSolicitation: (
+    quantity: string,
+    client_justification: string
+  ) => Promise<any>;
+  pointsSolicitationList: any;
 }
 
 interface ICliente {
@@ -34,41 +51,204 @@ const ClienteContext = createContext({} as IClienteContextData);
 function ClienteProvider({ children }: IClienteProviderProps) {
   const [logado, setLogado] = useState(false);
   const [cliente, setCliente] = useState({} as ICliente);
+  const [clienteStore, setClienteStore] = useState({} as any);
+  const [pointsSolicitationList, setPointsSolicitationList] = useState(
+    {} as any
+  );
+
   async function logar(email: string, password: string) {
-    let errorMessage = '';
+    let errorMessage = "";
     try {
       const { data } = await api.post("/client/login", { email, password });
-     
+
       if (data.sucess) {
         setCliente(data.data.user);
-        api.defaults.headers.common["Authorization"] = `Bearer ${data.data.token}`;
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${data.data.token}`;
         setLogado(true);
       } else {
-        errorMessage = data.message
+        errorMessage = data.message;
       }
       //window.alert(JSON.stringify(data));
     } catch (error) {
       console.log(error);
       throw "Não foi possível efeturar o login!";
-    }finally{
-      if(errorMessage){
-        throw errorMessage
+    } finally {
+      if (errorMessage) {
+        throw errorMessage;
       }
     }
   }
 
-  useEffect(() => {}, []);
+  async function register(
+    name: string,
+    email: string,
+    phone: string,
+    cpf: string,
+    cep: string,
+    storeId: number,
+    password: string
+  ) {
+    try {
+      const { data } = await api.post("/client/", {
+        name,
+        email,
+        phone,
+        cpf,
+        cep,
+        storeId,
+        password,
+      });
+
+      if (data.sucess) {
+        setCliente(data);
+        setLogado(true);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+      window.alert(JSON.stringify(data.data));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function pointsSolicitation(
+    quantity: string,
+    client_justification: string
+  ) {
+    try {
+      const clientId = +cliente.id;
+      console.log("oi", cliente.id);
+
+      const { data } = await api.post("/pointsSolicitation/", {
+        clientId,
+        quantity,
+        client_justification,
+      });
+
+      if (data.sucess) {
+        window.alert(JSON.stringify(data.message));
+      } else {
+        //MENSSAGEM DE ERRO
+        window.alert(JSON.stringify(data.message));
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function pointsSolicitationHistoric() {
+    const clientId = +cliente.id;
+    try {
+      const { data } = await api.get(`/pointsSolicitation/${clientId}`);
+
+      if (data.sucess) {
+        console.log("data", data);
+        setPointsSolicitationList(data.data);
+        return data;
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function updateProfile(
+    name: string,
+    phone: string,
+    cep: string,
+    storeId: number,
+    points: number
+  ) {
+    const email = cliente.email;
+    try {
+      const { data } = await api.put("/client/", {
+        name,
+        email,
+        phone,
+        cep,
+        storeId,
+        points,
+      });
+
+      if (data.sucess) {
+        window.alert(JSON.stringify("Atualizado com sucesso"));
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function updatePassword(oldPassword: string, newPassword: string) {
+    const email = cliente.email;
+    try {
+      const { data } = await api.put("/client/pass", {
+        email,
+        oldPassword,
+        newPassword,
+      });
+
+      if (data.sucess) {
+        window.alert(JSON.stringify("Atualizado com sucesso"));
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getProfile() {
+    const email = cliente.email;
+    try {
+      const { data } = await api.get(`/client/${email}`);
+
+      if (data.sucess) {
+        console.log("data", data);
+        setClienteStore(data.data);
+        return data;
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  console.log("cliente", cliente);
+  console.log("clienteStore", clienteStore);
 
   useEffect(() => {
-    console.log(cliente);
+    getProfile();
+    pointsSolicitationHistoric();
+  }, [cliente]);
+
+  useEffect(() => {
     //window.alert(JSON.stringify(cliente))
   }, [cliente]);
+
   return (
     <ClienteContext.Provider
       value={{
         logado,
         logar,
+        register,
         cliente,
+        updatePassword,
+        getProfile,
+        clienteStore,
+        pointsSolicitation,
+        pointsSolicitationList,
       }}
     >
       <>{children}</>

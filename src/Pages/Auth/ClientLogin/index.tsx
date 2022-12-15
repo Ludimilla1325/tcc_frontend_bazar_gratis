@@ -7,7 +7,7 @@ import {
   Span,
   LoginButton,
   Subtitle,
-  SpanLabel
+  SpanLabel,
 } from "../AuthStyles";
 import { useCliente } from "../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
@@ -19,38 +19,42 @@ export const ClientLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const[error, setError] = useState({title:"", message:""});
+  const [error, setError] = useState({ title: "", message: "" });
 
   return (
     <Container>
       <Title>Login</Title>
       <Subtitle>Faça seu login para escolher os produtos</Subtitle>
       <Label>
-       <SpanLabel> Email</SpanLabel>
-        <Input value={email} onChange={(ev) => setEmail(ev.target.value)} 
-        placeholder="Digite seu email!"
+        <SpanLabel> Email</SpanLabel>
+        <Input
+          value={email}
+          onChange={(ev) => setEmail(ev.target.value)}
+          placeholder="Digite seu email!"
         />
       </Label>
       <Label>
-      <SpanLabel> Senha</SpanLabel>
-        <Input value={password} onChange={(ev) => setPassword(ev.target.value)} placeholder="Digite sua senha!"/>
+        <SpanLabel> Senha</SpanLabel>
+        <Input
+          value={password}
+          onChange={(ev) => setPassword(ev.target.value)}
+          placeholder="Digite sua senha!"
+        />
       </Label>
 
       <Span>Esqueceu a Senha?</Span>
 
       <LoginButton
-        onClick={async() => {
+        onClick={async () => {
           try {
             setLoading(true);
-           await logar(email, password);
-           navigate(`${app_base_url}/home`);
+            await logar(email, password);
+            navigate(`${app_base_url}/editPass`);
           } catch (error) {
-            setError({title:"Ops", message:String(error)})
-          }finally{
+            setError({ title: "Ops", message: String(error) });
+          } finally {
             setLoading(false);
           }
-    
-      
         }}
       >
         Logar
@@ -59,16 +63,19 @@ export const ClientLogin = () => {
       <LoginButton
         onClick={() => {
           //logar();
-         // navigate(`${app_base_url}/home`);
+          navigate(`${app_base_url}/register`);
         }}
       >
         Cadastrar
       </LoginButton>
 
-        <Alert open={error.message.length > 0} onClose={()=>{setError({title:"", message:""})}}
-          error={error}
-        
-        />
+      <Alert
+        open={error.message.length > 0}
+        onClose={() => {
+          setError({ title: "", message: "" });
+        }}
+        error={error}
+      />
     </Container>
   );
 };

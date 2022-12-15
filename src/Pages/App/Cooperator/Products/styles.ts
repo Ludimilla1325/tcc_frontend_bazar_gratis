@@ -23,17 +23,20 @@ export const CategoryContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width:100%;
+  overflow-x: scroll;
+  padding:20px;
 `;
 
 export const ProductContainer = styled.div`
   background-color: ${theme.colors.dark};
-  padding: 1vw;
+ 
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-
-  width: 15vw;
+  margin-left:max(1vw,15px);
+  width: max(15vw,150px);
   height: 20vh;
 
   margin: 1vw;
@@ -44,7 +47,8 @@ export const ProductContainer = styled.div`
 `;
 
 export const ProductImage = styled.img`
-  width: max(5vw, 50px);
+  width: max(5vw, 80px);
+
 `;
 
 export const ProdutctFooter = styled.div`

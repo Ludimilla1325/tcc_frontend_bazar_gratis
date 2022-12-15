@@ -17,8 +17,14 @@ export const Title = styled.h1`
   font-weight:bold;
 `;
 
+export const TableContainer = styled.div`
+background-color: ${theme.colors.darkGrey};
+padding:0.6vw;
+`;
+
 export const Table = styled.table`
-  
+    background-color: ${theme.colors.darkGrey};
+
 `;
 
 export const Header = styled.tr`
@@ -51,4 +57,18 @@ export const TBody = styled.td`
    
 
 
+`;
+
+
+export const HandlerDiv = styled.div`
+
+
+`; 
+export const ButtonsDiv = styled.div`
+ 
+
+`; 
+export const Button = styled.button`
+padding:1vw;
+font-size:max(1vw, 10px);
 `;

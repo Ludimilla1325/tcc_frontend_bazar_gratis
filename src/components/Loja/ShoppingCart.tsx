@@ -5,6 +5,9 @@ import { CartItem } from "./CartItem";
 import { useProdutos } from "../../Context/ProdutosContext";
 import { useCliente } from "../../Hooks/cliente";
 import api from "../../Services/api";
+import { useState } from "react";
+import { AppointmentDates } from "../Modals/AppointmentDates";
+import DatePicker from "react-datepicker";
 
 type ShoppingCartProps = {
   isOpen: boolean;
@@ -14,6 +17,8 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const { closeCart, cartItems, removeFromCart } = useShoppingCart();
   const { produtos } = useProdutos();
   const { cliente, logar } = useCliente();
+  const[agendamentoId,setAgendamentoId] = useState(0);
+  const [appointmentModal, setAppointmentModal] = useState(false);
 
   function verificaValorFinal() {
     let valor_final = 0;
@@ -24,7 +29,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
     return valor_final;
   }
 
-  async function finalizarCompra() {
+  async function finalizarCompra(appointmentId:number) {
     if (cartItems.length > 0)
       try {
         if (cliente.points < verificaValorFinal()) {
@@ -32,26 +37,21 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
           return;
         }
 
-        const { data } = await api.post("/agendamento-cliente/", {
-          agendamentoId: 1,
-          clienteId: 2,
-          entregue: false,
-        });
+       
 
         for (let index = 0; index < cartItems.length; index++) {
           const item = cartItems[index];
-
-          await api.post("/compra", {
-            agendamentoId: 1,
-            produtoId: item.id,
-            quantidade: item.quantity,
+window.alert(item.quantity)
+          await api.post("/purchase", {
+            client_AppointmentId: appointmentId,
+            productId: item.id,
+            quantity: item.quantity,
           });
 
           if (index == cartItems.length - 1) {
             cartItems.forEach((element) => {
               removeFromCart(element.id);
             });
-            
           }
         }
       } catch (e) {
@@ -59,10 +59,16 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
       } finally {
         console.log("ACABOU!");
       }
-
   }
 
-  return (
+  return appointmentModal ? (
+    <AppointmentDates
+      open={appointmentModal}
+      onClose={() => setAppointmentModal(false)}
+      handleSetAgendamentoId={(id:number)=>finalizarCompra(id)}
+      
+    />
+  ) : (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>Carrinho</Offcanvas.Title>
@@ -88,7 +94,10 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
                 return 0;
               }, 0)
             )}
-            <button style={{ padding: 3 }} onClick={() => finalizarCompra()}>
+            <button
+              style={{ padding: 3 }}
+              onClick={() => setAppointmentModal(true)}
+            >
               Comprar
             </button>
           </div>

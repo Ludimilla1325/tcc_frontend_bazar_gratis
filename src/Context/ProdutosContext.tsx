@@ -20,7 +20,7 @@ export type StoreItemProps = {
   id: number;
   name: string;
   photo: string;
-  categoryId:number;
+  categoryId: number;
   value: number;
   quantity: number;
   storeId: number;
@@ -39,6 +39,8 @@ export function ProdutosProvider({ children }: ShoppingCartProviderProps) {
   async function handleData() {
     try {
       const { data } = await api.get("/product/1");
+
+      console.log("data", data);
 
       setProdutos(data.data);
     } catch (e) {

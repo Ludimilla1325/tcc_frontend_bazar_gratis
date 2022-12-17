@@ -18,7 +18,7 @@ import { useGeral } from "../../../../Hooks/geral";
 export const Profile = () => {
   const navigate = useNavigate();
   const { stores } = useGeral();
-  const { getProfile, clienteStore } = useCliente();
+  const { updateProfile, clienteStore } = useCliente();
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -95,14 +95,26 @@ export const Profile = () => {
       </Label>
 
       {isEdit ? (
-        <RegisterButton>Salvar</RegisterButton>
+        <RegisterButton
+          onClick={async () => {
+            try {
+              await updateProfile(
+                formValue.name,
+                formValue.phone,
+                formValue.cep,
+                formValue.store
+              );
+            } catch (error) {
+              window.alert(error);
+            }
+            setIsEdit(true);
+          }}
+        >
+          Salvar
+        </RegisterButton>
       ) : (
         <>
-          <RegisterButton
-            onClick={() => {
-              setIsEdit(true);
-            }}
-          >
+          <RegisterButton onClick={() => setIsEdit(true)}>
             Editar Dados
           </RegisterButton>
           <LoginButton

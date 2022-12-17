@@ -32,6 +32,13 @@ interface IClienteContextData {
     client_justification: string
   ) => Promise<any>;
   pointsSolicitationList: any;
+  updateProfile: (
+    name: string,
+    phone: string,
+    cep: string,
+    storeId: number
+  ) => Promise<any>;
+  sendLinkToResetPass: (email: string) => Promise<any>;
 }
 
 interface ICliente {
@@ -78,6 +85,22 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       if (errorMessage) {
         throw errorMessage;
       }
+    }
+  }
+
+  async function sendLinkToResetPass(email: string) {
+    try {
+      const { data } = await api.post("/client/link-to-reset-pass", { email });
+      console.log(data);
+
+      if (data.sucess) {
+        window.alert(JSON.stringify(data.data));
+      } else {
+        window.alert(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      window.alert(JSON.stringify("Não foi possível enviar o token!"));
     }
   }
 
@@ -162,8 +185,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     name: string,
     phone: string,
     cep: string,
-    storeId: number,
-    points: number
+    storeId: number
   ) {
     const email = cliente.email;
     try {
@@ -173,7 +195,6 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         phone,
         cep,
         storeId,
-        points,
       });
 
       if (data.sucess) {
@@ -249,6 +270,8 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         clienteStore,
         pointsSolicitation,
         pointsSolicitationList,
+        updateProfile,
+        sendLinkToResetPass,
       }}
     >
       <>{children}</>

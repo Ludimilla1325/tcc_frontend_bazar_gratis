@@ -53,6 +53,7 @@ export const LoginButton = styled.button`
   border-radius: 0.25rem;
   margin-bottom: 2vh;
   font-size: max(1.2vw, 12px);
+  margin-top: 0.5ch;
 `;
 
 export const SpanLabel = styled.span`

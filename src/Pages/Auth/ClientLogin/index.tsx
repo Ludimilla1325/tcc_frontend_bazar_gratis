@@ -42,7 +42,14 @@ export const ClientLogin = () => {
         />
       </Label>
 
-      <Span>Esqueceu a Senha?</Span>
+      <Span
+        onClick={() => {
+          //logar();
+          navigate(`${app_base_url}/reset-pass`);
+        }}
+      >
+        Esqueceu a Senha? Recuperar Senha
+      </Span>
 
       <LoginButton
         onClick={async () => {

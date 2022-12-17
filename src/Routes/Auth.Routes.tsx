@@ -6,6 +6,7 @@ import {
   IndexRouteProps,
 } from "react-router-dom";
 import Navbar from "../components/Layout/Navbar/Navbar";
+import { ForgotPass } from "../Pages/App/Client/ForgotPass";
 import { ClientLogin } from "../Pages/Auth/ClientLogin";
 import { ClientRegister } from "../Pages/Auth/ClientRegister";
 import { CooperatorLogin } from "../Pages/Auth/CooperatorLogin";
@@ -20,6 +21,12 @@ export function AuthRoutes() {
         <Route
           path={`${app_base_url}/register`}
           element={<ClientRegister />}
+        ></Route>
+      </Routes>
+      <Routes>
+        <Route
+          path={`${app_base_url}/reset-pass`}
+          element={<ForgotPass />}
         ></Route>
       </Routes>
       <Routes>

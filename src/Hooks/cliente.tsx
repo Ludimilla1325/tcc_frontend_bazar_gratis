@@ -143,7 +143,6 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   ) {
     try {
       const clientId = +cliente.id;
-      console.log("oi", cliente.id);
 
       const { data } = await api.post("/pointsSolicitation/", {
         clientId,
@@ -156,7 +155,6 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       } else {
         //MENSSAGEM DE ERRO
         window.alert(JSON.stringify(data.message));
-        console.log(data);
       }
     } catch (error) {
       console.log(error);

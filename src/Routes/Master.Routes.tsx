@@ -16,6 +16,7 @@ import { Cooperators } from "../Pages/App/Cooperator/Cooperators";
 import { Products } from "../Pages/App/Cooperator/Products";
 import { Stores } from "../Pages/App/Master/Stores";
 import { CooperatorRegister } from "../Pages/App/Master/Employee";
+import Dashboard from "../Pages/App/Master/Dashboard/Dashboard";
 
 const MasterRoutes: FC = () => {
   return (
@@ -26,6 +27,12 @@ const MasterRoutes: FC = () => {
           <Container className="mb-4">
             <Routes>
               <Route path={`${app_base_url}/Home`} element={<Home />}></Route>
+            </Routes>
+            <Routes>
+              <Route
+                path={`${app_base_url}/dashboard`}
+                element={<Dashboard />}
+              ></Route>
             </Routes>
             <Routes>
               <Route
@@ -54,10 +61,13 @@ const MasterRoutes: FC = () => {
             </Routes>
 
             <Routes>
-            <Route path={`${app_base_url}/funcionarios/:storeId`} element={<Cooperators />}></Route>
-          </Routes>
+              <Route
+                path={`${app_base_url}/funcionarios/:storeId`}
+                element={<Cooperators />}
+              ></Route>
+            </Routes>
 
-          <Routes>
+            <Routes>
               <Route
                 path={`${app_base_url}/produtos/:storeId`}
                 element={<Products />}

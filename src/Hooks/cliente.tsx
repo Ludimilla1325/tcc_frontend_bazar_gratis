@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react";
 import api from "../Services/api";
-import { app_base_url } from "../Utils/urls";
 
 interface IClienteProviderProps {
   children: ReactNode;

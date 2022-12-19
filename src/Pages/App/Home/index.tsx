@@ -22,6 +22,7 @@ export const Home = () => {
   const [handleCard, setHandleCard] = useState([] as IHandleProdutoCard[]);
 
   useEffect(() => {
+    if( produtos)
     handleData();
   }, []);
 

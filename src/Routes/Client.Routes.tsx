@@ -46,19 +46,15 @@ const ClientRoutes: FC = () => {
                 path={`${app_base_url}/profile`}
                 element={<Profile />}
               ></Route>
-              
-           
             </Routes>
             <Routes>
               <Route
                 path={`${app_base_url}/historico-de-compras`}
                 element={<PurchasesHistoric />}
               ></Route>
-           
             </Routes>
             <Routes>
-               
-            <Route path={`${app_base_url}/loja`} element={<Home />}></Route>
+              <Route path={`${app_base_url}/loja`} element={<Home />}></Route>
             </Routes>
           </Container>
         </Router>

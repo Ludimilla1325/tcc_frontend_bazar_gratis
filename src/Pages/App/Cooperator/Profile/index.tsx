@@ -15,25 +15,20 @@ import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
 import { useGeral } from "../../../../Hooks/geral";
+import { useCooperator } from "../../../../Hooks/cooperator";
 export const Profile = () => {
   const navigate = useNavigate();
   const { stores } = useGeral();
-  const { updateProfile, clienteStore } = useCliente();
+  const { updateProfile, cooperator } = useCooperator();
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
   const [formValue, setFormValue] = useState({
-    name: clienteStore.name,
-    phone: clienteStore.phone,
-    cpf: clienteStore.cpf,
-    cep: clienteStore.cep,
-    store: clienteStore.storeId,
+    name: cooperator.name,
+    cpf: cooperator.cpf,
+    store: cooperator.storeId,
     password: "",
     confirmPass: "",
-  });
-
-  const storeList = stores.map((store) => {
-    return <option value={store.id}>{store.name}</option>;
   });
 
   const handleChangeForm = (name: string, event: any) => {
@@ -42,8 +37,6 @@ export const Profile = () => {
       [name]: event.target.value,
     });
   };
-
-  const store = `${clienteStore.Store.name}, ${clienteStore.Store.localization}`;
 
   return (
     <Container>
@@ -57,14 +50,6 @@ export const Profile = () => {
         />
       </Label>
       <Label>
-        Telefone
-        <Input
-          value={formValue.phone}
-          onChange={(ev) => handleChangeForm("phone", ev)}
-          disabled={!isEdit}
-        />
-      </Label>
-      <Label>
         CPF
         <Input
           value={formValue.cpf}
@@ -72,38 +57,12 @@ export const Profile = () => {
           disabled={true}
         />
       </Label>
-      <Label>
-        CEP
-        <Input
-          value={formValue.cep}
-          onChange={(ev) => handleChangeForm("cep", ev)}
-          disabled={!isEdit}
-        />
-      </Label>
-      <Label>
-        Selecionar Loja
-        {!isEdit ? (
-          <Input value={store} disabled={!isEdit} />
-        ) : (
-          <Select onChange={(ev) => handleChangeForm("store", ev)}>
-            <option value="" hidden>
-              {store}
-            </option>
-            {storeList}
-          </Select>
-        )}
-      </Label>
 
       {isEdit ? (
         <RegisterButton
           onClick={async () => {
             try {
-              await updateProfile(
-                formValue.name,
-                formValue.phone,
-                formValue.cep,
-                formValue.store
-              );
+              await updateProfile(formValue.name);
             } catch (error) {
               window.alert(error);
             }

@@ -42,7 +42,7 @@ export const SidebarData: SidebarItem[] = [
 export const SidebarDataCooperator: SidebarItem[] = [
   {
     title: "Perfil",
-    path: "/perfil",
+    path: "/profile",
     icon: <AiOutlineUser />,
   },
   {

@@ -25,6 +25,8 @@ export const Home = () => {
     handleData();
   }, []);
 
+  console.log("produtos", produtos);
+
   function auxAddCategoria(categoria: string) {
     if (produtos) {
       if (produtos.length > 0) {

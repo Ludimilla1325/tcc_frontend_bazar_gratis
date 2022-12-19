@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import api from "../Services/api";
+import { app_base_url } from "../Utils/urls";
 
 interface IClienteProviderProps {
   children: ReactNode;
@@ -243,9 +244,6 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       console.log(error);
     }
   }
-
-  console.log("cliente", cliente);
-  console.log("clienteStore", clienteStore);
 
   useEffect(() => {
     getProfile();

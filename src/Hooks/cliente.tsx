@@ -67,7 +67,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     let errorMessage = "";
     try {
       const { data } = await api.post("/client/login", { email, password });
-
+      window.alert(JSON.stringify(data));
       if (data.sucess) {
         setCliente(data.data.user);
         api.defaults.headers.common[
@@ -248,8 +248,10 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   console.log("clienteStore", clienteStore);
 
   useEffect(() => {
-    getProfile();
-    pointsSolicitationHistoric();
+    // if (cliente.id) {
+    //   getProfile();
+    //   pointsSolicitationHistoric();
+    // }
   }, [cliente]);
 
   useEffect(() => {

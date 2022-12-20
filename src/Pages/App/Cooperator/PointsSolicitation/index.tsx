@@ -94,7 +94,7 @@ export const PointsSolicitation = () => {
                 statusList == 2 ? theme.colors.darkGrey : theme.colors.dark,
             }}
           >
-            ENTREGUES
+            ANALISADOS
           </Button>
         </ButtonsDiv>
         <TableContainer>

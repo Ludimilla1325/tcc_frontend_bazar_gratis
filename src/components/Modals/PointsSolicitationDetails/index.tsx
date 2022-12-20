@@ -4,6 +4,7 @@ import { FiPlus, FiX } from "react-icons/fi";
 import Modal from "react-modal";
 import { IPointsSolicitation } from "../../../Hooks/cliente";
 import { useCooperator } from "../../../Hooks/cooperator";
+import api from "../../../Services/api";
 import theme from "../../../Styles/theme";
 import {
   Body,
@@ -55,6 +56,22 @@ export function PointsSolicitationDetails({
 
 
   async function post() {
+
+    try {
+      const {data} = await api.put(`/pointsSolicitation/${solicitacao.id}`,{status:confirmar?'A':'C', 
+      pointsSolicitationId:solicitacao.id,
+      employeeId:cooperator.id,
+      employee_justification:justificatiaOperador
+    });
+    if(data.status){
+      onClose();
+      
+    }else{
+      window.alert(data.message);
+    }
+    } catch (error) {
+      window.alert("Não foi possível avaliar a solicitação");
+    }
       
   }
   return (
@@ -87,7 +104,7 @@ export function PointsSolicitationDetails({
             value={solicitacao.client_justification}
             disabled={true}
           ></Textarea>
-          <HandleButtonsDiv hidden={!logado }>
+          <HandleButtonsDiv hidden={!logado || solicitacao.status?.toLowerCase() != "p" }>
             <OperationButton
               focus={confirmar == false}
               onClick={() => setConfimar(false)}
@@ -109,11 +126,11 @@ export function PointsSolicitationDetails({
             placeholder="Justificativa"
           ></Textarea>
 
-          <HandleButtonsDiv hidden={!logado }>
+          <HandleButtonsDiv hidden={!logado || solicitacao.status?.toLowerCase() != "p"}>
             <OperationButton
               focus={confirmar != null && justificatiaOperador.length > 0}
               disabled={confirmar == null && justificatiaOperador.length == 0}
-              onClick={() => post}
+              onClick={post}
             >
               Enviar
             </OperationButton>

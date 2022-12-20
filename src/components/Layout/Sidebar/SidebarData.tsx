@@ -66,6 +66,11 @@ export const SidebarDataCooperator: SidebarItem[] = [
     icon: <TbFilePlus />,
   },
   {
+    title: "Solicitação de Pontos",
+    path: "/points-solicitation",
+    icon: <TbFilePlus />,
+  },
+  {
     title: "Pedidos",
     path: "/pedidos",
     icon: <RiHistoryFill />,

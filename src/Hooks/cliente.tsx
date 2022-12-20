@@ -39,6 +39,7 @@ interface IClienteContextData {
     storeId: number
   ) => Promise<any>;
   sendLinkToResetPass: (email: string) => Promise<any>;
+  // getPointsSolicitationHistoric(): Promise<void>;
 }
 
 interface ICliente {
@@ -164,7 +165,9 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   async function pointsSolicitationHistoric() {
     const clientId = +cliente.id;
     try {
-      const { data } = await api.get(`/pointsSolicitation/${clientId}`);
+      const { data } = await api.get(
+        `/pointsSolicitation/?clientId=${clientId}`
+      );
 
       if (data.sucess) {
         console.log("data", data);
@@ -245,10 +248,10 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   }
 
   useEffect(() => {
-    // if (cliente.id) {
-    //   getProfile();
-    //   pointsSolicitationHistoric();
-    // }
+    if (cliente.id) {
+      getProfile();
+      // pointsSolicitationHistoric();
+    }
   }, [cliente]);
 
   useEffect(() => {
@@ -269,6 +272,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         pointsSolicitationList,
         updateProfile,
         sendLinkToResetPass,
+        // getPointsSolicitationHistoric,
       }}
     >
       <>{children}</>

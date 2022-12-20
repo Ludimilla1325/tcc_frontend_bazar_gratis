@@ -23,8 +23,8 @@ export const ClientLogin = () => {
 
   return (
     <Container>
-      <Title>Login</Title>
-      <Subtitle>Faça seu login para escolher os produtos</Subtitle>
+      {/* <Title>Login</Title>
+      <Subtitle>Faça seu login para escolher os produtos</Subtitle> */}
       <Label>
         <SpanLabel> Email</SpanLabel>
         <Input
@@ -67,14 +67,14 @@ export const ClientLogin = () => {
         Logar
       </LoginButton>
 
-      <LoginButton
+      {/* <LoginButton
         onClick={() => {
           //logar();
           navigate(`${app_base_url}/register`);
         }}
       >
         Cadastrar
-      </LoginButton>
+      </LoginButton> */}
 
       <Alert
         open={error.message.length > 0}

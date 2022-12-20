@@ -6,9 +6,10 @@ export const Nav = styled.div`
   justify-content: space-between;
   width: 100vw;
   align-items: center;
-  height: 3rem;
+  height: 3rem;/*HEIGH DA NAV */
   background: deeppink;
   position: static;
+  
 `;
 
 export const NavIcon = styled(Link)`

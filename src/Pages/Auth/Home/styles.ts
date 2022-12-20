@@ -20,10 +20,15 @@ export const Body = styled.div`
 export const BodyContent = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
+  justify-content: space-around;
+  flex-direction: column;
   width: 100%;
   height: calc(93vh - 4rem);
+
+  @media (min-width: 500px) {
+    flex-direction: row;
+    justify-content: space-around;
+  }
 `;
 
 export const HandleDiv = styled.div`

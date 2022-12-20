@@ -31,7 +31,7 @@ interface IClienteContextData {
     quantity: string,
     client_justification: string
   ) => Promise<any>;
-  pointsSolicitationList: any;
+  pointsSolicitationList: IPointsSolicitation[];
   updateProfile: (
     name: string,
     phone: string,
@@ -54,6 +54,18 @@ interface ICliente {
   points: number;
 }
 
+export interface IPointsSolicitation {
+  id: number;
+  clientId: number;
+  quantity: number;
+  request_date: Date;
+  status: string;
+  employeeId: number;
+  client_justification: string;
+  employee_justification: string;
+  name: string;
+}
+
 const ClienteContext = createContext({} as IClienteContextData);
 
 function ClienteProvider({ children }: IClienteProviderProps) {
@@ -61,7 +73,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   const [cliente, setCliente] = useState({} as ICliente);
   const [clienteStore, setClienteStore] = useState({} as any);
   const [pointsSolicitationList, setPointsSolicitationList] = useState(
-    {} as any
+    {} as IPointsSolicitation[]
   );
 
   async function logar(email: string, password: string) {

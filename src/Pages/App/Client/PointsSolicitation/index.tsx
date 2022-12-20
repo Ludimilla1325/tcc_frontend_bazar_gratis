@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useCliente } from "../../../../Hooks/cliente";
+import { IPointsSolicitation, useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
 import { Alert } from "../../../../components/Modals/Alert";
@@ -20,6 +20,7 @@ import {
   SpanLabel,
   InputJustification,
 } from "./styles";
+import { PointsSolicitationDetails } from "../../../../components/Modals/PointsSolicitationDetails";
 export const PointsSolicitation = () => {
   const navigate = useNavigate();
   const { pointsSolicitationList, cliente, clienteStore, pointsSolicitation,getPointsSolicitationHistoric } =
@@ -29,12 +30,13 @@ export const PointsSolicitation = () => {
   const [justification, setJustification] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ title: "", message: "" });
+  const [solicitationFocus, setSolicitationFocus] = useState({} as IPointsSolicitation);
 
   function renderData() {
     if (pointsSolicitationList && pointsSolicitationList.length > 0) {
       return pointsSolicitationList.map((item: any) => {
         return (
-          <Body>
+          <Body onClick={()=>setSolicitationFocus(item)}>
             <TBody>{new Date(item.request_date).toLocaleDateString("pt-br")}</TBody>
             <TBody>{item.quantity}</TBody>
             <TBody>{item.status}</TBody>
@@ -97,6 +99,12 @@ export const PointsSolicitation = () => {
 
         {renderData()}
       </Table>
+      <PointsSolicitationDetails
+      
+      open={!!solicitationFocus.id}
+      onClose={()=>setSolicitationFocus({} as IPointsSolicitation)}
+        solicitacao={solicitationFocus}
+      />
     </Container>
   );
 };

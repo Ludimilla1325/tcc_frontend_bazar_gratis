@@ -27,7 +27,7 @@ export const Profile = () => {
     phone: clienteStore.phone,
     cpf: clienteStore.cpf,
     cep: clienteStore.cep,
-    store: clienteStore.storeId,
+    store: 0,
     password: "",
     confirmPass: "",
   });

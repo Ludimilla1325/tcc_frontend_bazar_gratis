@@ -16,7 +16,7 @@ import { app_base_url } from "../../../../../Utils/urls";
 import { useCooperator } from "../../../../../Hooks/cooperator";
 export const CreateAndEditProduct = () => {
   const navigate = useNavigate();
-  const { categories } = useCooperator();
+  const { register } = useCliente();
   const { createProduct } = useCooperator();
   const [loading, setLoading] = useState(false);
 
@@ -27,10 +27,6 @@ export const CreateAndEditProduct = () => {
     quantity: "",
     unityValue: "",
     image: "",
-  });
-
-  const categoryList = categories.map((category) => {
-    return <option value={category.id}>{category.name}</option>;
   });
 
   const handleChangeForm = (name: string, event: any) => {
@@ -59,23 +55,24 @@ export const CreateAndEditProduct = () => {
       </Label>
       <Label>
         Categoria
-        <Select onChange={(ev) => handleChangeForm("category", ev)}>
+        <Select>
           <option value="" hidden></option>
-          {categoryList}
+          <option value="1">Audi</option>
+          <option value="2">BMW</option>
+          <option value="3">Citroen</option>
+          <option value="4">Ford</option>
         </Select>
       </Label>
       <Label>
         Quantidade
         <Input
-          type="number"
           value={formValue.quantity}
-          onChange={(ev) => handleChangeForm("quantity", ev)}
+          onChange={(ev) => handleChangeForm("quanity", ev)}
         />
       </Label>
       <Label>
         Valor unitário
         <Input
-          type="number"
           value={formValue.unityValue}
           onChange={(ev) => handleChangeForm("unityValue", ev)}
         />

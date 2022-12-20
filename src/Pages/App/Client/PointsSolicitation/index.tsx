@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
@@ -22,7 +22,7 @@ import {
 } from "./styles";
 export const PointsSolicitation = () => {
   const navigate = useNavigate();
-  const { pointsSolicitationList, cliente, clienteStore, pointsSolicitation } =
+  const { pointsSolicitationList, cliente, clienteStore, pointsSolicitation,getPointsSolicitationHistoric } =
     useCliente();
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -35,7 +35,7 @@ export const PointsSolicitation = () => {
       return pointsSolicitationList.map((item: any) => {
         return (
           <Body>
-            <TBody>{item.request_date}</TBody>
+            <TBody>{new Date(item.request_date).toLocaleDateString("pt-br")}</TBody>
             <TBody>{item.quantity}</TBody>
             <TBody>{item.status}</TBody>
           </Body>
@@ -44,6 +44,9 @@ export const PointsSolicitation = () => {
     }
   }
 
+  useEffect(()=>{
+    getPointsSolicitationHistoric();
+  },[])
   return (
     <Container>
       <Title>Solicitar Novos pontos</Title>

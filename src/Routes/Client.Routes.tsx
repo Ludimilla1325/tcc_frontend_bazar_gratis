@@ -23,11 +23,8 @@ const ClientRoutes: FC = () => {
         <Router>
           <Sidebar />
           <Container className="mb-4">
-            {/* <Routes>
-              <Route path={`${app_base_url}/home`} element={<Home />}></Route>
-            </Routes> */}
             <Routes>
-              <Route path={`${app_base_url}/loja`} element={<Home />}></Route>
+              <Route path={`${app_base_url}/Home`} element={<Home />}></Route>
             </Routes>
             <Routes>
               <Route

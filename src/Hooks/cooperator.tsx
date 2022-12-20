@@ -23,10 +23,6 @@ interface ICooperatorContextData {
     unityValue: string,
     image: string
   ) => Promise<void>;
-  categories: any[];
-  updatePassword: (oldPass: string, newPass: string) => Promise<void>;
-  getProfile: () => Promise<ICooperator>;
-  updateProfile: (name: string) => Promise<any>;
 }
 
 interface ICooperator {
@@ -44,7 +40,7 @@ const CooperatorContext = createContext({} as ICooperatorContextData);
 function CooperatorProvider({ children }: ICooperatorProviderProps) {
   const [logado, setLogado] = useState(false);
   const [cooperator, setCooperator] = useState({} as ICooperator);
-  const [categories, setCategories] = useState([]);
+
   async function logar(email: string, password: string) {
     let errorMessage = "";
     try {
@@ -79,13 +75,13 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
     image: string
   ) {
     try {
-      const { data } = await api.post(`/product/${cooperator.storeId}`, {
-        name: product,
+      const { data } = await api.post("/:storeId/:productId", {
+        product,
         description,
-        categoryId: category,
+        category,
         quantity,
-        value: unityValue,
-        photo: image,
+        unityValue,
+        image,
       });
 
       if (data.sucess) {
@@ -100,97 +96,12 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
     }
   }
 
-  async function getCategories() {
-    try {
-      const { data } = await api.get(`/category/`);
-
-      if (data.sucess) {
-        const categories = data.data.map((category: any) => {
-          return { id: category.id, name: category.name };
-        });
-
-        setCategories(categories);
-        return data;
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function updateProfile(name: string) {
-    const email = cooperator.email;
-    try {
-      const { data } = await api.patch("/cooperator/", {
-        name,
-        email,
-      });
-
-      if (data.sucess) {
-        window.alert(JSON.stringify("Atualizado com sucesso"));
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function updatePassword(oldPassword: string, newPassword: string) {
-    const email = cooperator.email;
-    try {
-      const { data } = await api.put("/cooperator/pass", {
-        email,
-        oldPassword,
-        newPassword,
-      });
-
-      if (data.sucess) {
-        window.alert(JSON.stringify("Atualizado com sucesso"));
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getProfile() {
-    const email = cooperator.email;
-    try {
-      const { data } = await api.get(`/cooperator/by_email/${email}`);
-
-      if (data.sucess) {
-        console.log("data", data);
-        setCooperator(data.data);
-        return data;
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  getProfile();
-
-  useEffect(() => {
-    getCategories();
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     console.log(cooperator);
+    //window.alert(JSON.stringify(cooperator))
   }, [cooperator]);
-
-  useEffect(() => {
-    //window.alert(JSON.stringify(cliente))
-  }, [cooperator]);
-
   return (
     <CooperatorContext.Provider
       value={{
@@ -198,10 +109,6 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         logar,
         cooperator,
         createProduct,
-        categories,
-        updatePassword,
-        getProfile,
-        updateProfile,
       }}
     >
       <>{children}</>

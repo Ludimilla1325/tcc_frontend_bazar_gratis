@@ -18,16 +18,19 @@ import { useGeral } from "../../../../Hooks/geral";
 export const Profile = () => {
   const navigate = useNavigate();
   const { stores } = useGeral();
-  const { updateProfile, clienteStore } = useCliente();
+  const { updateProfile, clienteStore, cliente, setClienteStore } =
+    useCliente();
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+
+  console.log("test", clienteStore, cliente);
 
   const [formValue, setFormValue] = useState({
     name: clienteStore.name,
     phone: clienteStore.phone,
     cpf: clienteStore.cpf,
     cep: clienteStore.cep,
-    store: 0,
+    store: clienteStore.storeId,
     password: "",
     confirmPass: "",
   });
@@ -95,23 +98,40 @@ export const Profile = () => {
       </Label>
 
       {isEdit ? (
-        <RegisterButton
-          onClick={async () => {
-            try {
-              await updateProfile(
-                formValue.name,
-                formValue.phone,
-                formValue.cep,
-                formValue.store
-              );
-            } catch (error) {
-              window.alert(error);
-            }
-            setIsEdit(true);
-          }}
-        >
-          Salvar
-        </RegisterButton>
+        <>
+          <RegisterButton
+            onClick={async () => {
+              try {
+                await updateProfile(
+                  formValue.name,
+                  formValue.phone,
+                  formValue.cep,
+                  formValue.store
+                );
+
+                setClienteStore({
+                  ...clienteStore,
+                  name: formValue.name,
+                  phone: formValue.phone,
+                  cep: formValue.cep,
+                  storeId: formValue.store,
+                });
+              } catch (error) {
+                window.alert(error);
+              }
+              setIsEdit(false);
+            }}
+          >
+            Salvar
+          </RegisterButton>
+          <LoginButton
+            onClick={async () => {
+              navigate(`${app_base_url}/profile`);
+            }}
+          >
+            Voltar
+          </LoginButton>
+        </>
       ) : (
         <>
           <RegisterButton onClick={() => setIsEdit(true)}>

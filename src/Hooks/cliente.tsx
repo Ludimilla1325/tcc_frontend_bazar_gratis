@@ -40,6 +40,7 @@ interface IClienteContextData {
   ) => Promise<any>;
   sendLinkToResetPass: (email: string) => Promise<any>;
   getPointsSolicitationHistoric(): Promise<void>;
+  setClienteStore: any;
 }
 
 interface ICliente {
@@ -290,6 +291,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         updateProfile,
         sendLinkToResetPass,
         getPointsSolicitationHistoric,
+        setClienteStore,
       }}
     >
       <>{children}</>

@@ -53,15 +53,11 @@ export const EditPass = () => {
 
       <EditButton
         onClick={async () => {
-          try {
-            if (password === confirmPass) {
-              await updatePassword(oldPass, password);
-            }
-          } catch (error) {
-            setError({ title: "Ops", message: String(error) });
-          } finally {
-            setLoading(false);
+          if (password === confirmPass) {
+            await updatePassword(oldPass, password);
           }
+
+          navigate(`${app_base_url}/profile`);
         }}
       >
         Editar Senha
@@ -69,7 +65,7 @@ export const EditPass = () => {
 
       <BackButton
         onClick={async () => {
-          navigate(`${app_base_url}/home`);
+          navigate(`${app_base_url}/profile`);
         }}
       >
         Voltar

@@ -97,6 +97,8 @@ export const SecondTitle = styled.h2`
   font-size: max(2vw, 15px);
   text-align: center;
   padding: 4vw;
+
+  /* background-color: blue; */
 `;
 
 export const StepDiv = styled.div`
@@ -125,14 +127,31 @@ export const Body2 = styled.div`
   justify-content: center;
   flex-direction: column;
   width: 100%;
-  height: 80vh;
+
+  @media (min-width: 500px) {
+    height: 50vh;
+  }
   flex-wrap: none;
+/* 
+  background-color: red; */
 `;
 
+
+export const Body3 = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+
+  height:80vh;
+  flex-wrap: none;
+/* 
+  background-color: red; */
+`;
 export const BodyContent2 = styled.div`
   display: flex;
   align-items: center;
-  
   flex-direction: column;
   width: 100%;
   min-height: 70vh;
@@ -171,3 +190,20 @@ padding: 1vw;
 font-size: max(1vw, 12px);
 `;
 
+
+interface BodyFooterSimpleProps{
+  final?:boolean;
+}
+export const BodyFooterSimple = styled.div<BodyFooterSimpleProps>`
+
+background-color: ${({final})=>final?theme.colors.primary:theme.colors.secondary};
+  color: ${theme.colors.light};
+  width: 100%;
+  text-align: center;
+  padding:2vw;
+
+  font-weight: bold;
+  font-size: max(1vw, 10px);
+
+  
+`;

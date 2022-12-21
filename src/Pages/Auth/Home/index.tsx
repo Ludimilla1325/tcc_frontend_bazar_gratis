@@ -20,6 +20,8 @@ import {
   HandleColumnDiv,
   Question,
   Answer,
+  BodyFooterSimple,
+  Body3
 } from "./styles";
 import BazarGratisIcon from "../../../Assets/bazargratis.png";
 import { ClientLogin } from "../ClientLogin";
@@ -96,10 +98,13 @@ export const Home = () => {
             </StepDiv>
           </HandleDiv>
         </BodyContent2>
+        <BodyFooterSimple></BodyFooterSimple>
+        <SecondTitle>PERGUNTAS FREQUENTES</SecondTitle>
       </Body2>
-
-      <SecondTitle>PERGUNTAS FREQUENTES</SecondTitle>
-      <Body2>
+     
+     
+      <Body3>
+     
         <BodyContent2>
           <HandleDiv>
             <HandleColumnDiv>
@@ -139,7 +144,8 @@ export const Home = () => {
             </HandleColumnDiv>
           </HandleDiv>
         </BodyContent2>
-      </Body2>
+        <BodyFooterSimple final={true}>Copyright © 2022 BAZAR GRÁTIS MIDI. All Rights Reserved.</BodyFooterSimple>
+      </Body3>
     </Container>
   );
 };

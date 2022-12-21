@@ -67,14 +67,14 @@ export const ClientLogin = () => {
         Logar
       </LoginButton>
 
-      {/* <LoginButton
+     <LoginButton
         onClick={() => {
           //logar();
           navigate(`${app_base_url}/register`);
         }}
       >
         Cadastrar
-      </LoginButton> */}
+      </LoginButton>
 
       <Alert
         open={error.message.length > 0}

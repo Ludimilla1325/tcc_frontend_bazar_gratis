@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import api from "../Services/api";
+import { operatorLocalStorage, tokenLocalStorage } from "../Utils/localStorage";
 
 interface ICooperatorProviderProps {
   children: ReactNode;
@@ -40,6 +41,7 @@ interface ICooperatorContextData {
   productSelected: any;
   isEditProduct: any;
   setIsEditProduct: any;
+  logOut():void;
 }
 
 interface ICooperator {
@@ -61,6 +63,43 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   const [productSelected, setProductSelected] = useState({});
   const [isEditProduct, setIsEditProduct] = useState(false);
 
+
+  function saveLocalStorage(cliente:ICooperator,token:string){
+    localStorage.setItem(operatorLocalStorage, JSON.stringify(cliente));
+    localStorage.setItem(tokenLocalStorage, token);
+  }
+
+  function getLocalStorage(){
+    const usuario = localStorage.getItem(operatorLocalStorage);
+    const token = localStorage.getItem(tokenLocalStorage);
+    if(usuario && token){
+      setCooperator(JSON.parse(usuario));
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+        setLogado(true);
+    }
+    
+   
+  }
+
+
+
+  function deleteLocalStorage(){
+    localStorage.removeItem(operatorLocalStorage);
+    localStorage.removeItem(tokenLocalStorage);
+  }
+
+ function logOut(){
+    setCooperator({} as ICooperator);
+    setLogado(false)
+    deleteLocalStorage();
+  }
+
+  useEffect(()=>{
+    getLocalStorage();
+  },[])
+
   async function logar(email: string, password: string) {
     let errorMessage = "";
     try {
@@ -72,6 +111,7 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
           "Authorization"
         ] = `Bearer ${data.data.token}`;
         setLogado(true);
+        saveLocalStorage(data.data.user,data.data.token)
       } else {
         errorMessage = data.message;
       }
@@ -251,6 +291,7 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         productSelected,
         isEditProduct,
         setIsEditProduct,
+        logOut
       }}
     >
       <>{children}</>

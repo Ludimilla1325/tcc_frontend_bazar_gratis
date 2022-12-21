@@ -58,7 +58,7 @@ export function PointsSolicitationDetails({
   async function post() {
 
     try {
-      const {data} = await api.put(`/pointsSolicitation/${solicitacao.id}`,{status:confirmar?'A':'C', 
+      const {data} = await api.put(`/pointsSolicitation/${solicitacao.id}`,{status:confirmar?'APROVADO':'NEGADO', 
       pointsSolicitationId:solicitacao.id,
       employeeId:cooperator.id,
       employee_justification:justificatiaOperador
@@ -104,7 +104,7 @@ export function PointsSolicitationDetails({
             value={solicitacao.client_justification}
             disabled={true}
           ></Textarea>
-          <HandleButtonsDiv hidden={!logado || solicitacao.status?.toLowerCase() != "p" }>
+          <HandleButtonsDiv hidden={!logado || solicitacao.employeeId != undefined}>
             <OperationButton
               focus={confirmar == false}
               onClick={() => setConfimar(false)}
@@ -121,12 +121,12 @@ export function PointsSolicitationDetails({
           </HandleButtonsDiv>
           <Textarea
             value={justificatiaOperador}
-            disabled={solicitacao.status?.toLowerCase() != "p" ? true : false}
+            disabled={ solicitacao.employeeId== undefined ? false : true}
             onChange={(ev) => setJustificativaOperador(ev.target.value)}
             placeholder="Justificativa"
           ></Textarea>
 
-          <HandleButtonsDiv hidden={!logado || solicitacao.status?.toLowerCase() != "p"}>
+          <HandleButtonsDiv hidden={!logado || solicitacao.employeeId != undefined}>
             <OperationButton
               focus={confirmar != null && justificatiaOperador.length > 0}
               disabled={confirmar == null && justificatiaOperador.length == 0}
@@ -137,7 +137,7 @@ export function PointsSolicitationDetails({
           </HandleButtonsDiv>
 
 
-          <HandleButtonsDiv hidden={logado }>
+          <HandleButtonsDiv hidden={logado || solicitacao.employeeId == undefined}>
             <OperationButton
               focus={true}
              

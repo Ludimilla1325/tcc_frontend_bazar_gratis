@@ -53,6 +53,8 @@ export const Title = styled.h1`
 export const FirstSpan = styled.span`
   font-weight: lighter;
   font-size: max(1vw, 12px);
+  width: 100%;
+  text-align:center;
 `;
 
 export const ContactHelper = styled.div`

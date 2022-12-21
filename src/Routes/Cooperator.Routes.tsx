@@ -17,6 +17,8 @@ import { Products } from "../Pages/App/Cooperator/Products";
 import { CreateAndEditProduct } from "../Pages/App/Cooperator/Products/Create_Edit";
 import { Purchase } from "../Pages/App/Cooperator/Purchase";
 import { PointsSolicitation } from "../Pages/App/Cooperator/PointsSolicitation";
+import { Profile } from "../Pages/App/Cooperator/Profile";
+import { EditPass } from "../Pages/App/Cooperator/EditPass";
 const AppRoutes: FC = () => {
   return (
     <ProdutosProvider>
@@ -57,7 +59,18 @@ const AppRoutes: FC = () => {
                 element={<PointsSolicitation />}
               ></Route>
             </Routes>
-            
+            <Routes>
+              <Route
+                path={`${app_base_url}/profile`}
+                element={<Profile />}
+              ></Route>
+            </Routes>
+            <Routes>
+              <Route
+                path={`${app_base_url}/editPass`}
+                element={<EditPass />}
+              ></Route>
+            </Routes>
           </Container>
         </Router>
       </ShoppingCartProvider>

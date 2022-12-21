@@ -23,6 +23,9 @@ interface ICooperatorContextData {
     unityValue: string,
     image: string
   ) => Promise<void>;
+  updateProfile: (name: string) => Promise<any>;
+  updatePassword: (oldPass: string, newPass: string) => Promise<void>;
+  setCooperator: any;
 }
 
 interface ICooperator {
@@ -96,6 +99,45 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
     }
   }
 
+  async function updateProfile(name: string) {
+    const id = cooperator.id;
+    try {
+      const { data } = await api.patch("/cooperator/", {
+        name,
+        id,
+      });
+
+      if (data.sucess) {
+        window.alert(JSON.stringify("Atualizado com sucesso"));
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function updatePassword(oldPassword: string, newPassword: string) {
+    const email = cooperator.email;
+    try {
+      const { data } = await api.put("/cooperator/pass", {
+        email,
+        oldPassword,
+        newPassword,
+      });
+
+      if (data.sucess) {
+        window.alert(JSON.stringify("Atualizado com sucesso"));
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {}, []);
 
   useEffect(() => {
@@ -109,6 +151,9 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         logar,
         cooperator,
         createProduct,
+        updateProfile,
+        updatePassword,
+        setCooperator,
       }}
     >
       <>{children}</>

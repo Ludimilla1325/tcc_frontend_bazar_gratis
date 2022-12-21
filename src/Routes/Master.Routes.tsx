@@ -17,6 +17,7 @@ import { Products } from "../Pages/App/Cooperator/Products";
 import { Stores } from "../Pages/App/Master/Stores";
 import { CooperatorRegister } from "../Pages/App/Master/Employee";
 import Dashboard from "../Pages/App/Master/Dashboard/Dashboard";
+import { Profile } from "../Pages/App/Cooperator/Profile";
 
 const MasterRoutes: FC = () => {
   return (

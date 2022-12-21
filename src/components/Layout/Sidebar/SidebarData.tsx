@@ -41,11 +41,6 @@ export const SidebarDataCooperator: SidebarItem[] = [
     icon: <AiOutlineUser />,
   },
   {
-    title: "Loja",
-    path: "/loja",
-    icon: <AiOutlineHome />,
-  },
-  {
     title: "Produtos",
     path: "/produtos",
     icon: <MdOutlineLocalGroceryStore />,

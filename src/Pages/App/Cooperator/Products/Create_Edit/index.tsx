@@ -16,17 +16,30 @@ import { app_base_url } from "../../../../../Utils/urls";
 import { useCooperator } from "../../../../../Hooks/cooperator";
 export const CreateAndEditProduct = () => {
   const navigate = useNavigate();
-  const { register } = useCliente();
-  const { createProduct } = useCooperator();
+  const {
+    createProduct,
+    categories,
+    updateProduct,
+    productSelected,
+    isEditProduct,
+    setIsEditProduct,
+  } = useCooperator();
   const [loading, setLoading] = useState(false);
 
   const [formValue, setFormValue] = useState({
-    product: "",
-    description: "",
-    category: "",
-    quantity: "",
-    unityValue: "",
-    image: "",
+    product: isEditProduct ? productSelected.name : "",
+    description: isEditProduct ? productSelected.description : "",
+    category: isEditProduct ? productSelected.categoryId : "",
+    // categoryName: isEditProduct ? productSelected.Category.name : "",
+    quantity: isEditProduct ? productSelected.quantity : "",
+    unityValue: isEditProduct ? productSelected.value : "",
+    image: isEditProduct ? productSelected.photo : "",
+  });
+
+  console.log("pr", productSelected, productSelected.Category.name);
+
+  const categoryList = categories.map((category) => {
+    return <option value={category.id}>{category.name}</option>;
   });
 
   const handleChangeForm = (name: string, event: any) => {
@@ -55,24 +68,32 @@ export const CreateAndEditProduct = () => {
       </Label>
       <Label>
         Categoria
-        <Select>
-          <option value="" hidden></option>
-          <option value="1">Audi</option>
-          <option value="2">BMW</option>
-          <option value="3">Citroen</option>
-          <option value="4">Ford</option>
-        </Select>
+        {isEditProduct ? (
+          <Select onChange={(ev) => handleChangeForm("category", ev)}>
+            <option value="" hidden>
+              {productSelected.Category.name}
+            </option>
+            {categoryList}
+          </Select>
+        ) : (
+          <Select onChange={(ev) => handleChangeForm("category", ev)}>
+            <option value="" hidden></option>
+            {categoryList}
+          </Select>
+        )}
       </Label>
       <Label>
         Quantidade
         <Input
+          type="number"
           value={formValue.quantity}
-          onChange={(ev) => handleChangeForm("quanity", ev)}
+          onChange={(ev) => handleChangeForm("quantity", ev)}
         />
       </Label>
       <Label>
         Valor unitário
         <Input
+          type="number"
           value={formValue.unityValue}
           onChange={(ev) => handleChangeForm("unityValue", ev)}
         />
@@ -84,27 +105,56 @@ export const CreateAndEditProduct = () => {
           onChange={(ev) => handleChangeForm("image", ev)}
         />
       </Label>
-      <Button
-        onClick={async () => {
-          try {
-            setLoading(true);
-            await createProduct(
-              formValue.product,
-              formValue.description,
-              formValue.category,
-              formValue.quantity,
-              formValue.unityValue,
-              formValue.image
-            );
-          } catch (error) {
-            window.alert(JSON.stringify("Erro ao cadastrar!"));
-          } finally {
-            setLoading(false);
-          }
-        }}
-      >
-        Confirmar
-      </Button>
+
+      {isEditProduct ? (
+        <Button
+          onClick={async () => {
+            try {
+              setLoading(true);
+
+              await updateProduct(
+                productSelected.id,
+                formValue.product,
+                formValue.description,
+                formValue.category,
+                formValue.quantity,
+                formValue.unityValue,
+                formValue.image
+              );
+
+              setIsEditProduct(false);
+            } catch (error) {
+              window.alert(JSON.stringify("Erro ao cadastrar!"));
+            } finally {
+              setLoading(false);
+            }
+          }}
+        >
+          Atualizar
+        </Button>
+      ) : (
+        <Button
+          onClick={async () => {
+            try {
+              setLoading(true);
+              await createProduct(
+                formValue.product,
+                formValue.description,
+                formValue.category,
+                formValue.quantity,
+                formValue.unityValue,
+                formValue.image
+              );
+            } catch (error) {
+              window.alert(JSON.stringify("Erro ao cadastrar!"));
+            } finally {
+              setLoading(false);
+            }
+          }}
+        >
+          Confirmar
+        </Button>
+      )}
     </Container>
   );
 };

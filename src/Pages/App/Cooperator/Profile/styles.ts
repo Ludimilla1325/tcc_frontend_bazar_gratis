@@ -57,7 +57,7 @@ export const RegisterButton = styled.button`
 `;
 
 export const LoginButton = styled.button`
-  background-color: ${theme.colors.dark};
+  background-color: ${theme.colors.blue};
   color: ${theme.colors.light};
   min-width: 20vw;
   padding: 0.6vw;

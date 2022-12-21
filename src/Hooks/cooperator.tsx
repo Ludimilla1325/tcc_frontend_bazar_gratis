@@ -26,6 +26,20 @@ interface ICooperatorContextData {
   updateProfile: (name: string) => Promise<any>;
   updatePassword: (oldPass: string, newPass: string) => Promise<void>;
   setCooperator: any;
+  categories: any[];
+  getProduct: (productId: number) => Promise<void>;
+  updateProduct: (
+    productId: number,
+    product: string,
+    description: string,
+    category: string,
+    quantity: string,
+    unityValue: string,
+    image: string
+  ) => Promise<void>;
+  productSelected: any;
+  isEditProduct: any;
+  setIsEditProduct: any;
 }
 
 interface ICooperator {
@@ -43,6 +57,9 @@ const CooperatorContext = createContext({} as ICooperatorContextData);
 function CooperatorProvider({ children }: ICooperatorProviderProps) {
   const [logado, setLogado] = useState(false);
   const [cooperator, setCooperator] = useState({} as ICooperator);
+  const [categories, setCategories] = useState([]);
+  const [productSelected, setProductSelected] = useState({});
+  const [isEditProduct, setIsEditProduct] = useState(false);
 
   async function logar(email: string, password: string) {
     let errorMessage = "";
@@ -78,17 +95,69 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
     image: string
   ) {
     try {
-      const { data } = await api.post("/:storeId/:productId", {
-        product,
+      const { data } = await api.post(`/product/${cooperator.storeId}`, {
+        name: product,
         description,
-        category,
+        categoryId: category,
         quantity,
-        unityValue,
-        image,
+        value: unityValue,
+        photo: image,
       });
 
       if (data.sucess) {
         window.alert(JSON.stringify("Produto criado com sucesso"));
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getProduct(productId: number) {
+    try {
+      const { data } = await api.get(
+        `/product/${cooperator.storeId}/${productId}`
+      );
+
+      console.log("product", data, productId);
+
+      if (data.sucess) {
+        setProductSelected(data.data);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function updateProduct(
+    productId: number,
+    product: string,
+    description: string,
+    category: string,
+    quantity: string,
+    unityValue: string,
+    image: string
+  ) {
+    try {
+      const { data } = await api.put(
+        `/product/${cooperator.storeId}/${productId}`,
+        {
+          name: product,
+          description,
+          categoryId: category,
+          quantity,
+          value: unityValue,
+          photo: image,
+        }
+      );
+
+      if (data.sucess) {
+        window.alert(JSON.stringify("Produto atualizado com sucesso"));
       } else {
         //MENSSAGEM DE ERRO
         console.log(data);
@@ -138,7 +207,29 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
     }
   }
 
-  useEffect(() => {}, []);
+  async function getCategories() {
+    try {
+      const { data } = await api.get(`/category/`);
+
+      if (data.sucess) {
+        const categories = data.data.map((category: any) => {
+          return { id: category.id, name: category.name };
+        });
+
+        setCategories(categories);
+        return data;
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getCategories();
+  }, []);
 
   useEffect(() => {
     console.log(cooperator);
@@ -154,6 +245,12 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         updateProfile,
         updatePassword,
         setCooperator,
+        categories,
+        getProduct,
+        updateProduct,
+        productSelected,
+        isEditProduct,
+        setIsEditProduct,
       }}
     >
       <>{children}</>

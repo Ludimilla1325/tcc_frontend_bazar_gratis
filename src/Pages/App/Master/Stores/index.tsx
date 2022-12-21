@@ -54,7 +54,7 @@ export const Stores = () => {
 
   return (
     <Container>
-      <Title>Operadores</Title>
+      <Title>Lojas</Title>
       <Table>
         <Header>
           <THead>CÓDIGO</THead>

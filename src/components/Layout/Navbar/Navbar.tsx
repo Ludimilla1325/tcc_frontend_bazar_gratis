@@ -30,6 +30,7 @@ const Navbar: FC = () => {
     <IconContext.Provider value={{ color: "white" }}>
       <Nav>
         <Subtitle>BAZAR GRÁTIS MIDI</Subtitle>
+        
 
         <div
           style={{

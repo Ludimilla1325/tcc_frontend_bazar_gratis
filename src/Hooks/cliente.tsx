@@ -7,7 +7,11 @@ import React, {
   useState,
 } from "react";
 import api from "../Services/api";
-import { clienteLocalStorage, tokenLocalStorage } from "../Utils/localStorage";
+import {
+  clienteLocalStorage,
+  tokenLocalStorage,
+  tokenTimeLocalStorage,
+} from "../Utils/localStorage";
 
 interface IClienteProviderProps {
   children: ReactNode;
@@ -43,7 +47,7 @@ interface IClienteContextData {
   sendLinkToResetPass: (email: string) => Promise<any>;
   getPointsSolicitationHistoric(): Promise<void>;
   setClienteStore: any;
-  logOut():void;
+  logOut(): void;
 }
 
 interface ICliente {
@@ -80,41 +84,42 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     {} as IPointsSolicitation[]
   );
 
-  function saveLocalStorage(cliente:ICliente,token:string){
+  function saveLocalStorage(cliente: ICliente, token: string) {
     localStorage.setItem(clienteLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);
+    localStorage.setItem(tokenTimeLocalStorage, String(Date.now()));
   }
 
-  function getLocalStorage(){
+  function getLocalStorage() {
     const usuario = localStorage.getItem(clienteLocalStorage);
     const token = localStorage.getItem(tokenLocalStorage);
-    if(usuario && token){
-      setCliente(JSON.parse(usuario));
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${token}`;
+    const time = localStorage.getItem(tokenTimeLocalStorage);
+    if (usuario && token && time) {
+      if ((Date.now() - Number(time))* 0.001 >= 3600) {
+        deleteLocalStorage();
+      } else {
+        setCliente(JSON.parse(usuario));
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         setLogado(true);
+      }
     }
-    
-   
   }
 
-
-
-  function deleteLocalStorage(){
+  function deleteLocalStorage() {
     localStorage.removeItem(clienteLocalStorage);
     localStorage.removeItem(tokenLocalStorage);
+    localStorage.remove(tokenTimeLocalStorage);
   }
 
- function logOut(){
+  function logOut() {
     setCliente({} as ICliente);
-    setLogado(false)
+    setLogado(false);
     deleteLocalStorage();
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getLocalStorage();
-  },[])
+  }, []);
 
   async function logar(email: string, password: string) {
     let errorMessage = "";
@@ -126,7 +131,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         api.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${data.data.token}`;
-        saveLocalStorage(data.data.user, data.data.token)
+        saveLocalStorage(data.data.user, data.data.token);
         setLogado(true);
       } else {
         errorMessage = data.message;

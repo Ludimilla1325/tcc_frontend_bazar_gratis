@@ -6,7 +6,11 @@ import React, {
   useState,
 } from "react";
 import api from "../Services/api";
-import { masterLocalStorage, tokenLocalStorage } from "../Utils/localStorage";
+import {
+  masterLocalStorage,
+  tokenLocalStorage,
+  tokenTimeLocalStorage,
+} from "../Utils/localStorage";
 
 interface IMasterProviderProps {
   children: ReactNode;
@@ -16,7 +20,7 @@ interface IMasterContextData {
   logado: boolean;
   logar: (email: string, senha: string) => Promise<void>;
   master: IMaster;
-  logOut():void;
+  logOut(): void;
   createCooperator: (
     name: string,
     email: string,
@@ -26,7 +30,6 @@ interface IMasterContextData {
     storeId: number,
     password: string
   ) => Promise<void>;
-  
 }
 
 interface IMaster {
@@ -41,41 +44,42 @@ function MasterProvider({ children }: IMasterProviderProps) {
   const [logado, setLogado] = useState(false);
   const [master, setMaster] = useState({} as IMaster);
 
-  function saveLocalStorage(cliente:IMaster,token:string){
+  function saveLocalStorage(cliente: IMaster, token: string) {
     localStorage.setItem(masterLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);
+
+    localStorage.setItem(tokenTimeLocalStorage, String(Date.now()));
   }
 
-  function getLocalStorage(){
+  function getLocalStorage() {
     const usuario = localStorage.getItem(masterLocalStorage);
     const token = localStorage.getItem(tokenLocalStorage);
-    if(usuario && token){
-      setMaster(JSON.parse(usuario));
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${token}`;
+    const time = localStorage.getItem(tokenTimeLocalStorage);
+    if (usuario && token && time) {
+      if ((Date.now() - Number(time)) * 0.001 >= 3600) {
+        deleteLocalStorage();
+      } else {
+        setMaster(JSON.parse(usuario));
+        api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         setLogado(true);
+      }
     }
-    
-   
   }
 
-
-
-  function deleteLocalStorage(){
+  function deleteLocalStorage() {
     localStorage.removeItem(masterLocalStorage);
     localStorage.removeItem(tokenLocalStorage);
   }
 
- function logOut(){
+  function logOut() {
     setMaster({} as IMaster);
-    setLogado(false)
+    setLogado(false);
     deleteLocalStorage();
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getLocalStorage();
-  },[])
+  }, []);
 
   async function logar(email: string, password: string) {
     let errorMessage = "";
@@ -88,7 +92,7 @@ function MasterProvider({ children }: IMasterProviderProps) {
           "Authorization"
         ] = `Bearer ${data.data.token}`;
         setLogado(true);
-        saveLocalStorage(data.data.user,data.data.token)
+        saveLocalStorage(data.data.user, data.data.token);
       } else {
         errorMessage = data.message;
       }

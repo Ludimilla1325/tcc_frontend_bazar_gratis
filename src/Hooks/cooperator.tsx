@@ -6,7 +6,7 @@ import React, {
   useState,
 } from "react";
 import api from "../Services/api";
-import { operatorLocalStorage, tokenLocalStorage } from "../Utils/localStorage";
+import { operatorLocalStorage, tokenLocalStorage, tokenTimeLocalStorage } from "../Utils/localStorage";
 
 interface ICooperatorProviderProps {
   children: ReactNode;
@@ -67,17 +67,25 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   function saveLocalStorage(cliente:ICooperator,token:string){
     localStorage.setItem(operatorLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);
+
+    localStorage.setItem(tokenTimeLocalStorage, String(Date.now()));
   }
 
   function getLocalStorage(){
     const usuario = localStorage.getItem(operatorLocalStorage);
     const token = localStorage.getItem(tokenLocalStorage);
-    if(usuario && token){
-      setCooperator(JSON.parse(usuario));
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${token}`;
-        setLogado(true);
+    const time = localStorage.getItem(tokenTimeLocalStorage);
+    if (usuario && token && time) {
+      if ((Date.now() - Number(time))* 0.001 >= 3600) {
+        deleteLocalStorage();
+      } else{
+        setCooperator(JSON.parse(usuario));
+        api.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${token}`;
+          setLogado(true);
+      }
+      
     }
     
    

@@ -1,3 +1,4 @@
+import { userInfo } from "os";
 import React, {
   createContext,
   ReactNode,
@@ -6,6 +7,7 @@ import React, {
   useState,
 } from "react";
 import api from "../Services/api";
+import { clienteLocalStorage, tokenLocalStorage } from "../Utils/localStorage";
 
 interface IClienteProviderProps {
   children: ReactNode;
@@ -41,6 +43,7 @@ interface IClienteContextData {
   sendLinkToResetPass: (email: string) => Promise<any>;
   getPointsSolicitationHistoric(): Promise<void>;
   setClienteStore: any;
+  logOut():void;
 }
 
 interface ICliente {
@@ -77,6 +80,42 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     {} as IPointsSolicitation[]
   );
 
+  function saveLocalStorage(cliente:ICliente,token:string){
+    localStorage.setItem(clienteLocalStorage, JSON.stringify(cliente));
+    localStorage.setItem(tokenLocalStorage, token);
+  }
+
+  function getLocalStorage(){
+    const usuario = localStorage.getItem(clienteLocalStorage);
+    const token = localStorage.getItem(tokenLocalStorage);
+    if(usuario && token){
+      setCliente(JSON.parse(usuario));
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+        setLogado(true);
+    }
+    
+   
+  }
+
+
+
+  function deleteLocalStorage(){
+    localStorage.removeItem(clienteLocalStorage);
+    localStorage.removeItem(tokenLocalStorage);
+  }
+
+ function logOut(){
+    setCliente({} as ICliente);
+    setLogado(false)
+    deleteLocalStorage();
+  }
+
+  useEffect(()=>{
+    getLocalStorage();
+  },[])
+
   async function logar(email: string, password: string) {
     let errorMessage = "";
     try {
@@ -87,6 +126,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         api.defaults.headers.common[
           "Authorization"
         ] = `Bearer ${data.data.token}`;
+        saveLocalStorage(data.data.user, data.data.token)
         setLogado(true);
       } else {
         errorMessage = data.message;
@@ -279,6 +319,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   return (
     <ClienteContext.Provider
       value={{
+        logOut,
         logado,
         logar,
         register,

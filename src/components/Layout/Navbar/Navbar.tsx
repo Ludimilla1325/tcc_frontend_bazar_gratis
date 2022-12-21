@@ -19,7 +19,7 @@ import {
 
 const Navbar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
-  const { cliente } = useCliente();
+  const { cliente, } = useCliente();
   const { cooperator } = useCooperator();
   const { master } = useMaster();
   const showSidebar = () => {

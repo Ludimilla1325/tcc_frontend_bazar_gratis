@@ -1,6 +1,9 @@
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useCliente } from "../../../Hooks/cliente";
+import { useCooperator } from "../../../Hooks/cooperator";
+import { useMaster } from "../../../Hooks/master";
 import { SidebarItem } from "../../../models/SidebarItem";
 import { app_base_url } from "../../../Utils/urls";
 
@@ -45,6 +48,9 @@ const DropdownLink = styled(Link)`
 
 const Submenu: FC<SidebarLinkProps> = ({ item }) => {
   const [subnav, setSubnav] = useState(false);
+  const clienteHook = useCliente();
+  const { cooperator } = useCooperator();
+  const { master } = useMaster();
   const showSubnav = () => {
     setSubnav(!subnav);
   };

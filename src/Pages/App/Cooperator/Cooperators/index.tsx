@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useCooperator } from "../../../../Hooks/cooperator";
 import api from "../../../../Services/api";
+import { cpfMask } from "../../../../Utils/cpfMask";
 import {Container,Header,Table, THead,Title,Body,TBody} from "./styles";
 export interface ICooperator {
   id: number;
@@ -44,7 +45,7 @@ export const Cooperators = () => {
             <TBody>{item.id}</TBody>
             <TBody>{item.name}</TBody>
             <TBody>{item.email}</TBody>
-            <TBody>{item.cpf}</TBody>
+            <TBody>{cpfMask(item.cpf)}</TBody>
             <TBody>{item.active ? "A" : "I"}</TBody>
           </Body>
         );

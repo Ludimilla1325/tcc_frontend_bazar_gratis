@@ -126,7 +126,7 @@ export const Profile = () => {
           </RegisterButton>
           <LoginButton
             onClick={async () => {
-              navigate(`${app_base_url}/profile`);
+              setIsEdit(false);
             }}
           >
             Voltar

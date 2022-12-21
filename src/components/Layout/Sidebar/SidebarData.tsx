@@ -23,11 +23,6 @@ export const SidebarData: SidebarItem[] = [
     icon: <AiOutlineHome />,
   },
   {
-    title: "Carinho",
-    path: "/loja",
-    icon: <MdOutlineLocalGroceryStore />,
-  },
-  {
     title: "Solicitar pontos",
     path: "/pointsSolicitation",
     icon: <TbFilePlus />,

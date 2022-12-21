@@ -169,7 +169,7 @@ const Sidebar: FC = () => {
           <NavIcon to="#" onClick={showSidebar}>
             <AiOutlineClose />
           </NavIcon>
-          <SidebarTitle>MCGI FREE STORE</SidebarTitle>
+          <SidebarTitle>BAZAR GRÁTIS</SidebarTitle>
           <Line></Line>
           {cliente.id ? (
             <>
@@ -198,7 +198,6 @@ const Sidebar: FC = () => {
           ) : (
             ""
           )}
-          SidebarMaster
         </SidebarWrap>
       </SidebarNav>
     </IconContext.Provider>

@@ -36,8 +36,6 @@ export const CreateAndEditProduct = () => {
     image: isEditProduct ? productSelected.photo : "",
   });
 
-  console.log("pr", productSelected, productSelected.Category.name);
-
   const categoryList = categories.map((category) => {
     return <option value={category.id}>{category.name}</option>;
   });

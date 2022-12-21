@@ -10,9 +10,10 @@ import {
 } from "react-icons/ai";
 import { FiLogOut } from "react-icons/fi";
 import {
-  SidebarData,
-  SidebarDataCooperator,
-  SidebarMaster,
+  SidebarDataClient,
+  SidebarDataAdmin,
+  SidebarDataMaster,
+  SidebarDataOperator,
 } from "./SidebarData";
 import SidebarLink from "./Submenu";
 import { Button } from "react-bootstrap";
@@ -173,16 +174,25 @@ const Sidebar: FC = () => {
           <Line></Line>
           {cliente.id ? (
             <>
-              {SidebarData.map((item: any, index: any) => {
+              {SidebarDataClient.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;
               })}
             </>
           ) : (
             ""
           )}{" "}
-          {cooperator.id ? (
+          {cooperator.id && cooperator.admin == false ? (
             <>
-              {SidebarDataCooperator.map((item: any, index: any) => {
+              {SidebarDataOperator.map((item: any, index: any) => {
+                return <SidebarLink item={item} key={index} />;
+              })}
+            </>
+          ) : (
+            ""
+          )}
+          {cooperator.id && cooperator.admin == true ? (
+            <>
+              {SidebarDataAdmin.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;
               })}
             </>
@@ -191,7 +201,7 @@ const Sidebar: FC = () => {
           )}
           {master.id ? (
             <>
-              {SidebarMaster.map((item: any, index: any) => {
+              {SidebarDataMaster.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;
               })}
             </>

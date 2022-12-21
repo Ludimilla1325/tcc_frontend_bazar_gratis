@@ -11,7 +11,7 @@ import {
 import { MdOutlineLocalGroceryStore } from "react-icons/md";
 import { TbFilePlus } from "react-icons/tb";
 import { RiHistoryFill } from "react-icons/ri";
-export const SidebarData: SidebarItem[] = [
+export const SidebarDataClient: SidebarItem[] = [
   {
     title: "Perfil",
     path: "/profile",
@@ -34,10 +34,45 @@ export const SidebarData: SidebarItem[] = [
   },
 ];
 
-export const SidebarDataCooperator: SidebarItem[] = [
+export const SidebarDataOperator: SidebarItem[] = [
   {
     title: "Perfil",
     path: "/profile",
+    icon: <AiOutlineUser />,
+  },
+  {
+    title: "Produtos",
+    path: "/produtos",
+    icon: <MdOutlineLocalGroceryStore />,
+  },
+  {
+    title: "Criar Produtos",
+    path: "/create-products",
+    icon: <MdOutlineLocalGroceryStore />,
+  },
+  {
+    title: "Solicitação de Pontos",
+    path: "/points-solicitation",
+    icon: <TbFilePlus />,
+  },
+  {
+    title: "Pedidos",
+    path: "/pedidos",
+    icon: <RiHistoryFill />,
+    iconOpened: <AiFillCaretUp />,
+    iconClosed: <AiFillCaretDown />,
+  },
+];
+
+export const SidebarDataAdmin: SidebarItem[] = [
+  {
+    title: "Perfil",
+    path: "/profile",
+    icon: <AiOutlineUser />,
+  },
+  {
+    title: "Dashboard",
+    path: "/dashboard",
     icon: <AiOutlineUser />,
   },
   {
@@ -56,6 +91,12 @@ export const SidebarDataCooperator: SidebarItem[] = [
     icon: <TbFilePlus />,
   },
   {
+    title: "Criar Cooperador",
+    path: "/create-cooperator",
+    icon: <AiOutlineUser />,
+  },
+
+  {
     title: "Solicitação de Pontos",
     path: "/points-solicitation",
     icon: <TbFilePlus />,
@@ -69,7 +110,7 @@ export const SidebarDataCooperator: SidebarItem[] = [
   },
 ];
 
-export const SidebarMaster: SidebarItem[] = [
+export const SidebarDataMaster: SidebarItem[] = [
   {
     title: "Dashboard",
     path: "/dashboard",

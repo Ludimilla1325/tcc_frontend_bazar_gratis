@@ -23,8 +23,7 @@ export const ClientLogin = () => {
 
   return (
     <Container>
-      {/* <Title>Login</Title>
-      <Subtitle>Faça seu login para escolher os produtos</Subtitle> */}
+      <Title>Login</Title>
       <Label>
         <SpanLabel> Email</SpanLabel>
         <Input

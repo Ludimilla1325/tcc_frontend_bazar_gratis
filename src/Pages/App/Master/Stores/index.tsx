@@ -3,6 +3,7 @@ import { StoreDetails } from "../../../../components/Modals/StoreDetails";
 import { useMaster } from "../../../../Hooks/master";
 import api from "../../../../Services/api";
 import { Container, Header, Table, THead, Title, Body, TBody } from "./styles";
+import {AiOutlinePlus} from "react-icons/ai"
 export interface IStore {
   id: number;
   name: string;
@@ -69,6 +70,7 @@ export const Stores = () => {
         onClose={() => setStoreFocus({} as IStore)}
         store={storeFocus}
       />
+      <AiOutlinePlus style={{cursor:"pointer"}} size={"max(2vw,24px)"}/>
     </Container>
   );
 };

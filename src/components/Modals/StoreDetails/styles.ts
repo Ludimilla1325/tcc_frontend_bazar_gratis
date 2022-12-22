@@ -50,3 +50,13 @@ export const HandlerContainerData = styled.div`
     justify-content:space-around;
     margin-top:2vh;
 `;
+
+
+export const IconsDiv = styled.div`
+
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding: 1vw;
+
+`;

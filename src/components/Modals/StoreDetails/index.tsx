@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FiPlus, FiSearch, FiX } from "react-icons/fi";
+import { FiPlus, FiSearch, FiX,FiUser, FiEdit2 } from "react-icons/fi";
 
 import Modal from "react-modal";
 import { IStore } from "../../../Pages/App/Master/Stores";
@@ -13,6 +13,7 @@ import {
   HandlerContainerData,
   Label,
   Title,
+  IconsDiv
 } from "./styles";
 import { ICooperator } from "../../../Pages/App/Cooperator/Cooperators";
 import api from "../../../Services/api";
@@ -85,16 +86,35 @@ export function StoreDetails({ open, onClose, store }: Props) {
           </ContainerData>
           <ContainerData>
             <Label style={{"display":"flex", alignItems:"center", cursor:"pointer"}}
-            onClick={() =>  navigate(`${app_base_url}/funcionarios/${store.id}`)}
+            
             >Funcionários <FiSearch/></Label>
             <DataSpan>{cooperators.length}</DataSpan>
           </ContainerData>
         </HandlerContainerData>
+        <IconsDiv>
         <FiShoppingCart 
-        
+     
+
         size={"max(2vw, 24px)"} style={{cursor:"pointer"}} 
         onClick={()=>navigate(`${app_base_url}/produtos/${store.id}`)}/>
+         <FiUser 
+        
+        size={"max(2vw, 24px)"} style={{cursor:"pointer"}} 
+        onClick={() =>  navigate(`${app_base_url}/funcionarios/${store.id}`)}/>
+
+        </IconsDiv>
+        <IconsDiv>
+        <FiEdit2 
+        
+        size={"max(2vw, 24px)"} style={{cursor:"pointer"}} 
+        onClick={() =>  window.alert("Sem função ainda")}/>
+
+        </IconsDiv>
+
+        
       </Container>
+
+      
 
     </Modal>
   );

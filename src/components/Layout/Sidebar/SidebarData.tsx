@@ -126,4 +126,9 @@ export const SidebarDataMaster: SidebarItem[] = [
     path: "/lojas",
     icon: <AiOutlineHome />,
   },
+  {
+    title: "Criar Loja",
+    path: "/create-store",
+    icon: <AiOutlineHome />,
+  },
 ];

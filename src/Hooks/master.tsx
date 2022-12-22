@@ -30,6 +30,22 @@ interface IMasterContextData {
     storeId: number,
     password: string
   ) => Promise<void>;
+  createStore: (
+    name: string,
+    localization: string,
+    maxPoints: string
+  ) => Promise<void>;
+  getStore: (storeId: number) => Promise<void>;
+  updateStore: (
+    storeId: number,
+    name: string,
+    localization: string,
+    maxPoints: string
+  ) => Promise<void>;
+  selectedStore: any;
+  setSelectedStore: any;
+  isEditedStore: any;
+  setIsEditedStore: any;
 }
 
 interface IMaster {
@@ -43,6 +59,8 @@ const MasterContext = createContext({} as IMasterContextData);
 function MasterProvider({ children }: IMasterProviderProps) {
   const [logado, setLogado] = useState(false);
   const [master, setMaster] = useState({} as IMaster);
+  const [selectedStore, setSelectedStore] = useState({});
+  const [isEditedStore, setIsEditedStore] = useState(false);
 
   function saveLocalStorage(cliente: IMaster, token: string) {
     localStorage.setItem(masterLocalStorage, JSON.stringify(cliente));
@@ -75,6 +93,67 @@ function MasterProvider({ children }: IMasterProviderProps) {
     setMaster({} as IMaster);
     setLogado(false);
     deleteLocalStorage();
+  }
+
+  async function createStore(
+    name: string,
+    localization: string,
+    maxPoints: string
+  ) {
+    try {
+      const { data } = await api.post(`/store/`, {
+        name,
+        localization,
+        maxPoints,
+      });
+
+      if (data.sucess) {
+        window.alert(JSON.stringify("Loja criada com sucesso"));
+      } else {
+        window.alert(JSON.stringify("Erro ao criar loja"));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getStore(storeId: number) {
+    try {
+      const { data } = await api.get(`/store/${storeId}`);
+      if (data.sucess) {
+        setSelectedStore(data.data);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function updateStore(
+    storeId: number,
+    name: string,
+    localization: string,
+    maxPoints: string
+  ) {
+    try {
+      const { data } = await api.patch(`/store/`, {
+        storeId,
+        name,
+        localization,
+        maxPoints,
+      });
+
+      if (data.sucess) {
+        window.alert(JSON.stringify("Loja atualizada com sucesso"));
+      } else {
+        window.alert(JSON.stringify("Problema ao atualizar a loja"));
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   useEffect(() => {
@@ -153,6 +232,13 @@ function MasterProvider({ children }: IMasterProviderProps) {
         logar,
         master,
         createCooperator,
+        createStore,
+        getStore,
+        updateStore,
+        selectedStore,
+        setSelectedStore,
+        isEditedStore,
+        setIsEditedStore,
       }}
     >
       <>{children}</>

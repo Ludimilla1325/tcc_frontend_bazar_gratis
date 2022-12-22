@@ -18,6 +18,7 @@ import { Stores } from "../Pages/App/Master/Stores";
 import { CooperatorRegister } from "../Pages/App/Master/Employee";
 import Dashboard from "../Pages/App/Master/Dashboard/Dashboard";
 import { Profile } from "../Pages/App/Cooperator/Profile";
+import { CreateAndEditStore } from "../Pages/App/Master/Create_Edit_Store";
 
 const MasterRoutes: FC = () => {
   return (
@@ -58,6 +59,12 @@ const MasterRoutes: FC = () => {
               <Route
                 path={`${app_base_url}/lojas`}
                 element={<Stores />}
+              ></Route>
+            </Routes>
+            <Routes>
+              <Route
+                path={`${app_base_url}/create-store`}
+                element={<CreateAndEditStore />}
               ></Route>
             </Routes>
 

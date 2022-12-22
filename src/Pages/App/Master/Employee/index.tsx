@@ -4,9 +4,7 @@ import {
   Title,
   Label,
   Input,
-  Span,
   Button,
-  Subtitle,
   SpanLabel,
   Switch,
   LabelToggle,
@@ -15,28 +13,37 @@ import {
 } from "./styles";
 import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
-import { app_base_url } from "../../../../Utils/urls";
-import { Alert } from "../../../../components/Modals/Alert";
 import { useGeral } from "../../../../Hooks/geral";
 import { useMaster } from "../../../../Hooks/master";
 export const CooperatorRegister = () => {
   const navigate = useNavigate();
   const { stores } = useGeral();
-  const { createCooperator } = useMaster();
+  const {
+    createCooperator,
+    isEditedCooperator,
+    selectedCooperator,
+    updateCooperator,
+    setIsEditedCooperator,
+  } = useMaster();
   const { register } = useCliente();
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(
+    isEditedCooperator ? selectedCooperator.active : false
+  );
   const [loading, setLoading] = useState(false);
-  const [administrator, setAdministrator] = useState(false);
+  const [administrator, setAdministrator] = useState(
+    isEditedCooperator ? selectedCooperator.admin : false
+  );
 
   const storeList = stores.map((store) => {
     return <option value={store.id}>{store.name}</option>;
   });
+
   const [formValue, setFormValue] = useState({
-    name: "",
-    email: "",
-    cpf: "",
-    store: 0,
-    password: "",
+    name: isEditedCooperator ? selectedCooperator.name : "",
+    email: isEditedCooperator ? selectedCooperator.email : "",
+    cpf: isEditedCooperator ? selectedCooperator.cpf : "",
+    store: isEditedCooperator ? selectedCooperator.storeId : "",
+    password: isEditedCooperator ? selectedCooperator.password : "",
     confirmPass: "",
   });
 
@@ -74,73 +81,126 @@ export const CooperatorRegister = () => {
           placeholder="Digite o cpf!"
         />
       </Label>
+
       <Label>
-        <SpanLabel>Loja</SpanLabel>
+        Selecionar Loja
         <Select onChange={(ev) => handleChangeForm("store", ev)}>
-          <option value="" hidden></option>
+          <option value="" hidden>
+            {isEditedCooperator
+              ? `${selectedCooperator.Store.name}, ${selectedCooperator.Store.localization}`
+              : ""}
+          </option>
           {storeList}
         </Select>
-      </Label>
-      <Label>
-        Senha
-        <Input
-          value={formValue.password}
-          onChange={(ev) => handleChangeForm("password", ev)}
-        />
-      </Label>
-      <Label>
-        Confirmar Senha
-        <Input
-          value={formValue.confirmPass}
-          onChange={(ev) => handleChangeForm("confirmPass", ev)}
-        />
+        {/* )} */}
       </Label>
 
+      {isEditedCooperator ? (
+        " "
+      ) : (
+        <>
+          <Label>
+            Senha
+            <Input
+              value={formValue.password}
+              onChange={(ev) => handleChangeForm("password", ev)}
+            />
+          </Label>
+          <Label>
+            Confirmar Senha
+            <Input
+              value={formValue.confirmPass}
+              onChange={(ev) => handleChangeForm("confirmPass", ev)}
+            />
+          </Label>
+        </>
+      )}
       <div>
         <LabelToggle>
           <span>Ativo</span>
           <InpuToggle
             checked={active}
             type="checkbox"
-            onChange={(e) => setActive(e.target.checked)}
+            onChange={(ev) => {
+              console.log("ev", ev.target.checked);
+              setActive(ev.target.checked);
+            }}
           />
           <Switch />
         </LabelToggle>
+
         <LabelToggle>
           <span>Administrador</span>
           <InpuToggle
             checked={administrator}
             type="checkbox"
-            onChange={(e) => setAdministrator(e.target.checked)}
+            onChange={(ev) => setAdministrator(ev.target.checked)}
           />
           <Switch />
         </LabelToggle>
       </div>
+      {/* )} */}
 
-      <Button
-        onClick={async () => {
-          try {
-            setLoading(true);
-            if (formValue.password === formValue.confirmPass) {
-              await createCooperator(
-                formValue.name,
-                formValue.email,
-                formValue.cpf,
-                active,
-                administrator,
-                formValue.store,
-                formValue.password
-              );
+      {isEditedCooperator ? (
+        <>
+          <Button
+            onClick={async () => {
+              try {
+                setLoading(true);
+                await updateCooperator(
+                  selectedCooperator.id,
+                  formValue.name,
+                  formValue.email,
+                  active,
+                  administrator,
+                  formValue.store
+                );
+
+                setIsEditedCooperator(false);
+              } catch (error) {
+                window.alert(JSON.stringify(`Erro ao cadastrar! ${error}`));
+              } finally {
+                setLoading(false);
+              }
+            }}
+          >
+            Atualizar
+          </Button>
+
+          <Button
+            onClick={() => {
+              setIsEditedCooperator(false);
+            }}
+          >
+            Voltar
+          </Button>
+        </>
+      ) : (
+        <Button
+          onClick={async () => {
+            try {
+              setLoading(true);
+              if (formValue.password === formValue.confirmPass) {
+                await createCooperator(
+                  formValue.name,
+                  formValue.email,
+                  formValue.cpf,
+                  active,
+                  administrator,
+                  formValue.store,
+                  formValue.password
+                );
+              }
+            } catch (error) {
+              window.alert(JSON.stringify(`Erro ao cadastrar! ${error}`));
+            } finally {
+              setLoading(false);
             }
-          } catch (error) {
-            window.alert(JSON.stringify(`Erro ao cadastrar! ${error}`));
-          } finally {
-            setLoading(false);
-          }
-        }}
-      >
-        Confirmar
-      </Button>
+          }}
+        >
+          Confirmar
+        </Button>
+      )}
     </Container>
   );
 };

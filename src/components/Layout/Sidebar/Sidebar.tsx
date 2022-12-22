@@ -116,9 +116,9 @@ const SidebarWrap = styled.div``;
 
 const Sidebar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
-  const { cliente } = useCliente();
-  const { cooperator } = useCooperator();
-  const { master } = useMaster();
+  const clienteHook = useCliente();
+  const cooperatorHook = useCooperator();
+  const masterHook = useMaster();
   const showSidebar = () => {
     setSidebar(!sidebar);
   };
@@ -131,10 +131,10 @@ const Sidebar: FC = () => {
         </NavIcon>
 
         <HelperIcons>
-          <span>SALDO:{cliente.points}</span>
+          <span>SALDO:{clienteHook.cliente.points}</span>
 
-          <span>{cliente.name}</span>
-          {cliente.id ? (
+          <span>{clienteHook.cliente.name}</span>
+          {clienteHook.cliente.id ? (
             <>
               {cartQuantity > 0 && (
                 <NavCart className="rounded-circle" to="#" onClick={openCart}>
@@ -159,7 +159,14 @@ const Sidebar: FC = () => {
             ""
           )}
 
-          <NavLeft to="#" onClick={showSidebar}>
+          <NavLeft
+            to="#"
+            onClick={() => {
+              clienteHook.logOut();
+              masterHook.logOut();
+              cooperatorHook.logOut();
+            }}
+          >
             <FiLogOut />
           </NavLeft>
         </HelperIcons>
@@ -172,7 +179,7 @@ const Sidebar: FC = () => {
           </NavIcon>
           <SidebarTitle>BAZAR GRÁTIS</SidebarTitle>
           <Line></Line>
-          {cliente.id ? (
+          {clienteHook.cliente.id ? (
             <>
               {SidebarDataClient.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;
@@ -181,7 +188,8 @@ const Sidebar: FC = () => {
           ) : (
             ""
           )}{" "}
-          {cooperator.id && cooperator.admin == false ? (
+          {cooperatorHook.cooperator.id &&
+          cooperatorHook.cooperator.admin == false ? (
             <>
               {SidebarDataOperator.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;
@@ -190,7 +198,8 @@ const Sidebar: FC = () => {
           ) : (
             ""
           )}
-          {cooperator.id && cooperator.admin == true ? (
+          {cooperatorHook.cooperator.id &&
+          cooperatorHook.cooperator.admin == true ? (
             <>
               {SidebarDataAdmin.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;
@@ -199,7 +208,7 @@ const Sidebar: FC = () => {
           ) : (
             ""
           )}
-          {master.id ? (
+          {masterHook.master.id ? (
             <>
               {SidebarDataMaster.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;

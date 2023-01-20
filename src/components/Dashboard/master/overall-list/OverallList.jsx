@@ -1,6 +1,6 @@
 import React from "react";
 import "./overall-list.scss";
-import { data } from "../../../constants";
+import { useMaster } from "../../../../Hooks/master";
 
 const icons = [
   <i className="bx bx-receipt"></i>,
@@ -10,9 +10,10 @@ const icons = [
 ];
 
 const OverallList = () => {
+  const { purchaseDeliveredList } = useMaster();
   return (
     <ul className="overall-list">
-      {data.overall.map((item, index) => (
+      {purchaseDeliveredList.map((item, index) => (
         <li className="overall-list__item" key={`overall-${index}`}>
           <div className="overall-list__item__icon">{icons[index]}</div>
           <div className="overall-list__item__info">

@@ -4,29 +4,29 @@ const data = {
   },
   summary: [
     {
-      title: "Sales",
-      subtitle: "Total sales today",
+      title: "Solicitação de pontos",
+      subtitle: "30 dias",
       value: "$1.000",
-      percent: 70,
+      percent: 100,
     },
     {
-      title: "Orders",
-      subtitle: "Total orders today",
+      title: "Solicitação de pontos aprovados",
+      subtitle: "30 dias",
       value: "3000",
       percent: 49,
     },
     {
-      title: "Revenue",
-      subtitle: "Total revenue today",
+      title: "Solicitação de pontos negados",
+      subtitle: "30 dias",
       value: "$678",
       percent: 38,
     },
-    {
-      title: "Visits",
-      subtitle: "Total visits today",
-      value: "2345",
-      percent: 55,
-    },
+    // {
+    //   title: "Visits",
+    //   subtitle: "Total visits today",
+    //   value: "2345",
+    //   percent: 55,
+    // },
   ],
   revenueSummary: {
     title: "Revenue",
@@ -39,19 +39,15 @@ const data = {
   overall: [
     {
       value: "300K",
-      title: "Orders",
+      title: "90 dias",
     },
     {
       value: "9.876K",
-      title: "Customers",
+      title: "30 dias",
     },
     {
       value: "1.234K",
-      title: "Products",
-    },
-    {
-      value: "$5678",
-      title: "Revenue",
+      title: "7 dias",
     },
   ],
   revenueByChannel: [

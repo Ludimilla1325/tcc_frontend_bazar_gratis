@@ -19,9 +19,9 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
-import { useMaster } from "../../../../Hooks/master";
-import OverallList from "../../../../components/Dashboard/master/overall-list/OverallList";
-import RevenueList from "../../../../components/Dashboard/master/revenue-list/RevenueList";
+import { useCooperator } from "../../../../Hooks/cooperator";
+import OverallList from "../../../../components/Dashboard/admin/overall-list/OverallList";
+import RevenueList from "../../../../components/Dashboard/admin/revenue-list/RevenueList";
 
 ChartJS.register(
   CategoryScale,
@@ -33,15 +33,17 @@ ChartJS.register(
   Legend
 );
 
-const Dashboard = () => {
-  const { pointsSolicitationList } = useMaster();
+const DashboardAdmin = () => {
+  const { pointsSolicitationByStoreId } = useCooperator();
+
+  console.log("test", pointsSolicitationByStoreId);
   return (
     <DashboardWrapper>
       <DashboardWrapperMain>
         <div className="row">
-          <div className="col-12 col-md-12">
+          <div className="col-8 col-md-12">
             <div className="row">
-              {pointsSolicitationList.map((item, index) => (
+              {pointsSolicitationByStoreId.map((item, index) => (
                 <div
                   key={`summary-${index}`}
                   className="col-6 col-md-6 col-sm-12 mb"
@@ -61,12 +63,14 @@ const Dashboard = () => {
         </div>
       </DashboardWrapperMain>
       <DashboardWrapperRight>
-        <div className="title mb">Overall</div>
+        <div className="title mb">Cestas entregues</div>
         <div className="mb">
           <OverallList />
         </div>
 
-        <div className="title mb">Lista de Alimentos</div>
+        <div style={{ marginTop: "2" }}>
+          Top alimentos que mais são retirados
+        </div>
         <div className="mb">
           <RevenueList />
         </div>
@@ -75,10 +79,17 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default DashboardAdmin;
 
 const RevenueByMonthsChart = () => {
-  const { monthlyPurchaseList } = useMaster();
+  const { pointsSolicitationByStoreId, monthlyPurchaseByStoreId } =
+    useCooperator();
+
+  console.log(
+    "bwekbfewjl",
+    pointsSolicitationByStoreId,
+    monthlyPurchaseByStoreId
+  );
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -114,17 +125,20 @@ const RevenueByMonthsChart = () => {
   };
 
   const chartData = {
-    labels: monthlyPurchaseList.labels,
+    labels: monthlyPurchaseByStoreId.labels,
     datasets: [
       {
         label: "Revenue",
-        data: monthlyPurchaseList.data,
+        data: monthlyPurchaseByStoreId.data,
       },
     ],
   };
+
   return (
     <>
-      <div className="title mb">Revenue by months</div>
+      <div className="title mb outlined big">
+        Gráfico por mês das cestas entregues nos últimos 365 dias
+      </div>
       <div>
         <Bar options={chartOptions} data={chartData} height={`300px`} />
       </div>

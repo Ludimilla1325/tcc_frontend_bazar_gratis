@@ -9,6 +9,7 @@
     &__main {
         flex-grow: 1;
         padding-right: $sideBarWidth;
+        margin-top: 1;
 
         @include tablet {
             padding-right: 0;

@@ -59,6 +59,11 @@ interface IMasterContextData {
   setSelectedCooperator: any;
   isEditedCooperator: any;
   setIsEditedCooperator: any;
+  pointsSolicitationList: any;
+  purchaseDeliveredList: any;
+  monthlyPurchaseList: any;
+  totalNumberClient: any;
+  topProductsList: any;
 }
 
 interface IMaster {
@@ -76,7 +81,11 @@ function MasterProvider({ children }: IMasterProviderProps) {
   const [isEditedStore, setIsEditedStore] = useState(false);
   const [selectedCooperator, setSelectedCooperator] = useState({});
   const [isEditedCooperator, setIsEditedCooperator] = useState(false);
-
+  const [pointsSolicitationList, setPointsSolicitation] = useState([]);
+  const [purchaseDeliveredList, setPurchaseDelivered] = useState([]);
+  const [monthlyPurchaseList, setMonthlyPurchase] = useState([]);
+  const [totalNumberClient, setTotalNumClient] = useState(0);
+  const [topProductsList, setTopProductsList] = useState([]);
   function saveLocalStorage(cliente: IMaster, token: string) {
     localStorage.setItem(masterLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);
@@ -254,9 +263,9 @@ function MasterProvider({ children }: IMasterProviderProps) {
     storeId: number
   ) {
     try {
-      const { data } = await api.patch(`/cooperator/?userId=${cooperatorId}`, {
+      const { data } = await api.patch(`/cooperator/`, {
+        id: cooperatorId,
         name,
-        email,
         active,
         admin,
         storeId,
@@ -273,10 +282,98 @@ function MasterProvider({ children }: IMasterProviderProps) {
     }
   }
 
+  ///////////////
+
+  async function pointsSolicitation() {
+    try {
+      const { data } = await api.get(
+        `/dashboard/points-solicitation/percentage/`
+      );
+
+      console.log("dddddd", data);
+
+      if (data.sucess) {
+        setPointsSolicitation(data.data);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function purchaseDelivered() {
+    try {
+      const { data } = await api.get(
+        `/dashboard/purchase-delivered/percentage/`
+      );
+
+      if (data.sucess) {
+        setPurchaseDelivered(data.data);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function monthlyPurchase() {
+    try {
+      const { data } = await api.get(`/dashboard/monthly-purchase/percentage/`);
+
+      if (data.sucess) {
+        setMonthlyPurchase(data.data);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function totalNumClient() {
+    try {
+      const { data } = await api.get(`/dashboard/total-number-client/`);
+
+      if (data.sucess) {
+        setTotalNumClient(+data.data);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function topProducts() {
+    try {
+      const { data } = await api.get(`/dashboard/top-selling-products/`);
+
+      if (data.sucess) {
+        setTopProductsList(data.data);
+      } else {
+        //MENSSAGEM DE ERRO
+        console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {}, []);
 
   useEffect(() => {
     console.log(master);
+    pointsSolicitation();
+    purchaseDelivered();
+    monthlyPurchase();
+    totalNumClient();
+    topProducts();
     //window.alert(JSON.stringify(master))
   }, [master]);
   return (
@@ -300,6 +397,11 @@ function MasterProvider({ children }: IMasterProviderProps) {
         setSelectedCooperator,
         isEditedCooperator,
         setIsEditedCooperator,
+        pointsSolicitationList,
+        purchaseDeliveredList,
+        monthlyPurchaseList,
+        totalNumberClient,
+        topProductsList,
       }}
     >
       <>{children}</>

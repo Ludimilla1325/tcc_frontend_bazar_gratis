@@ -1,11 +1,6 @@
 import React, { FC } from "react";
 import { Container } from "react-bootstrap";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  IndexRouteProps,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Layout/Sidebar/Sidebar";
 import { ShoppingCartProvider } from "../Context/ShoppingCartContext";
 import { Home } from "../Pages/App/Cooperator/Home";
@@ -19,7 +14,7 @@ import { Purchase } from "../Pages/App/Cooperator/Purchase";
 import { PointsSolicitation } from "../Pages/App/Cooperator/PointsSolicitation";
 import { Profile } from "../Pages/App/Cooperator/Profile";
 import { EditPass } from "../Pages/App/Cooperator/EditPass";
-import Dashboard from "../Pages/App/Master/Dashboard/Dashboard";
+import DashboardAdmin from "../Pages/App/Cooperator/Dashboard/Dashboard";
 import { CooperatorRegister } from "../Pages/App/Master/Employee";
 const AppRoutes: FC = () => {
   return (
@@ -76,7 +71,7 @@ const AppRoutes: FC = () => {
             <Routes>
               <Route
                 path={`${app_base_url}/dashboard`}
-                element={<Dashboard />}
+                element={<DashboardAdmin />}
               ></Route>
             </Routes>{" "}
             <Routes>

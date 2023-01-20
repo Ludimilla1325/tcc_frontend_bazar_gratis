@@ -1,12 +1,13 @@
 import React from "react";
-import { data } from "../../../constants";
 import "./revenue-list.scss";
-import ProgressBar from "../progressbar/ProgressBar";
+import { useMaster } from "../../../../Hooks/master";
+import ProgressBar from "../../progressbar/ProgressBar";
 
 const RevenueList = () => {
+  const { topProductsList } = useMaster();
   return (
     <ul className="revenue-list">
-      {data.revenueByChannel.map((item, index) => (
+      {topProductsList.map((item, index) => (
         <li className="revenue-list__item" key={`revenue-${index}`}>
           <div className="revenue-list__item__title">
             {item.title}

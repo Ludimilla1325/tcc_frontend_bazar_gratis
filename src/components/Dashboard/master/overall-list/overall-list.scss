@@ -1,4 +1,4 @@
-@use '../../../scss/abstracts/' as *;
+@use '../../../../scss/abstracts/' as *;
 @use 'sass:math';
 
 .overall-list {
@@ -19,7 +19,7 @@
             margin-right: $spacing;
 
             i {
-                font-size: 1.9rem;
+                font-size: 3rem;
                 color: $black;
             }
         }

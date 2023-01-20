@@ -65,30 +65,37 @@ export const CooperatorRegister = () => {
           placeholder="Digite o nome!"
         />
       </Label>
-      <Label>
-        <SpanLabel> Email</SpanLabel>
-        <Input
-          value={formValue.email}
-          onChange={(ev) => handleChangeForm("email", ev)}
-          placeholder="Digite o email!"
-        />
-      </Label>
-      <Label>
-        <SpanLabel>CPF</SpanLabel>
-        <Input
-          value={formValue.cpf}
-          onChange={(ev) => handleChangeForm("cpf", ev)}
-          placeholder="Digite o cpf!"
-        />
-      </Label>
-
+      {isEditedCooperator ? (
+        " "
+      ) : (
+        <>
+          <Label>
+            <SpanLabel> Email</SpanLabel>
+            <Input
+              value={formValue.email}
+              onChange={(ev) => handleChangeForm("email", ev)}
+              placeholder="Digite o email!"
+            />
+          </Label>
+          <Label>
+            <SpanLabel>CPF</SpanLabel>
+            <Input
+              value={formValue.cpf}
+              onChange={(ev) => handleChangeForm("cpf", ev)}
+              placeholder="Digite o cpf!"
+            />
+          </Label>
+        </>
+      )}
       <Label>
         Selecionar Loja
         <Select onChange={(ev) => handleChangeForm("store", ev)}>
           <option value="" hidden>
             {isEditedCooperator
-              ? `${selectedCooperator.Store.name}, ${selectedCooperator.Store.localization}`
-              : ""}
+              ? "test"
+              : // `${selectedCooperator.Store.name}, ${selectedCooperator.Store.localization}`
+                //
+                ""}
           </option>
           {storeList}
         </Select>

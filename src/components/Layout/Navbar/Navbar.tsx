@@ -19,7 +19,7 @@ import {
 
 const Navbar: FC = () => {
   const [sidebar, setSidebar] = useState(false);
-  const { cliente, } = useCliente();
+  const { cliente } = useCliente();
   const { cooperator } = useCooperator();
   const { master } = useMaster();
   const showSidebar = () => {
@@ -29,8 +29,7 @@ const Navbar: FC = () => {
   return (
     <IconContext.Provider value={{ color: "white" }}>
       <Nav>
-        <Subtitle>BAZAR GRÁTIS MIDI</Subtitle>
-        
+        <Subtitle>BAZAR GRÁTIS</Subtitle>
 
         <div
           style={{

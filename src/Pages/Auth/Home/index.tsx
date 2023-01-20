@@ -21,7 +21,7 @@ import {
   Question,
   Answer,
   BodyFooterSimple,
-  Body3
+  Body3,
 } from "./styles";
 import BazarGratisIcon from "../../../Assets/bazargratis.png";
 import { ClientLogin } from "../ClientLogin";
@@ -34,16 +34,18 @@ export const Home = () => {
           <HandleDiv>
             <HelperTitle>
               <Title>BAZAR</Title>
-              <Title> GRÁTIS MIDI</Title>
+              <Title> GRÁTIS</Title>
             </HelperTitle>
             <i>
               <FirstSpan>
-                O Bazar Grátis MIDI usa pontos para <br />
-                comprar itens que são doados por doadores <br />
-                com o objetivo de ajudar irmãos <br />
-                necessitados.No Bazar Grátis MIDI
+                O Bazar Grátis é uma plataforma desenvolvida para a troca
                 <br />
-                promovemos a verdadeira essência de dar e receber.
+                de pontos por produtos de maneira simples e amigável! <br />
+                Aqui tanto o gerenciamento das lojas por parte de de
+                <br />
+                administradores, quanto o a compras por parte de clientes
+                <br /> são facilitadas!
+                <br />
               </FirstSpan>
             </i>
             <ContactHelper>
@@ -58,7 +60,7 @@ export const Home = () => {
             <ClientLogin />
           </HandleDiv>
         </BodyContent>
-        <BodyFooter>"PEGUE O QUE PRECISA E NÃO O QUE QUER"</BodyFooter>
+        <BodyFooter>"ESCOLHA COM CONSCIÊNCIA!"</BodyFooter>
       </Body>
       <SecondTitle>
         NÃO SABE COMO FUNCIONA E ESTÁ NECESSITANDO DE DOAÇÕES? <br />
@@ -101,10 +103,8 @@ export const Home = () => {
         <BodyFooterSimple></BodyFooterSimple>
         <SecondTitle>PERGUNTAS FREQUENTES</SecondTitle>
       </Body2>
-     
-     
+
       <Body3>
-     
         <BodyContent2>
           <HandleDiv>
             <HandleColumnDiv>
@@ -135,16 +135,14 @@ export const Home = () => {
               </Answer>
             </HandleColumnDiv>
             <HandleColumnDiv>
-              <Question>
-              4. Esqueci minha senha, o que fazer?
-              </Question>
-              <Answer>
-              Será decidido depois
-              </Answer>
+              <Question>4. Esqueci minha senha, o que fazer?</Question>
+              <Answer>Será decidido depois</Answer>
             </HandleColumnDiv>
           </HandleDiv>
         </BodyContent2>
-        <BodyFooterSimple final={true}>Copyright © 2022 BAZAR GRÁTIS MIDI. All Rights Reserved.</BodyFooterSimple>
+        <BodyFooterSimple final={true}>
+          Copyright © 2022 BAZAR GRÁTIS. All Rights Reserved.
+        </BodyFooterSimple>
       </Body3>
     </Container>
   );

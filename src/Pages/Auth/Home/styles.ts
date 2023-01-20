@@ -32,7 +32,6 @@ export const BodyContent = styled.div`
 `;
 
 export const HandleDiv = styled.div`
-  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,7 +53,7 @@ export const FirstSpan = styled.span`
   font-weight: lighter;
   font-size: max(1vw, 12px);
   width: 100%;
-  text-align:center;
+  text-align: center;
 `;
 
 export const ContactHelper = styled.div`
@@ -97,7 +96,7 @@ export const SecondTitle = styled.h2`
   font-size: max(2vw, 15px);
   text-align: center;
   padding: 4vw;
-
+  margin: 1w;
   /* background-color: blue; */
 `;
 
@@ -132,10 +131,9 @@ export const Body2 = styled.div`
     height: 50vh;
   }
   flex-wrap: none;
-/* 
+  /* 
   background-color: red; */
 `;
-
 
 export const Body3 = styled.div`
   display: flex;
@@ -144,9 +142,9 @@ export const Body3 = styled.div`
   flex-direction: column;
   width: 100%;
 
-  height:80vh;
+  height: 80vh;
   flex-wrap: none;
-/* 
+  /* 
   background-color: red; */
 `;
 export const BodyContent2 = styled.div`
@@ -162,48 +160,40 @@ export const BodyContent2 = styled.div`
   }
 `;
 
-
 export const HandleColumnDiv = styled.div`
-
-display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding: 2vw;
   width: 100%;
-
 `;
 
-
 export const Question = styled.div`
-background-color: ${theme.colors.secondary};
-color:${theme.colors.light};
-padding: 1vw;
-font-size: max(1vw, 12px);
-min-width:90%;
-text-align:center;
+  background-color: ${theme.colors.secondary};
+  color: ${theme.colors.light};
+  padding: 1vw;
+  font-size: max(1vw, 12px);
+  min-width: 90%;
+  text-align: center;
 `;
 
 export const Answer = styled.div`
-
-padding: 1vw;
-font-size: max(1vw, 12px);
+  padding: 1vw;
+  font-size: max(1vw, 12px);
 `;
 
-
-interface BodyFooterSimpleProps{
-  final?:boolean;
+interface BodyFooterSimpleProps {
+  final?: boolean;
 }
 export const BodyFooterSimple = styled.div<BodyFooterSimpleProps>`
-
-background-color: ${({final})=>final?theme.colors.primary:theme.colors.secondary};
+  background-color: ${({ final }) =>
+    final ? theme.colors.primary : theme.colors.secondary};
   color: ${theme.colors.light};
   width: 100%;
   text-align: center;
-  padding:2vw;
+  padding: 2vw;
 
   font-weight: bold;
   font-size: max(1vw, 10px);
-
-  
 `;

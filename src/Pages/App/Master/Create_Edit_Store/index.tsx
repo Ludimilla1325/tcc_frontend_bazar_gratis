@@ -55,22 +55,14 @@ export const CreateAndEditStore = () => {
       {isEditedStore ? (
         <Button
           onClick={async () => {
-            try {
-              setLoading(true);
+            setLoading(true);
 
-              await updateStore(
-                selectedStore.id,
-                formValue.name,
-                formValue.localization,
-                formValue.maxPoints
-              );
-
-              setIsEditedStore(false);
-            } catch (error) {
-              window.alert(JSON.stringify("Erro ao cadastrar!"));
-            } finally {
-              setLoading(false);
-            }
+            await updateStore(
+              selectedStore.id,
+              formValue.name,
+              formValue.localization,
+              formValue.maxPoints
+            );
           }}
         >
           Atualizar
@@ -78,18 +70,12 @@ export const CreateAndEditStore = () => {
       ) : (
         <Button
           onClick={async () => {
-            try {
-              setLoading(true);
-              await createStore(
-                formValue.name,
-                formValue.localization,
-                formValue.maxPoints
-              );
-            } catch (error) {
-              window.alert(JSON.stringify("Erro ao cadastrar!"));
-            } finally {
-              setLoading(false);
-            }
+            setLoading(true);
+            await createStore(
+              formValue.name,
+              formValue.localization,
+              formValue.maxPoints
+            );
           }}
         >
           Confirmar

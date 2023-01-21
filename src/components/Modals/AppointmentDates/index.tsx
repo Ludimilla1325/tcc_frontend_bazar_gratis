@@ -9,6 +9,7 @@ import { Button, Container, DivX, Label, Message, Title } from "./styles";
 import pt_BR from "date-fns/locale/pt-BR"; // the locale you want
 import api from "../../../Services/api";
 import { useCliente } from "../../../Hooks/cliente";
+import { useSnackbar } from "notistack";
 registerLocale("pt_BR", pt_BR); // register it with the name you want
 
 interface IAppointment {
@@ -48,13 +49,22 @@ export function AppointmentDates({
   const [dates, setDates] = useState(["2022-12-5"]);
   const [appointments, setAppointments] = useState({} as IAppointment[]);
   const { cliente } = useCliente();
+
+  const { enqueueSnackbar } = useSnackbar();
+
   async function handleData() {
     try {
       const { data } = await api.get(`/appointment/${cliente.storeId}`);
       if (data.sucess) {
         setAppointments(data.data);
       } else {
-        window.alert(data.message);
+        enqueueSnackbar(`${data.message}`, {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (err) {
       console.log(err);
@@ -74,22 +84,17 @@ export function AppointmentDates({
       const element = appointments[index];
 
       const d = new Date(element.appointment_date);
-      //window.alert(JSON.stringify(element));
       helperDatas.push(`${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`);
     }
     setDates(helperDatas);
   }
 
-  useEffect(() => {
-    //window.alert(JSON.stringify(dates));
-  }, [dates]);
+  useEffect(() => {}, [dates]);
 
   function checkDate(d: Date) {
-    // console.log( `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`)
     const index = dates.indexOf(
       `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
     );
-    // console.log(index)
     return index >= 0 ? true : false;
   }
 
@@ -139,7 +144,13 @@ export function AppointmentDates({
             if (data.sucess) {
               handleSetAgendamentoId(data.data.id);
             } else {
-              window.alert(data.message);
+              enqueueSnackbar(`${data.message}`, {
+                variant: "error",
+                anchorOrigin: {
+                  vertical: "top",
+                  horizontal: "right",
+                },
+              });
             }
           }}
         >

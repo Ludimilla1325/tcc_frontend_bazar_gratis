@@ -3,7 +3,8 @@ import { StoreDetails } from "../../../../components/Modals/StoreDetails";
 import { useMaster } from "../../../../Hooks/master";
 import api from "../../../../Services/api";
 import { Container, Header, Table, THead, Title, Body, TBody } from "./styles";
-import {AiOutlinePlus} from "react-icons/ai"
+import { AiOutlinePlus } from "react-icons/ai";
+import { useSnackbar } from "notistack";
 export interface IStore {
   id: number;
   name: string;
@@ -15,14 +16,20 @@ export const Stores = () => {
   const [stores, setStores] = useState({} as IStore[]);
   const [storeFocus, setStoreFocus] = useState({} as IStore);
   const { master } = useMaster();
+  const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
       const { data } = await api.get(`/store/`);
       if (data.sucess) {
-        // window.alert(data.data);
         setStores(data.data);
       } else {
-        window.alert(data.message);
+        enqueueSnackbar(`${data.message}`, {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (err) {
       console.log(err);
@@ -70,7 +77,7 @@ export const Stores = () => {
         onClose={() => setStoreFocus({} as IStore)}
         store={storeFocus}
       />
-      <AiOutlinePlus style={{cursor:"pointer"}} size={"max(2vw,24px)"}/>
+      <AiOutlinePlus style={{ cursor: "pointer" }} size={"max(2vw,24px)"} />
     </Container>
   );
 };

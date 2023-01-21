@@ -152,23 +152,15 @@ export const CooperatorRegister = () => {
         <>
           <Button
             onClick={async () => {
-              try {
-                setLoading(true);
-                await updateCooperator(
-                  selectedCooperator.id,
-                  formValue.name,
-                  formValue.email,
-                  active,
-                  administrator,
-                  formValue.store
-                );
-
-                setIsEditedCooperator(false);
-              } catch (error) {
-                window.alert(JSON.stringify(`Erro ao cadastrar! ${error}`));
-              } finally {
-                setLoading(false);
-              }
+              setLoading(true);
+              await updateCooperator(
+                selectedCooperator.id,
+                formValue.name,
+                formValue.email,
+                active,
+                administrator,
+                formValue.store
+              );
             }}
           >
             Atualizar
@@ -185,24 +177,19 @@ export const CooperatorRegister = () => {
       ) : (
         <Button
           onClick={async () => {
-            try {
-              setLoading(true);
-              if (formValue.password === formValue.confirmPass) {
-                await createCooperator(
-                  formValue.name,
-                  formValue.email,
-                  formValue.cpf,
-                  active,
-                  administrator,
-                  formValue.store,
-                  formValue.password
-                );
-              }
-            } catch (error) {
-              window.alert(JSON.stringify(`Erro ao cadastrar! ${error}`));
-            } finally {
-              setLoading(false);
+            setLoading(true);
+            if (formValue.password === formValue.confirmPass) {
+              await createCooperator(
+                formValue.name,
+                formValue.email,
+                formValue.cpf,
+                active,
+                administrator,
+                formValue.store,
+                formValue.password
+              );
             }
+            setLoading(false);
           }}
         >
           Confirmar

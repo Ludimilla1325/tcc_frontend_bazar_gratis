@@ -26,13 +26,12 @@ function GeralProvider({ children }: IGeralProviderProps) {
 
       if (data.sucess) {
         const stores = data.data.map((store: any) => {
+          setStores(stores);
           return { id: store.id, name: `${store.name}, ${store.localization}` };
         });
 
-        setStores(stores);
         return data;
       } else {
-        //MENSSAGEM DE ERRO
         console.log(data);
       }
     } catch (error) {

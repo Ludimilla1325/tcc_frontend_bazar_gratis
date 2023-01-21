@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { AppointmentDetails } from "../../../../components/Modals/AppointmentDetails";
 import { PointsSolicitationDetails } from "../../../../components/Modals/PointsSolicitationDetails";
@@ -20,20 +21,32 @@ import {
 } from "./styles";
 
 export const PointsSolicitation = () => {
-  const [appointements, setAppointements] = useState({} as IPointsSolicitation[]);
+  const [appointements, setAppointements] = useState(
+    {} as IPointsSolicitation[]
+  );
   const [statusList, setStatusList] = useState(1 as 1 | 2);
-  const [solicitationFocus, setSolicitationFocus] = useState({} as IPointsSolicitation);
+  const [solicitationFocus, setSolicitationFocus] = useState(
+    {} as IPointsSolicitation
+  );
 
+  const { enqueueSnackbar } = useSnackbar();
   const { cooperator } = useCooperator();
 
   async function handleData() {
     try {
-      const { data } = await api.get(`/pointsSolicitation?loja_id=${cooperator.storeId}`);
+      const { data } = await api.get(
+        `/pointsSolicitation?loja_id=${cooperator.storeId}`
+      );
       if (data.sucess) {
-        // window.alert(data.data);
         setAppointements(data.data);
       } else {
-        window.alert(data.message);
+        enqueueSnackbar(`${data.message}`, {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (err) {
       console.log(err);
@@ -111,9 +124,8 @@ export const PointsSolicitation = () => {
         </TableContainer>
       </HandlerDiv>
       <PointsSolicitationDetails
-      
-      open={!!solicitationFocus.id}
-      onClose={()=>setSolicitationFocus({} as IPointsSolicitation)}
+        open={!!solicitationFocus.id}
+        onClose={() => setSolicitationFocus({} as IPointsSolicitation)}
         solicitacao={solicitationFocus}
       />
     </Container>

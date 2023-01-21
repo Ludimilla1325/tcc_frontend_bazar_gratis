@@ -8,6 +8,7 @@ import api from "../../Services/api";
 import { useState } from "react";
 import { AppointmentDates } from "../Modals/AppointmentDates";
 import DatePicker from "react-datepicker";
+import { useSnackbar } from "notistack";
 
 type ShoppingCartProps = {
   isOpen: boolean;
@@ -17,8 +18,10 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const { closeCart, cartItems, removeFromCart } = useShoppingCart();
   const { produtos } = useProdutos();
   const { cliente, logar } = useCliente();
-  const[agendamentoId,setAgendamentoId] = useState(0);
+  const [agendamentoId, setAgendamentoId] = useState(0);
   const [appointmentModal, setAppointmentModal] = useState(false);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   function verificaValorFinal() {
     let valor_final = 0;
@@ -29,19 +32,22 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
     return valor_final;
   }
 
-  async function finalizarCompra(appointmentId:number) {
+  async function finalizarCompra(appointmentId: number) {
     if (cartItems.length > 0)
       try {
         if (cliente.points < verificaValorFinal()) {
-          window.alert("Saldo indisponível para realizar esta compra!");
+          enqueueSnackbar("Saldo indisponível para realizar esta compra!", {
+            variant: "warning",
+            anchorOrigin: {
+              vertical: "top",
+              horizontal: "right",
+            },
+          });
           return;
         }
 
-       
-
         for (let index = 0; index < cartItems.length; index++) {
           const item = cartItems[index];
-window.alert(item.quantity)
           await api.post("/purchase", {
             client_AppointmentId: appointmentId,
             productId: item.id,
@@ -65,8 +71,7 @@ window.alert(item.quantity)
     <AppointmentDates
       open={appointmentModal}
       onClose={() => setAppointmentModal(false)}
-      handleSetAgendamentoId={(id:number)=>finalizarCompra(id)}
-      
+      handleSetAgendamentoId={(id: number) => finalizarCompra(id)}
     />
   ) : (
     <Offcanvas show={isOpen} onHide={closeCart} placement="end">

@@ -1,4 +1,4 @@
-import { userInfo } from "os";
+import { useSnackbar } from "notistack";
 import React, {
   createContext,
   ReactNode,
@@ -84,6 +84,8 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     {} as IPointsSolicitation[]
   );
 
+  const { enqueueSnackbar } = useSnackbar();
+
   function saveLocalStorage(cliente: ICliente, token: string) {
     localStorage.setItem(clienteLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);
@@ -95,7 +97,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     const token = localStorage.getItem(tokenLocalStorage);
     const time = localStorage.getItem(tokenTimeLocalStorage);
     if (usuario && token && time) {
-      if ((Date.now() - Number(time))* 0.001 >= 3600) {
+      if ((Date.now() - Number(time)) * 0.001 >= 3600) {
         deleteLocalStorage();
       } else {
         setCliente(JSON.parse(usuario));
@@ -125,7 +127,6 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     let errorMessage = "";
     try {
       const { data } = await api.post("/client/login", { email, password });
-      window.alert(JSON.stringify(data));
       if (data.sucess) {
         setCliente(data.data.user);
         api.defaults.headers.common[
@@ -136,10 +137,10 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       } else {
         errorMessage = data.message;
       }
-      //window.alert(JSON.stringify(data));
     } catch (error) {
-      console.log(error);
-      throw "Não foi possível efeturar o login!";
+      enqueueSnackbar("Não foi possível efeturar o login!", {
+        variant: "error",
+      });
     } finally {
       if (errorMessage) {
         throw errorMessage;
@@ -150,16 +151,14 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   async function sendLinkToResetPass(email: string) {
     try {
       const { data } = await api.post("/client/link-to-reset-pass", { email });
-      console.log(data);
-
-      if (data.sucess) {
-        window.alert(JSON.stringify(data.data));
-      } else {
-        window.alert(data.message);
-      }
     } catch (error) {
-      console.log(error);
-      window.alert(JSON.stringify("Não foi possível enviar o token!"));
+      enqueueSnackbar("Não foi possível enviar o token!", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -186,13 +185,22 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       if (data.sucess) {
         setCliente(data);
         setLogado(true);
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
+        enqueueSnackbar(`Cadastrado com sucesso`, {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
-      window.alert(JSON.stringify(data.data));
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar(`Não foi realizar o cadastro`, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -210,13 +218,22 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       });
 
       if (data.sucess) {
-        window.alert(JSON.stringify(data.message));
-      } else {
-        //MENSSAGEM DE ERRO
-        window.alert(JSON.stringify(data.message));
+        enqueueSnackbar(`${data.message}`, {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar(`Erro durante a solicitação de pontos`, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -228,13 +245,8 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       );
 
       if (data.sucess) {
-        console.log("data", data);
-        //window.alert(JSON.stringify(data))
         setPointsSolicitationList(data.data);
         return data;
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -257,14 +269,21 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         storeId,
       });
 
-      if (data.sucess) {
-        window.alert(JSON.stringify("Atualizado com sucesso"));
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
-      }
+      enqueueSnackbar(`Atualizado com sucesso`, {
+        variant: "success",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar(`Não foi possível atualizar o perfil`, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -278,13 +297,22 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       });
 
       if (data.sucess) {
-        window.alert(JSON.stringify("Atualizado com sucesso"));
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
+        enqueueSnackbar("Senha atualizada com sucesso", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar(`Não foi possível atualizar a senha`, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -294,31 +322,16 @@ function ClienteProvider({ children }: IClienteProviderProps) {
       const { data } = await api.get(`/client/${email}`);
 
       if (data.sucess) {
-        console.log("data", data);
         setClienteStore(data.data);
         return data;
-      } else {
-        //MENSSAGEM DE ERRO
-        console.log(data);
       }
     } catch (error) {
       console.log(error);
     }
   }
 
-  console.log("cliente", cliente);
-  console.log("clienteStore", clienteStore);
-
   useEffect(() => {
     getProfile();
-    // if (cliente.id) {
-
-    //   pointsSolicitationHistoric();
-    // }
-  }, [cliente]);
-
-  useEffect(() => {
-    //window.alert(JSON.stringify(cliente))
   }, [cliente]);
 
   return (

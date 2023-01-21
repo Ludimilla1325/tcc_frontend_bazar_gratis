@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 import api from "../Services/api";
@@ -35,17 +36,20 @@ export function useProdutos() {
 
 export function ProdutosProvider({ children }: ShoppingCartProviderProps) {
   const [produtos, setProdutos] = useState({} as StoreItemProps[]);
-
+  const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
       const { data } = await api.get("/product/1");
 
-      console.log("data", data);
-
       setProdutos(data.data);
     } catch (e) {
-      window.alert(e);
-      console.log(e);
+      enqueueSnackbar(`Erro`, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 

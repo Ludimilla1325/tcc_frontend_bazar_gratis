@@ -106,27 +106,21 @@ export const ClientRegister = () => {
       </Label>
       <RegisterButton
         onClick={async () => {
-          try {
-            setLoading(true);
-            console.log("formValue", formValue);
+          setLoading(true);
 
-            if (formValue.password === formValue.confirmPass) {
-              await register(
-                formValue.name,
-                formValue.email,
-                formValue.phone,
-                formValue.cpf,
-                formValue.cep,
-                formValue.store,
-                formValue.password
-              );
-            }
-            navigate(`${app_base_url}/home`);
-          } catch (error) {
-            window.alert(JSON.stringify("Erro ao cadastrar!"));
-          } finally {
-            setLoading(false);
+          if (formValue.password === formValue.confirmPass) {
+            await register(
+              formValue.name,
+              formValue.email,
+              formValue.phone,
+              formValue.cpf,
+              formValue.cep,
+              formValue.store,
+              formValue.password
+            );
           }
+          navigate(`${app_base_url}/home`);
+          setLoading(false);
         }}
       >
         Cadastrar
@@ -134,7 +128,6 @@ export const ClientRegister = () => {
       <Span>Já possui cadastro?</Span>
       <LoginButton
         onClick={() => {
-          //   logar();
           navigate(`${app_base_url}/login`);
         }}
       >

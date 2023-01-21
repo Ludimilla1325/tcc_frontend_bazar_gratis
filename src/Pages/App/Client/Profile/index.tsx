@@ -15,6 +15,7 @@ import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
 import { useGeral } from "../../../../Hooks/geral";
+import { useSnackbar } from "notistack";
 export const Profile = () => {
   const navigate = useNavigate();
   const { stores } = useGeral();
@@ -47,6 +48,8 @@ export const Profile = () => {
   };
 
   const store = `${clienteStore.Store.name}, ${clienteStore.Store.localization}`;
+
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Container>
@@ -117,7 +120,13 @@ export const Profile = () => {
                   storeId: formValue.store,
                 });
               } catch (error) {
-                window.alert(error);
+                enqueueSnackbar(`Erro`, {
+                  variant: "error",
+                  anchorOrigin: {
+                    vertical: "top",
+                    horizontal: "right",
+                  },
+                });
               }
               setIsEdit(false);
             }}

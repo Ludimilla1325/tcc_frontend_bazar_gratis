@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
 
@@ -46,7 +47,9 @@ export function PointsSolicitationDetails({
 }: Props) {
   const [justificatiaOperador, setJustificativaOperador] = useState("");
   const [confirmar, setConfimar] = useState(null as null | false | true);
-  const{cooperator,logado} = useCooperator();
+  const { cooperator, logado } = useCooperator();
+
+  const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
     if (solicitacao && solicitacao.employee_justification) {
       setJustificativaOperador(solicitacao.employee_justification);
@@ -54,25 +57,28 @@ export function PointsSolicitationDetails({
     }
   }, [solicitacao]);
 
-
   async function post() {
-
     try {
-      const {data} = await api.put(`/pointsSolicitation/${solicitacao.id}`,{status:confirmar?'APROVADO':'NEGADO', 
-      pointsSolicitationId:solicitacao.id,
-      employeeId:cooperator.id,
-      employee_justification:justificatiaOperador
-    });
-    if(data.status){
-      onClose();
-      
-    }else{
-      window.alert(data.message);
-    }
+      const { data } = await api.put(`/pointsSolicitation/${solicitacao.id}`, {
+        status: confirmar ? "APROVADO" : "NEGADO",
+        pointsSolicitationId: solicitacao.id,
+        employeeId: cooperator.id,
+        employee_justification: justificatiaOperador,
+      });
+      if (data.status) {
+        onClose();
+      } else {
+        window.alert(data.message);
+      }
     } catch (error) {
-      window.alert("Não foi possível avaliar a solicitação");
+      enqueueSnackbar(`"Não foi possível avaliar a solicitação"`, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
-      
   }
   return (
     <Modal isOpen={open} onRequestClose={onClose} style={customStyles}>
@@ -104,7 +110,9 @@ export function PointsSolicitationDetails({
             value={solicitacao.client_justification}
             disabled={true}
           ></Textarea>
-          <HandleButtonsDiv hidden={!logado || solicitacao.employeeId != undefined}>
+          <HandleButtonsDiv
+            hidden={!logado || solicitacao.employeeId != undefined}
+          >
             <OperationButton
               focus={confirmar == false}
               onClick={() => setConfimar(false)}
@@ -121,12 +129,14 @@ export function PointsSolicitationDetails({
           </HandleButtonsDiv>
           <Textarea
             value={justificatiaOperador}
-            disabled={ solicitacao.employeeId== undefined ? false : true}
+            disabled={solicitacao.employeeId == undefined ? false : true}
             onChange={(ev) => setJustificativaOperador(ev.target.value)}
             placeholder="Justificativa"
           ></Textarea>
 
-          <HandleButtonsDiv hidden={!logado || solicitacao.employeeId != undefined}>
+          <HandleButtonsDiv
+            hidden={!logado || solicitacao.employeeId != undefined}
+          >
             <OperationButton
               focus={confirmar != null && justificatiaOperador.length > 0}
               disabled={confirmar == null && justificatiaOperador.length == 0}
@@ -136,13 +146,10 @@ export function PointsSolicitationDetails({
             </OperationButton>
           </HandleButtonsDiv>
 
-
-          <HandleButtonsDiv hidden={logado || solicitacao.employeeId == undefined}>
-            <OperationButton
-              focus={true}
-             
-              onClick={onClose}
-            >
+          <HandleButtonsDiv
+            hidden={logado || solicitacao.employeeId == undefined}
+          >
+            <OperationButton focus={true} onClick={onClose}>
               Voltar
             </OperationButton>
           </HandleButtonsDiv>

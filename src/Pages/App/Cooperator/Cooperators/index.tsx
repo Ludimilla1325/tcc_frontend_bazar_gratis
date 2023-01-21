@@ -7,6 +7,7 @@ import api from "../../../../Services/api";
 import { cpfMask } from "../../../../Utils/cpfMask";
 import { app_base_url } from "../../../../Utils/urls";
 import { Container, Header, Table, THead, Title, Body, TBody } from "./styles";
+import { useSnackbar } from "notistack";
 export interface ICooperator {
   id: number;
   name: string;
@@ -22,16 +23,22 @@ export const Cooperators = () => {
   const { setIsEditedCooperator, getCooperator } = useMaster();
   const { storeId } = useParams();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
       const { data } = await api.get(
         `/cooperator/store/${storeId ? storeId : cooperator.storeId}`
       );
       if (data.sucess) {
-        // window.alert(data.data);
         setCooperators(data.data);
       } else {
-        window.alert(data.message);
+        enqueueSnackbar(`${data.message}`, {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (err) {
       console.log(err);
@@ -50,7 +57,6 @@ export const Cooperators = () => {
               getCooperator(item.id);
               navigate(`${app_base_url}/create-cooperator`);
               setIsEditedCooperator(true);
-              // window.alert("MODAL DE EDITAR AINDA NAO CRIADO");
             }}
           >
             <TBody>{item.id}</TBody>

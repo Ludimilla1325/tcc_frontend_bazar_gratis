@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { AppointmentDetails } from "../../../../components/Modals/AppointmentDetails";
 import { useCooperator } from "../../../../Hooks/cooperator";
@@ -28,15 +29,24 @@ export const Purchase = () => {
   const [appointements, setAppointements] = useState({} as IAppointement[]);
   const [statusList, setStatusList] = useState(1 as 1 | 2);
   const { cooperator } = useCooperator();
-  const [appointementsFocus, setAppointementFocus]= useState({} as IAppointement);
+  const [appointementsFocus, setAppointementFocus] = useState(
+    {} as IAppointement
+  );
+
+  const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
       const { data } = await api.get(`/appointment-client`);
       if (data.sucess) {
-        // window.alert(data.data);
         setAppointements(data.data);
       } else {
-        window.alert(data.message);
+        enqueueSnackbar(`${data.message}`, {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (err) {
       console.log(err);
@@ -49,22 +59,25 @@ export const Purchase = () => {
   function renderData() {
     if (appointements && appointements.length > 0) {
       return appointements.map((item) => {
-        if((statusList == 1 && !item.delivered )|| (statusList==2 && item.delivered))
-        return (
-          <Body
-            onClick={() => {
-              setAppointementFocus(item);
-            }}
-          >
-            <TBody>{item.id}</TBody>
-            <TBody>
-              {new Date(item.appointment_date).toLocaleDateString("pt-BR")}
-            </TBody>
-            <TBody>{item.itens}</TBody>
-            <TBody>{item.name}</TBody>
-            <TBody>{item.value}</TBody>
-          </Body>
-        );
+        if (
+          (statusList == 1 && !item.delivered) ||
+          (statusList == 2 && item.delivered)
+        )
+          return (
+            <Body
+              onClick={() => {
+                setAppointementFocus(item);
+              }}
+            >
+              <TBody>{item.id}</TBody>
+              <TBody>
+                {new Date(item.appointment_date).toLocaleDateString("pt-BR")}
+              </TBody>
+              <TBody>{item.itens}</TBody>
+              <TBody>{item.name}</TBody>
+              <TBody>{item.value}</TBody>
+            </Body>
+          );
       });
     }
   }
@@ -75,9 +88,9 @@ export const Purchase = () => {
       <HandlerDiv>
         <ButtonsDiv>
           <Button
-          onClick={()=>{
-            setStatusList(1);
-          }}
+            onClick={() => {
+              setStatusList(1);
+            }}
             style={{
               backgroundColor:
                 statusList == 1 ? theme.colors.darkGrey : theme.colors.dark,
@@ -86,7 +99,7 @@ export const Purchase = () => {
             PENDENTES
           </Button>
           <Button
-            onClick={()=>{
+            onClick={() => {
               setStatusList(2);
             }}
             style={{
@@ -110,9 +123,10 @@ export const Purchase = () => {
           </Table>
         </TableContainer>
       </HandlerDiv>
-      <AppointmentDetails  open={!!appointementsFocus.id} 
-      onClose={()=>setAppointementFocus({} as IAppointement) }
-      appointementFocus={appointementsFocus}
+      <AppointmentDetails
+        open={!!appointementsFocus.id}
+        onClose={() => setAppointementFocus({} as IAppointement)}
+        appointementFocus={appointementsFocus}
       />
     </Container>
   );

@@ -19,6 +19,7 @@ import {
 } from "./styles";
 import api from "../../../../Services/api";
 import { FiPlus } from "react-icons/fi";
+import { useSnackbar } from "notistack";
 export interface IProduct {
   id: number;
   name: string;
@@ -37,6 +38,8 @@ export const Products = () => {
   const navigate = useNavigate();
   const { cooperator, getProduct, setIsEditProduct } = useCooperator();
   const { storeId } = useParams();
+
+  const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
       const { data } = await api.get(
@@ -45,7 +48,13 @@ export const Products = () => {
       if (data.sucess) {
         setProducts(data.data);
       } else {
-        window.alert(data.message);
+        enqueueSnackbar(`${data.message}`, {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (err) {
       console.log(err);
@@ -84,7 +93,6 @@ export const Products = () => {
               getProduct(item.id);
               navigate(`${app_base_url}/create-products`);
               setIsEditProduct(true);
-              //    window.alert("Modal de Edição ainda nao criado!");
             }}
           >
             <ProductImage src={item.photo} />

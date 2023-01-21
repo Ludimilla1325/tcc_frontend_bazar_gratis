@@ -14,6 +14,7 @@ import { useCliente } from "../../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../../Utils/urls";
 import { useCooperator } from "../../../../../Hooks/cooperator";
+import { useSnackbar } from "notistack";
 export const CreateAndEditProduct = () => {
   const navigate = useNavigate();
   const {
@@ -36,6 +37,7 @@ export const CreateAndEditProduct = () => {
     image: isEditProduct ? productSelected.photo : "",
   });
 
+  const { enqueueSnackbar } = useSnackbar();
   const categoryList = categories.map((category) => {
     return <option value={category.id}>{category.name}</option>;
   });
@@ -122,7 +124,13 @@ export const CreateAndEditProduct = () => {
 
               setIsEditProduct(false);
             } catch (error) {
-              window.alert(JSON.stringify("Erro ao cadastrar!"));
+              enqueueSnackbar("Erro ao cadastrar!", {
+                variant: "error",
+                anchorOrigin: {
+                  vertical: "top",
+                  horizontal: "right",
+                },
+              });
             } finally {
               setLoading(false);
             }
@@ -144,7 +152,13 @@ export const CreateAndEditProduct = () => {
                 formValue.image
               );
             } catch (error) {
-              window.alert(JSON.stringify("Erro ao cadastrar!"));
+              enqueueSnackbar("Erro ao cadastrar!", {
+                variant: "error",
+                anchorOrigin: {
+                  vertical: "top",
+                  horizontal: "right",
+                },
+              });
             } finally {
               setLoading(false);
             }

@@ -16,12 +16,14 @@ import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
 import { useGeral } from "../../../../Hooks/geral";
 import { useCooperator } from "../../../../Hooks/cooperator";
+import { useSnackbar } from "notistack";
 export const Profile = () => {
   const navigate = useNavigate();
   const { stores } = useGeral();
   const { updateProfile, cooperator, setCooperator } = useCooperator();
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const [formValue, setFormValue] = useState({
     name: cooperator.name,
@@ -65,7 +67,13 @@ export const Profile = () => {
               try {
                 await updateProfile(formValue.name);
               } catch (error) {
-                window.alert(error);
+                enqueueSnackbar(`Erro`, {
+                  variant: "error",
+                  anchorOrigin: {
+                    vertical: "top",
+                    horizontal: "right",
+                  },
+                });
               }
               setIsEdit(true);
               setCooperator({ ...cooperator, name: formValue.name });

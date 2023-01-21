@@ -7,19 +7,22 @@ import { ClienteProvider } from "./Hooks/cliente";
 import { CooperatorProvider } from "./Hooks/cooperator";
 import { MasterProvider } from "./Hooks/master";
 import { GeralProvider } from "./Hooks/geral";
+import { SnackbarProvider } from "notistack";
 function App() {
   return (
     <div>
-      <GeralProvider>
-        <ClienteProvider>
-          <CooperatorProvider>
-            <MasterProvider>
-              <GlobalStyles />
-              <Routes />
-            </MasterProvider>
-          </CooperatorProvider>
-        </ClienteProvider>
-      </GeralProvider>
+      <SnackbarProvider>
+        <GeralProvider>
+          <ClienteProvider>
+            <CooperatorProvider>
+              <MasterProvider>
+                <GlobalStyles />
+                <Routes />
+              </MasterProvider>
+            </CooperatorProvider>
+          </ClienteProvider>
+        </GeralProvider>
+      </SnackbarProvider>
     </div>
   );
 }

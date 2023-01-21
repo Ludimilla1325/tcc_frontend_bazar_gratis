@@ -18,7 +18,7 @@ import {
   ProductFooter,
   SpanFooter,
   Footer,
-  OperationButton
+  OperationButton,
 } from "./styles";
 
 const customStyles = {
@@ -62,7 +62,6 @@ export function AppointmentDetails({
     try {
       const { data } = await api.get(`/purchase/${appointementFocus.id}`);
       if (data.sucess) {
-        // window.alert(data.data);
         setProducts(data.data);
       } else {
         window.alert(data.message);
@@ -123,17 +122,21 @@ export function AppointmentDetails({
       </Container>
 
       <Footer>
-          <OperationButton onClick={() =>onClose()}>
-              VOLTAR
+        <OperationButton onClick={() => onClose()}>VOLTAR</OperationButton>
+        {appointementFocus.delivered ? (
+          ""
+        ) : (
+          <OperationButton
+            onClick={async () => {
+              const { data } = await api.patch(
+                `/appointment-client/${appointementFocus.id}`
+              );
+              onClose();
+            }}
+          >
+            CONFIRMAR ENTREGA
           </OperationButton>
-{appointementFocus.delivered?"": <OperationButton  onClick={async() =>{
-            //window.alert(appointementFocus.id)
-            const {data} = await api.patch(`/appointment-client/${appointementFocus.id}`)
-            onClose();
-          }}>
-              CONFIRMAR ENTREGA
-          </OperationButton>}
-         
+        )}
       </Footer>
     </Modal>
   );

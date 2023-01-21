@@ -1,3 +1,4 @@
+import { useSnackbar } from "notistack";
 import React, {
   createContext,
   ReactNode,
@@ -93,6 +94,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
     localStorage.setItem(tokenTimeLocalStorage, String(Date.now()));
   }
 
+  const { enqueueSnackbar } = useSnackbar();
+
   function getLocalStorage() {
     const usuario = localStorage.getItem(masterLocalStorage);
     const token = localStorage.getItem(tokenLocalStorage);
@@ -132,12 +135,22 @@ function MasterProvider({ children }: IMasterProviderProps) {
       });
 
       if (data.sucess) {
-        window.alert(JSON.stringify("Loja criada com sucesso"));
-      } else {
-        window.alert(JSON.stringify("Erro ao criar loja"));
+        enqueueSnackbar(`Loja criada com sucesso`, {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar("Erro ao cadastrar loja", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -147,7 +160,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
       if (data.sucess) {
         setSelectedStore(data.data);
       } else {
-        //MENSSAGEM DE ERRO
         console.log(data);
       }
     } catch (error) {
@@ -170,13 +182,22 @@ function MasterProvider({ children }: IMasterProviderProps) {
       });
 
       if (data.sucess) {
-        window.alert(JSON.stringify("Loja atualizada com sucesso"));
-      } else {
-        window.alert(JSON.stringify("Problema ao atualizar a loja"));
-        console.log(data);
+        enqueueSnackbar("Loja atualizada com sucesso", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar("Problema ao atualizar a loja", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -199,9 +220,7 @@ function MasterProvider({ children }: IMasterProviderProps) {
       } else {
         errorMessage = data.message;
       }
-      //window.alert(JSON.stringify(data));
     } catch (error) {
-      console.log(error);
       throw "Não foi possível efeturar o login!";
     } finally {
       if (errorMessage) {
@@ -231,12 +250,22 @@ function MasterProvider({ children }: IMasterProviderProps) {
       });
 
       if (data.sucess) {
-        window.alert("Cooperador criado com sucesso");
+        enqueueSnackbar("Cooperador criado com sucesso", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (error) {
-      console.log("erro", error);
-
-      window.alert(`Falha em criar o cooperador, ${error}`);
+      enqueueSnackbar(`Falha em cadastrar o cooperador`, {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -246,7 +275,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
       if (data.sucess) {
         setSelectedCooperator(data.data);
       } else {
-        //MENSSAGEM DE ERRO
         console.log(data);
       }
     } catch (error) {
@@ -272,13 +300,22 @@ function MasterProvider({ children }: IMasterProviderProps) {
       });
 
       if (data.sucess) {
-        window.alert(JSON.stringify("Colaborador atualizada com sucesso"));
-      } else {
-        window.alert(JSON.stringify("Problema ao atualizar colaborador"));
-        console.log(data);
+        enqueueSnackbar("Colaborador atualizada com sucesso", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (error) {
-      console.log(error);
+      enqueueSnackbar("Erro ao atualizar colaborador", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
     }
   }
 
@@ -290,12 +327,9 @@ function MasterProvider({ children }: IMasterProviderProps) {
         `/dashboard/points-solicitation/percentage/`
       );
 
-      console.log("dddddd", data);
-
       if (data.sucess) {
         setPointsSolicitation(data.data);
       } else {
-        //MENSSAGEM DE ERRO
         console.log(data);
       }
     } catch (error) {
@@ -312,7 +346,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
       if (data.sucess) {
         setPurchaseDelivered(data.data);
       } else {
-        //MENSSAGEM DE ERRO
         console.log(data);
       }
     } catch (error) {
@@ -327,7 +360,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
       if (data.sucess) {
         setMonthlyPurchase(data.data);
       } else {
-        //MENSSAGEM DE ERRO
         console.log(data);
       }
     } catch (error) {
@@ -342,7 +374,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
       if (data.sucess) {
         setTotalNumClient(+data.data);
       } else {
-        //MENSSAGEM DE ERRO
         console.log(data);
       }
     } catch (error) {
@@ -357,7 +388,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
       if (data.sucess) {
         setTopProductsList(data.data);
       } else {
-        //MENSSAGEM DE ERRO
         console.log(data);
       }
     } catch (error) {
@@ -368,13 +398,11 @@ function MasterProvider({ children }: IMasterProviderProps) {
   useEffect(() => {}, []);
 
   useEffect(() => {
-    console.log(master);
     pointsSolicitation();
     purchaseDelivered();
     monthlyPurchase();
     totalNumClient();
     topProducts();
-    //window.alert(JSON.stringify(master))
   }, [master]);
   return (
     <MasterContext.Provider

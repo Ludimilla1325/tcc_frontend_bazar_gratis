@@ -37,6 +37,8 @@ export const Purchase = () => {
   async function handleData() {
     try {
       const { data } = await api.get(`/appointment-client`);
+      console.log(data);
+
       if (data.sucess) {
         setAppointements(data.data);
       } else {

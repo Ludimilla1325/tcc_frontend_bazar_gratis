@@ -131,11 +131,19 @@ const Sidebar: FC = () => {
         </NavIcon>
 
         <HelperIcons>
-          <span>SALDO:{clienteHook.cliente.points}</span>
+          {cooperatorHook.cooperator.id ? (
+            <span>{cooperatorHook.cooperator.name}</span>
+          ) : (
+            ""
+          )}
 
-          <span>{clienteHook.cliente.name}</span>
+          {masterHook.master.id ? <span>{masterHook.master.name}</span> : ""}
           {clienteHook.cliente.id ? (
             <>
+              <span>SALDO:{clienteHook.cliente.points}</span>
+
+              <span>{clienteHook.cliente.name}</span>
+
               {cartQuantity > 0 && (
                 <NavCart className="rounded-circle" to="#" onClick={openCart}>
                   <AiOutlineShoppingCart />
@@ -189,7 +197,7 @@ const Sidebar: FC = () => {
             ""
           )}{" "}
           {cooperatorHook.cooperator.id &&
-          cooperatorHook.cooperator.admin == false ? (
+          cooperatorHook.cooperator.admin === false ? (
             <>
               {SidebarDataOperator.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;
@@ -199,7 +207,7 @@ const Sidebar: FC = () => {
             ""
           )}
           {cooperatorHook.cooperator.id &&
-          cooperatorHook.cooperator.admin == true ? (
+          cooperatorHook.cooperator.admin === true ? (
             <>
               {SidebarDataAdmin.map((item: any, index: any) => {
                 return <SidebarLink item={item} key={index} />;

@@ -44,6 +44,7 @@ interface ICooperatorContextData {
     image: string
   ) => Promise<void>;
   productSelected: any;
+  setProductSelected: any;
   isEditProduct: any;
   setIsEditProduct: any;
   logOut(): void;
@@ -71,7 +72,7 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   const [cooperator, setCooperator] = useState({} as ICooperator);
   const [categories, setCategories] = useState([]);
   const [productSelected, setProductSelected] = useState({});
-  const [isEditProduct, setIsEditProduct] = useState(false);
+  const [isEditProduct, setIsEditProduct] = useState(0);
   const [pointsSolicitationByStoreId, setPointsSolicitationByStoreId] =
     useState([]);
   const [purchaseDeliveredByStoreId, setPurchaseDeliveredByStoreId] = useState(
@@ -423,6 +424,7 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         getProduct,
         updateProduct,
         productSelected,
+        setProductSelected,
         isEditProduct,
         setIsEditProduct,
         logOut,

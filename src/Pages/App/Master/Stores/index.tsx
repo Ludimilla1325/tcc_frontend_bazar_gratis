@@ -5,6 +5,8 @@ import api from "../../../../Services/api";
 import { Container, Header, Table, THead, Title, Body, TBody } from "./styles";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router";
+import { app_base_url } from "../../../../Utils/urls";
 export interface IStore {
   id: number;
   name: string;
@@ -17,6 +19,7 @@ export const Stores = () => {
   const [storeFocus, setStoreFocus] = useState({} as IStore);
   const { master } = useMaster();
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
   async function handleData() {
     try {
       const { data } = await api.get(`/store/`);
@@ -77,7 +80,11 @@ export const Stores = () => {
         onClose={() => setStoreFocus({} as IStore)}
         store={storeFocus}
       />
-      <AiOutlinePlus style={{ cursor: "pointer" }} size={"max(2vw,24px)"} />
+      <AiOutlinePlus
+        onClick={() => navigate(`${app_base_url}/create-store`)}
+        style={{ cursor: "pointer" }}
+        size={"max(2vw,24px)"}
+      />
     </Container>
   );
 };

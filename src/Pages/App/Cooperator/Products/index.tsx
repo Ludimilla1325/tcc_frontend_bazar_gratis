@@ -36,8 +36,20 @@ export const Products = () => {
   const [products, setProducts] = useState({} as IProduct[]);
   const [categories, setCategories] = useState([] as Array<string>);
   const navigate = useNavigate();
-  const { cooperator, getProduct, setIsEditProduct } = useCooperator();
+  const {
+    cooperator,
+    getProduct,
+    productSelected,
+    isEditProduct,
+    setIsEditProduct,
+    setProductSelected,
+  } = useCooperator();
   const { storeId } = useParams();
+  useEffect(() => {
+    handleData();
+    setProductSelected({});
+    setIsEditProduct(0);
+  }, []);
 
   const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
@@ -60,9 +72,6 @@ export const Products = () => {
       console.log(err);
     }
   }
-  useEffect(() => {
-    handleData();
-  }, []);
 
   useEffect(() => {
     if (products && products.length > 0) {
@@ -83,16 +92,27 @@ export const Products = () => {
     }
   }, [products]);
 
+  useEffect(() => {
+    getProduct(isEditProduct);
+  }, [isEditProduct]);
+
+  useEffect(() => {
+    if (productSelected && productSelected.id) {
+      navigate(`${app_base_url}/create-products`);
+    }
+  }, [productSelected]);
+
   function renderProducts(category: string) {
     const list = products.filter((item) => item.categoria == category);
     if (list && list.length > 0) {
       return list.map((item) => {
         return (
           <ProductContainer
+            //onClick={() => console.log("test")}
             onClick={() => {
-              getProduct(item.id);
-              navigate(`${app_base_url}/create-products`);
-              setIsEditProduct(true);
+              setIsEditProduct(item.id);
+
+              // getProduct(item.id);
             }}
           >
             <ProductImage src={item.photo} />
@@ -130,7 +150,7 @@ export const Products = () => {
       </Wrapper>
       <PlusButton
         onClick={() => {
-          setIsEditProduct(false);
+          setIsEditProduct(0);
           navigate(`${app_base_url}/create-products`);
         }}
       >

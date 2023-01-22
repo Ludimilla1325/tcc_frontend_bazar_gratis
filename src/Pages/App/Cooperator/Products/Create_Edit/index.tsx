@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Title,
@@ -28,13 +28,13 @@ export const CreateAndEditProduct = () => {
   const [loading, setLoading] = useState(false);
 
   const [formValue, setFormValue] = useState({
-    product: isEditProduct ? productSelected.name : "",
-    description: isEditProduct ? productSelected.description : "",
-    category: isEditProduct ? productSelected.categoryId : "",
+    product: isEditProduct != 0 ? productSelected.name : "",
+    description: isEditProduct != 0 ? productSelected.description : "",
+    category: isEditProduct != 0 ? productSelected.categoryId : "",
     // categoryName: isEditProduct ? productSelected.Category.name : "",
-    quantity: isEditProduct ? productSelected.quantity : "",
-    unityValue: isEditProduct ? productSelected.value : "",
-    image: isEditProduct ? productSelected.photo : "",
+    quantity: isEditProduct != 0 ? productSelected.quantity : "",
+    unityValue: isEditProduct != 0 ? productSelected.value : "",
+    image: isEditProduct != 0 ? productSelected.photo : "",
   });
 
   const { enqueueSnackbar } = useSnackbar();
@@ -48,6 +48,8 @@ export const CreateAndEditProduct = () => {
       [name]: event.target.value,
     });
   };
+
+  useEffect(() => {}, [productSelected]);
 
   return (
     <Container>
@@ -68,10 +70,10 @@ export const CreateAndEditProduct = () => {
       </Label>
       <Label>
         Categoria
-        {isEditProduct ? (
+        {isEditProduct != 0 ? (
           <Select onChange={(ev) => handleChangeForm("category", ev)}>
             <option value="" hidden>
-              {productSelected.Category.name}
+              test
             </option>
             {categoryList}
           </Select>
@@ -106,7 +108,7 @@ export const CreateAndEditProduct = () => {
         />
       </Label>
 
-      {isEditProduct ? (
+      {isEditProduct != 0 ? (
         <Button
           onClick={async () => {
             try {
@@ -122,7 +124,7 @@ export const CreateAndEditProduct = () => {
                 formValue.image
               );
 
-              setIsEditProduct(false);
+              setIsEditProduct(0);
             } catch (error) {
               enqueueSnackbar("Erro ao cadastrar!", {
                 variant: "error",

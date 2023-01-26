@@ -45,11 +45,6 @@ export const Products = () => {
     setProductSelected,
   } = useCooperator();
   const { storeId } = useParams();
-  useEffect(() => {
-    handleData();
-    setProductSelected({});
-    setIsEditProduct(0);
-  }, []);
 
   const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
@@ -72,6 +67,15 @@ export const Products = () => {
       console.log(err);
     }
   }
+
+  useEffect(() => {
+    setProductSelected({});
+    setIsEditProduct(0);
+  }, []);
+
+  useEffect(() => {
+    if (productSelected && !productSelected.id) handleData();
+  }, [isEditProduct]);
 
   useEffect(() => {
     if (products && products.length > 0) {
@@ -97,6 +101,8 @@ export const Products = () => {
   }, [isEditProduct]);
 
   useEffect(() => {
+    console.log("erfer", productSelected.id);
+
     if (productSelected && productSelected.id) {
       navigate(`${app_base_url}/create-products`);
     }
@@ -108,11 +114,8 @@ export const Products = () => {
       return list.map((item) => {
         return (
           <ProductContainer
-            //onClick={() => console.log("test")}
             onClick={() => {
               setIsEditProduct(item.id);
-
-              // getProduct(item.id);
             }}
           >
             <ProductImage src={item.photo} />

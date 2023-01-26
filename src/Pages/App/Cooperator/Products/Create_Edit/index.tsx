@@ -4,17 +4,15 @@ import {
   Title,
   Label,
   Input,
-  Span,
   Button,
-  Subtitle,
-  SpanLabel,
   Select,
+  ErrorMessage,
 } from "./styles";
-import { useCliente } from "../../../../../Hooks/cliente";
-import { useNavigate } from "react-router-dom";
-import { app_base_url } from "../../../../../Utils/urls";
 import { useCooperator } from "../../../../../Hooks/cooperator";
 import { useSnackbar } from "notistack";
+import * as yup from "yup";
+import { useNavigate } from "react-router";
+import { app_base_url } from "../../../../../Utils/urls";
 export const CreateAndEditProduct = () => {
   const navigate = useNavigate();
   const {
@@ -31,10 +29,27 @@ export const CreateAndEditProduct = () => {
     product: isEditProduct != 0 ? productSelected.name : "",
     description: isEditProduct != 0 ? productSelected.description : "",
     category: isEditProduct != 0 ? productSelected.categoryId : "",
-    // categoryName: isEditProduct ? productSelected.Category.name : "",
     quantity: isEditProduct != 0 ? productSelected.quantity : "",
     unityValue: isEditProduct != 0 ? productSelected.value : "",
     image: isEditProduct != 0 ? productSelected.photo : "",
+  });
+
+  const [errors, setErrors] = useState({
+    product: false,
+    description: false,
+    category: false,
+    quantity: false,
+    unityValue: false,
+    image: false,
+  });
+
+  const formSchema = yup.object().shape({
+    product: yup.string().required(),
+    description: yup.string().required(),
+    category: yup.string().required(),
+    quantity: yup.number().required(),
+    unityValue: yup.number().required(),
+    image: yup.string().required(),
   });
 
   const { enqueueSnackbar } = useSnackbar();
@@ -60,6 +75,7 @@ export const CreateAndEditProduct = () => {
           value={formValue.product}
           onChange={(ev) => handleChangeForm("product", ev)}
         />
+        {errors.product ? <ErrorMessage>Campo obrigatório</ErrorMessage> : ""}
       </Label>
       <Label>
         Descrição
@@ -67,16 +83,28 @@ export const CreateAndEditProduct = () => {
           value={formValue.description}
           onChange={(ev) => handleChangeForm("description", ev)}
         />
+        {errors.description ? (
+          <ErrorMessage>Campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         Categoria
         {isEditProduct != 0 ? (
-          <Select onChange={(ev) => handleChangeForm("category", ev)}>
-            <option value="" hidden>
-              test
-            </option>
-            {categoryList}
-          </Select>
+          <>
+            <Select onChange={(ev) => handleChangeForm("category", ev)}>
+              <option value="" hidden>
+                test
+              </option>
+              {categoryList}
+            </Select>
+            {errors.product ? (
+              <ErrorMessage>Campo obrigatório</ErrorMessage>
+            ) : (
+              ""
+            )}
+          </>
         ) : (
           <Select onChange={(ev) => handleChangeForm("category", ev)}>
             <option value="" hidden></option>
@@ -91,6 +119,7 @@ export const CreateAndEditProduct = () => {
           value={formValue.quantity}
           onChange={(ev) => handleChangeForm("quantity", ev)}
         />
+        {errors.quantity ? <ErrorMessage>Campo obrigatório</ErrorMessage> : ""}
       </Label>
       <Label>
         Valor unitário
@@ -99,6 +128,11 @@ export const CreateAndEditProduct = () => {
           value={formValue.unityValue}
           onChange={(ev) => handleChangeForm("unityValue", ev)}
         />
+        {errors.unityValue ? (
+          <ErrorMessage>Campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         Imagem
@@ -106,12 +140,17 @@ export const CreateAndEditProduct = () => {
           value={formValue.image}
           onChange={(ev) => handleChangeForm("image", ev)}
         />
+        {errors.image ? <ErrorMessage>Campo obrigatório</ErrorMessage> : ""}
       </Label>
 
       {isEditProduct != 0 ? (
         <Button
           onClick={async () => {
-            try {
+            const isFormValid = await formSchema.isValid(formValue, {
+              abortEarly: false,
+            });
+
+            if (isFormValid) {
               setLoading(true);
 
               await updateProduct(
@@ -125,16 +164,32 @@ export const CreateAndEditProduct = () => {
               );
 
               setIsEditProduct(0);
-            } catch (error) {
-              enqueueSnackbar("Erro ao cadastrar!", {
-                variant: "error",
-                anchorOrigin: {
-                  vertical: "top",
-                  horizontal: "right",
-                },
+
+              setFormValue({
+                product: "",
+                description: "",
+                category: "",
+                quantity: "",
+                unityValue: "",
+                image: "",
               });
-            } finally {
-              setLoading(false);
+            } else {
+              formSchema
+                .validate(formValue, { abortEarly: false })
+                .catch((err) => {
+                  const errors = err.inner.reduce(
+                    (acc: any, error: any) => {
+                      return {
+                        ...acc,
+                        [error.path]: true,
+                      };
+                    },
+
+                    {}
+                  );
+
+                  setErrors(errors);
+                });
             }
           }}
         >
@@ -143,7 +198,11 @@ export const CreateAndEditProduct = () => {
       ) : (
         <Button
           onClick={async () => {
-            try {
+            const isFormValid = await formSchema.isValid(formValue, {
+              abortEarly: false,
+            });
+
+            if (isFormValid) {
               setLoading(true);
               await createProduct(
                 formValue.product,
@@ -153,16 +212,21 @@ export const CreateAndEditProduct = () => {
                 formValue.unityValue,
                 formValue.image
               );
-            } catch (error) {
-              enqueueSnackbar("Erro ao cadastrar!", {
-                variant: "error",
-                anchorOrigin: {
-                  vertical: "top",
-                  horizontal: "right",
-                },
-              });
-            } finally {
+
               setLoading(false);
+            } else {
+              formSchema
+                .validate(formValue, { abortEarly: false })
+                .catch((err) => {
+                  const errors = err.inner.reduce((acc: any, error: any) => {
+                    return {
+                      ...acc,
+                      [error.path]: true,
+                    };
+                  }, {});
+
+                  setErrors(errors);
+                });
             }
           }}
         >

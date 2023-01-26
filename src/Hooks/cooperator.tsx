@@ -248,7 +248,7 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   async function updateProfile(name: string) {
     const id = cooperator.id;
     try {
-      const { data } = await api.patch("/cooperator/", {
+      const { data } = await api.put("/cooperator/", {
         name,
         id,
       });

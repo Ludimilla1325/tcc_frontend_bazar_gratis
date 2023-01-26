@@ -11,7 +11,6 @@ import {
   InpuToggle,
   Select,
 } from "./styles";
-import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
 import { useGeral } from "../../../../Hooks/geral";
 import { useMaster } from "../../../../Hooks/master";
@@ -25,7 +24,6 @@ export const CooperatorRegister = () => {
     updateCooperator,
     setIsEditedCooperator,
   } = useMaster();
-  const { register } = useCliente();
   const [active, setActive] = useState(
     isEditedCooperator ? selectedCooperator.active : false
   );
@@ -99,7 +97,6 @@ export const CooperatorRegister = () => {
           </option>
           {storeList}
         </Select>
-        {/* )} */}
       </Label>
 
       {isEditedCooperator ? (
@@ -146,7 +143,6 @@ export const CooperatorRegister = () => {
           <Switch />
         </LabelToggle>
       </div>
-      {/* )} */}
 
       {isEditedCooperator ? (
         <>

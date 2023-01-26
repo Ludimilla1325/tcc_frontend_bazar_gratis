@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { FiPlus, FiSearch, FiX,FiUser, FiEdit2 } from "react-icons/fi";
+import { FiPlus, FiSearch, FiX, FiUser, FiEdit2 } from "react-icons/fi";
 
 import Modal from "react-modal";
 import { IStore } from "../../../Pages/App/Master/Stores";
 import theme from "../../../Styles/theme";
-import {FiShoppingCart} from "react-icons/fi"
+import { FiShoppingCart } from "react-icons/fi";
 import {
   Container,
   ContainerData,
@@ -13,7 +13,7 @@ import {
   HandlerContainerData,
   Label,
   Title,
-  IconsDiv
+  IconsDiv,
 } from "./styles";
 import { ICooperator } from "../../../Pages/App/Cooperator/Cooperators";
 import api from "../../../Services/api";
@@ -42,22 +42,19 @@ interface Props {
 }
 
 export function StoreDetails({ open, onClose, store }: Props) {
-    const [cooperators, setCooperators] = useState({} as ICooperator[]);
-    const navigate = useNavigate();
+  const [cooperators, setCooperators] = useState({} as ICooperator[]);
+  const navigate = useNavigate();
 
-    async function handleData() {
-        const {data} = await api.get(`/cooperator/store/${store.id}`);
-        if(data.sucess){
-            setCooperators(data.data);
-        }
+  async function handleData() {
+    const { data } = await api.get(`/cooperator/store/${store.id}`);
+    if (data.sucess) {
+      setCooperators(data.data);
     }
+  }
 
-    useEffect(() => {
-        if(store.id)
-        handleData()
-    },[store.id])
-
-
+  useEffect(() => {
+    if (store.id) handleData();
+  }, [store.id]);
 
   return (
     <Modal isOpen={open} onRequestClose={onClose} style={customStyles}>
@@ -85,37 +82,38 @@ export function StoreDetails({ open, onClose, store }: Props) {
             </DataSpan>
           </ContainerData>
           <ContainerData>
-            <Label style={{"display":"flex", alignItems:"center", cursor:"pointer"}}
-            
-            >Funcionários <FiSearch/></Label>
+            <Label
+              style={{
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+            >
+              Funcionários <FiSearch />
+            </Label>
             <DataSpan>{cooperators.length}</DataSpan>
           </ContainerData>
         </HandlerContainerData>
         <IconsDiv>
-        <FiShoppingCart 
-     
-
-        size={"max(2vw, 24px)"} style={{cursor:"pointer"}} 
-        onClick={()=>navigate(`${app_base_url}/produtos/${store.id}`)}/>
-         <FiUser 
-        
-        size={"max(2vw, 24px)"} style={{cursor:"pointer"}} 
-        onClick={() =>  navigate(`${app_base_url}/funcionarios/${store.id}`)}/>
-
+          <FiShoppingCart
+            size={"max(2vw, 24px)"}
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`${app_base_url}/produtos/${store.id}`)}
+          />
+          <FiUser
+            size={"max(2vw, 24px)"}
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`${app_base_url}/funcionarios/${store.id}`)}
+          />
         </IconsDiv>
         <IconsDiv>
-        <FiEdit2 
-        
-        size={"max(2vw, 24px)"} style={{cursor:"pointer"}} 
-        onClick={() =>  window.alert("Sem função ainda")}/>
-
+          <FiEdit2
+            size={"max(2vw, 24px)"}
+            style={{ cursor: "pointer" }}
+            onClick={() => window.alert("Sem função ainda")}
+          />
         </IconsDiv>
-
-        
       </Container>
-
-      
-
     </Modal>
   );
 }

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Container, Title, Label, Input, Button } from "./styles";
+import { Container, Title, Label, Input, Button, ErrorMessage } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useMaster } from "../../../../Hooks/master";
+import * as yup from "yup";
 export const CreateAndEditStore = () => {
   const navigate = useNavigate();
   const {
@@ -17,6 +18,18 @@ export const CreateAndEditStore = () => {
     name: isEditedStore ? selectedStore.name : "",
     localization: isEditedStore ? selectedStore.description : "",
     maxPoints: isEditedStore ? selectedStore.quantity : "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: false,
+    localization: false,
+    maxPoints: false,
+  });
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required(),
+    localization: yup.string().required(),
+    maxPoints: yup.number().required(),
   });
 
   const handleChangeForm = (name: string, event: any) => {
@@ -35,6 +48,7 @@ export const CreateAndEditStore = () => {
           value={formValue.name}
           onChange={(ev) => handleChangeForm("name", ev)}
         />
+        {errors.name ? <ErrorMessage>Campo obrigatório</ErrorMessage> : ""}
       </Label>
       <Label>
         Localização
@@ -42,6 +56,11 @@ export const CreateAndEditStore = () => {
           value={formValue.localization}
           onChange={(ev) => handleChangeForm("localization", ev)}
         />
+        {errors.localization ? (
+          <ErrorMessage> Campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         Pontos Máximos
@@ -50,19 +69,53 @@ export const CreateAndEditStore = () => {
           value={formValue.maxPoints}
           onChange={(ev) => handleChangeForm("maxPoints", ev)}
         />
+        {errors.maxPoints ? <ErrorMessage>Campo obrigatório</ErrorMessage> : ""}
       </Label>
 
       {isEditedStore ? (
         <Button
           onClick={async () => {
-            setLoading(true);
+            const isFormValid = await formSchema.isValid(formValue, {
+              abortEarly: false,
+            });
 
-            await updateStore(
-              selectedStore.id,
-              formValue.name,
-              formValue.localization,
-              formValue.maxPoints
-            );
+            if (isFormValid) {
+              setLoading(true);
+
+              await updateStore(
+                selectedStore.id,
+                formValue.name,
+                formValue.localization,
+                formValue.maxPoints
+              );
+              setErrors({
+                name: false,
+                localization: false,
+                maxPoints: false,
+              });
+              setFormValue({
+                name: "",
+                localization: "",
+                maxPoints: "",
+              });
+            } else {
+              formSchema
+                .validate(formValue, { abortEarly: false })
+                .catch((err) => {
+                  const errors = err.inner.reduce(
+                    (acc: any, error: any) => {
+                      return {
+                        ...acc,
+                        [error.path]: true,
+                      };
+                    },
+
+                    {}
+                  );
+
+                  setErrors(errors);
+                });
+            }
           }}
         >
           Atualizar
@@ -70,12 +123,46 @@ export const CreateAndEditStore = () => {
       ) : (
         <Button
           onClick={async () => {
-            setLoading(true);
-            await createStore(
-              formValue.name,
-              formValue.localization,
-              formValue.maxPoints
-            );
+            const isFormValid = await formSchema.isValid(formValue, {
+              abortEarly: false,
+            });
+
+            if (isFormValid) {
+              setLoading(true);
+              await createStore(
+                formValue.name,
+                formValue.localization,
+                formValue.maxPoints
+              );
+              setErrors({
+                name: false,
+                localization: false,
+                maxPoints: false,
+              });
+
+              setFormValue({
+                name: "",
+                localization: "",
+                maxPoints: "",
+              });
+            } else {
+              formSchema
+                .validate(formValue, { abortEarly: false })
+                .catch((err) => {
+                  const errors = err.inner.reduce(
+                    (acc: any, error: any) => {
+                      return {
+                        ...acc,
+                        [error.path]: true,
+                      };
+                    },
+
+                    {}
+                  );
+
+                  setErrors(errors);
+                });
+            }
           }}
         >
           Confirmar

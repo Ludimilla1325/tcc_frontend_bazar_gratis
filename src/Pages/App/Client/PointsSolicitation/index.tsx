@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { IPointsSolicitation, useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
-import { app_base_url } from "../../../../Utils/urls";
-import { Alert } from "../../../../components/Modals/Alert";
+import * as yup from "yup";
 import {
   Body,
   Header,
@@ -19,25 +18,45 @@ import {
   Subtitle,
   SpanLabel,
   InputJustification,
+  ErrorMessage,
 } from "./styles";
 import { PointsSolicitationDetails } from "../../../../components/Modals/PointsSolicitationDetails";
 export const PointsSolicitation = () => {
   const navigate = useNavigate();
-  const { pointsSolicitationList, cliente, clienteStore, pointsSolicitation,getPointsSolicitationHistoric } =
-    useCliente();
+  const {
+    pointsSolicitationList,
+    cliente,
+    clienteStore,
+    pointsSolicitation,
+    getPointsSolicitationHistoric,
+  } = useCliente();
   const [email, setEmail] = useState("");
   const [quantity, setQuantity] = useState("");
   const [justification, setJustification] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({ title: "", message: "" });
-  const [solicitationFocus, setSolicitationFocus] = useState({} as IPointsSolicitation);
+  const [solicitationFocus, setSolicitationFocus] = useState(
+    {} as IPointsSolicitation
+  );
+
+  const [errors, setErrors] = useState({
+    quantity: false,
+    justification: false,
+  });
+
+  const formSchema = yup.object().shape({
+    quantity: yup.number().required().max(100),
+    justification: yup.string().required(),
+  });
 
   function renderData() {
     if (pointsSolicitationList && pointsSolicitationList.length > 0) {
       return pointsSolicitationList.map((item: any) => {
         return (
-          <Body onClick={()=>setSolicitationFocus(item)}>
-            <TBody>{new Date(item.request_date).toLocaleDateString("pt-br")}</TBody>
+          <Body onClick={() => setSolicitationFocus(item)}>
+            <TBody>
+              {new Date(item.request_date).toLocaleDateString("pt-br")}
+            </TBody>
             <TBody>{item.quantity}</TBody>
             <TBody>{item.status}</TBody>
           </Body>
@@ -46,9 +65,9 @@ export const PointsSolicitation = () => {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getPointsSolicitationHistoric();
-  },[])
+  }, []);
   return (
     <Container>
       <Title>Solicitar Novos pontos</Title>
@@ -57,13 +76,20 @@ export const PointsSolicitation = () => {
         <Input value={clienteStore.name} disabled={true} />
       </Label>
       <Label>
-        <SpanLabel> Pontos</SpanLabel>
+        <SpanLabel>Pontos</SpanLabel>
         <Input
           type="number"
           value={quantity}
           onChange={(ev) => setQuantity(ev.target.value)}
           placeholder="Digite os pontos"
         />
+        {errors.quantity ? (
+          <ErrorMessage>
+            Pontos é um campo obrigatório e o valor máximo é 100
+          </ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         <SpanLabel>Justificativa</SpanLabel>
@@ -72,17 +98,45 @@ export const PointsSolicitation = () => {
           onChange={(ev) => setJustification(ev.target.value)}
           placeholder="Digite uma justificativa!"
         />
+        {errors.justification ? (
+          <ErrorMessage>Justificativa é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
 
       <LoginButton
         onClick={async () => {
-          try {
+          const isFormValid = await formSchema.isValid(
+            { quantity, justification },
+            {
+              abortEarly: false, // Prevent aborting validation after first error
+            }
+          );
+
+          if (isFormValid) {
             setLoading(true);
             await pointsSolicitation(quantity, justification);
-          } catch (error) {
-            setError({ title: "Ops", message: String(error) });
-          } finally {
-            setLoading(false);
+            setQuantity("");
+            setJustification("");
+            setErrors({ quantity: false, justification: false });
+          } else {
+            formSchema
+              .validate({ quantity, justification }, { abortEarly: false })
+              .catch((err) => {
+                const errors = err.inner.reduce(
+                  (acc: any, error: any) => {
+                    return {
+                      ...acc,
+                      [error.path]: true,
+                    };
+                  },
+
+                  {}
+                );
+
+                setErrors(errors);
+              });
           }
         }}
       >
@@ -100,9 +154,8 @@ export const PointsSolicitation = () => {
         {renderData()}
       </Table>
       <PointsSolicitationDetails
-      
-      open={!!solicitationFocus.id}
-      onClose={()=>setSolicitationFocus({} as IPointsSolicitation)}
+        open={!!solicitationFocus.id}
+        onClose={() => setSolicitationFocus({} as IPointsSolicitation)}
         solicitacao={solicitationFocus}
       />
     </Container>

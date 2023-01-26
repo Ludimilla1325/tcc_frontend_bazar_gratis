@@ -48,6 +48,7 @@ export function PointsSolicitationDetails({
   const [justificatiaOperador, setJustificativaOperador] = useState("");
   const [confirmar, setConfimar] = useState(null as null | false | true);
   const { cooperator, logado } = useCooperator();
+  const [giveJustification, setGiveJustification] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
   useEffect(() => {
@@ -56,6 +57,8 @@ export function PointsSolicitationDetails({
       setConfimar(null);
     }
   }, [solicitacao]);
+
+  useEffect(() => setGiveJustification(false), []);
 
   async function post() {
     try {
@@ -68,7 +71,14 @@ export function PointsSolicitationDetails({
       if (data.status) {
         onClose();
       } else {
-        window.alert(data.message);
+        setGiveJustification(false);
+        enqueueSnackbar(`${data.message}`, {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
     } catch (error) {
       enqueueSnackbar(`"Não foi possível avaliar a solicitação"`, {
@@ -115,36 +125,50 @@ export function PointsSolicitationDetails({
           >
             <OperationButton
               focus={confirmar == false}
-              onClick={() => setConfimar(false)}
+              onClick={() => {
+                setConfimar(false);
+                setGiveJustification(true);
+              }}
             >
               Não fornecer
             </OperationButton>
 
             <OperationButton
               focus={confirmar == true}
-              onClick={() => setConfimar(true)}
+              onClick={() => {
+                setConfimar(true);
+                setGiveJustification(false);
+                post();
+              }}
             >
               Fornecer
             </OperationButton>
           </HandleButtonsDiv>
-          <Textarea
-            value={justificatiaOperador}
-            disabled={solicitacao.employeeId == undefined ? false : true}
-            onChange={(ev) => setJustificativaOperador(ev.target.value)}
-            placeholder="Justificativa"
-          ></Textarea>
 
-          <HandleButtonsDiv
-            hidden={!logado || solicitacao.employeeId != undefined}
-          >
-            <OperationButton
-              focus={confirmar != null && justificatiaOperador.length > 0}
-              disabled={confirmar == null && justificatiaOperador.length == 0}
-              onClick={post}
-            >
-              Enviar
-            </OperationButton>
-          </HandleButtonsDiv>
+          {giveJustification && (
+            <>
+              <Textarea
+                value={justificatiaOperador}
+                disabled={solicitacao.employeeId == undefined ? false : true}
+                onChange={(ev) => setJustificativaOperador(ev.target.value)}
+                placeholder="Justificativa"
+              ></Textarea>
+
+              <HandleButtonsDiv
+                hidden={!logado || solicitacao.employeeId != undefined}
+              >
+                <OperationButton
+                  focus={confirmar != null && justificatiaOperador.length > 0}
+                  disabled={
+                    confirmar == null && justificatiaOperador.length == 0
+                  }
+                  onClick={post}
+                >
+                  Enviar
+                </OperationButton>
+              </HandleButtonsDiv>
+            </>
+          )}
 
           <HandleButtonsDiv
             hidden={logado || solicitacao.employeeId == undefined}

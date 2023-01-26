@@ -45,7 +45,7 @@ export const CooperatorLogin = () => {
             setLoading(true);
 
             await logar(email, password);
-            navigate(`${app_base_url}/products`);
+            navigate(`${app_base_url}/dashboard`);
           } catch (error) {
             setError({ title: "Ops", message: String(error) });
           } finally {

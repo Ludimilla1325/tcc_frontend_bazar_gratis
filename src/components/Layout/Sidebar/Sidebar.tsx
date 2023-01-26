@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { Title } from "../../../Pages/App/Home/styles";
 import { IconContext } from "react-icons";
@@ -22,6 +22,7 @@ import { useCliente } from "../../../Hooks/cliente";
 import { useCooperator } from "../../../Hooks/cooperator";
 import { useMaster } from "../../../Hooks/master";
 import Navbar from "../Navbar/Navbar";
+import { app_base_url } from "../../../Utils/urls";
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
@@ -115,6 +116,7 @@ const HelperIcons = styled.div`
 const SidebarWrap = styled.div``;
 
 const Sidebar: FC = () => {
+  const navigate = useNavigate();
   const [sidebar, setSidebar] = useState(false);
   const clienteHook = useCliente();
   const cooperatorHook = useCooperator();
@@ -173,6 +175,7 @@ const Sidebar: FC = () => {
               clienteHook.logOut();
               masterHook.logOut();
               cooperatorHook.logOut();
+              navigate(`${app_base_url}/home`);
             }}
           >
             <FiLogOut />

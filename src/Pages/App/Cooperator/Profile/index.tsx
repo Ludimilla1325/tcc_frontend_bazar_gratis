@@ -1,29 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Title,
   Label,
   Input,
-  Span,
   LoginButton,
-  Subtitle,
-  SpanLabel,
   RegisterButton,
-  Select,
+  ErrorMessage,
 } from "./styles";
-import { useCliente } from "../../../../Hooks/cliente";
+import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
-import { useGeral } from "../../../../Hooks/geral";
 import { useCooperator } from "../../../../Hooks/cooperator";
-import { useSnackbar } from "notistack";
 export const Profile = () => {
   const navigate = useNavigate();
-  const { stores } = useGeral();
   const { updateProfile, cooperator, setCooperator } = useCooperator();
-  const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
 
   const [formValue, setFormValue] = useState({
     name: cooperator.name,
@@ -31,6 +23,14 @@ export const Profile = () => {
     store: cooperator.storeId,
     password: "",
     confirmPass: "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: false,
+  });
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required(),
   });
 
   const handleChangeForm = (name: string, event: any) => {
@@ -50,6 +50,11 @@ export const Profile = () => {
           onChange={(ev) => handleChangeForm("name", ev)}
           disabled={!isEdit}
         />
+        {errors.name ? (
+          <ErrorMessage>Nome é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         CPF
@@ -64,20 +69,49 @@ export const Profile = () => {
         <>
           <RegisterButton
             onClick={async () => {
-              try {
+              const isFormValid = await formSchema.isValid(formValue, {
+                abortEarly: false,
+              });
+              if (isFormValid) {
                 await updateProfile(formValue.name);
-              } catch (error) {
-                enqueueSnackbar(`Erro`, {
-                  variant: "error",
-                  anchorOrigin: {
-                    vertical: "top",
-                    horizontal: "right",
-                  },
+                setIsEdit(true);
+                setCooperator({ ...cooperator, name: formValue.name });
+                setIsEdit(false);
+                setErrors({
+                  name: false,
                 });
+              } else {
+                formSchema
+                  .validate(formValue, { abortEarly: false })
+                  .catch((err) => {
+                    const errors = err.inner.reduce(
+                      (acc: any, error: any) => {
+                        return {
+                          ...acc,
+                          [error.path]: true,
+                        };
+                      },
+
+                      {}
+                    );
+
+                    setErrors(errors);
+                  });
               }
-              setIsEdit(true);
-              setCooperator({ ...cooperator, name: formValue.name });
-              setIsEdit(false);
+              // try {
+              //   await updateProfile(formValue.name);
+              // } catch (error) {
+              //   enqueueSnackbar(`Erro`, {
+              //     variant: "error",
+              //     anchorOrigin: {
+              //       vertical: "top",
+              //       horizontal: "right",
+              //     },
+              //   });
+              // }
+              // setIsEdit(true);
+              // setCooperator({ ...cooperator, name: formValue.name });
+              // setIsEdit(false);
             }}
           >
             Salvar

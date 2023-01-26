@@ -71,3 +71,8 @@ export const SpanLabel = styled.span`
   margin-left: 0.8vw;
   padding-bottom: 0.2vh;
 `;
+
+export const ErrorMessage = styled.span`
+  color: #d8000c;
+  background-color: #ffbaba;
+`;

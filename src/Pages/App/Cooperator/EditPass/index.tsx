@@ -4,16 +4,14 @@ import {
   Title,
   Label,
   Input,
-  Span,
   BackButton,
-  Subtitle,
   SpanLabel,
   EditButton,
+  ErrorMessage,
 } from "./styles";
-import { useCliente } from "../../../../Hooks/cliente";
+import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../../Utils/urls";
-import { Alert } from "../../../../components/Modals/Alert";
 import { useCooperator } from "../../../../Hooks/cooperator";
 export const EditPass = () => {
   const navigate = useNavigate();
@@ -21,9 +19,18 @@ export const EditPass = () => {
   const [oldPass, setOldPass] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({ title: "", message: "" });
+  const [errors, setErrors] = useState({
+    password: false,
+    confirmPass: false,
+  });
 
+  const formSchema = yup.object().shape({
+    password: yup.string().required().min(8),
+    confirmPass: yup
+      .string()
+      .required()
+      .oneOf([yup.ref("password")]),
+  });
   return (
     <Container>
       <Title>Editar Senha</Title>
@@ -42,6 +49,14 @@ export const EditPass = () => {
           onChange={(ev) => setPassword(ev.target.value)}
           placeholder="Digite sua nova senha!"
         />
+        {errors.password ? (
+          <>
+            <ErrorMessage>Senha é um campo obrigatório</ErrorMessage>
+            <ErrorMessage>Mínimo de 8 caracteres</ErrorMessage>
+          </>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         <SpanLabel> Confirmar nova Senha</SpanLabel>
@@ -50,18 +65,48 @@ export const EditPass = () => {
           onChange={(ev) => setConfirmPass(ev.target.value)}
           placeholder="Confirme nova senha!"
         />
+        {errors.confirmPass ? (
+          <>
+            <ErrorMessage>Campo obrigatório</ErrorMessage>
+            <ErrorMessage>Corresponder ao campo senha</ErrorMessage>
+          </>
+        ) : (
+          ""
+        )}
       </Label>
 
       <EditButton
         onClick={async () => {
-          try {
+          const isFormValid = await formSchema.isValid(
+            { password, confirmPass },
+            {
+              abortEarly: false,
+            }
+          );
+
+          if (isFormValid) {
             if (password === confirmPass) {
               await updatePassword(oldPass, password);
             }
-          } catch (error) {
-            setError({ title: "Ops", message: String(error) });
-          } finally {
-            setLoading(false);
+
+            navigate(`${app_base_url}/profile`);
+          } else {
+            formSchema
+              .validate({ password, confirmPass }, { abortEarly: false })
+              .catch((err) => {
+                const errors = err.inner.reduce(
+                  (acc: any, error: any) => {
+                    return {
+                      ...acc,
+                      [error.path]: true,
+                    };
+                  },
+
+                  {}
+                );
+
+                setErrors(errors);
+              });
           }
         }}
       >

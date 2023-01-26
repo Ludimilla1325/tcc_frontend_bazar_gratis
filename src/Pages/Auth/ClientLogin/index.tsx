@@ -55,7 +55,7 @@ export const ClientLogin = () => {
           try {
             setLoading(true);
             await logar(email, password);
-            navigate(`${app_base_url}/editPass`);
+            navigate(`${app_base_url}/loja`);
           } catch (error) {
             setError({ title: "Ops", message: String(error) });
           } finally {
@@ -66,7 +66,7 @@ export const ClientLogin = () => {
         Logar
       </LoginButton>
 
-     <LoginButton
+      <LoginButton
         onClick={() => {
           //logar();
           navigate(`${app_base_url}/register`);

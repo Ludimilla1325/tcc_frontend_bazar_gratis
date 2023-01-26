@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import * as yup from "yup";
 import {
   Container,
   Title,
@@ -7,9 +8,9 @@ import {
   Span,
   LoginButton,
   Subtitle,
-  SpanLabel,
   RegisterButton,
   Select,
+  ErrorMessage,
 } from "./styles";
 import { useCliente } from "../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +37,31 @@ export const ClientRegister = () => {
     confirmPass: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: false,
+    email: false,
+    phone: false,
+    cpf: false,
+    cep: false,
+    store: false,
+    password: false,
+    confirmPass: false,
+  });
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required(),
+    email: yup.string().email().required(),
+    phone: yup.string().required(),
+    cpf: yup.string().required().min(11).max(11),
+    cep: yup.string().required(),
+    store: yup.number().required(),
+    password: yup.string().required().min(8),
+    confirmPass: yup
+      .string()
+      .required()
+      .oneOf([yup.ref("password")]),
+  });
+
   const handleChangeForm = (name: string, event: any) => {
     setFormValue({
       ...formValue,
@@ -52,14 +78,27 @@ export const ClientRegister = () => {
         <Input
           value={formValue.name}
           onChange={(ev) => handleChangeForm("name", ev)}
-        />
+        />{" "}
+        {errors.name ? (
+          <ErrorMessage>Nome é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
+
       <Label>
         Email
         <Input
           value={formValue.email}
           onChange={(ev) => handleChangeForm("email", ev)}
         />
+        {errors.email ? (
+          <ErrorMessage>
+            Email é um campo obrigatório e deve ser um email válido
+          </ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         Telefone
@@ -67,6 +106,11 @@ export const ClientRegister = () => {
           value={formValue.phone}
           onChange={(ev) => handleChangeForm("phone", ev)}
         />
+        {errors.phone ? (
+          <ErrorMessage>Telefone é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         CPF
@@ -74,6 +118,13 @@ export const ClientRegister = () => {
           value={formValue.cpf}
           onChange={(ev) => handleChangeForm("cpf", ev)}
         />
+        {errors.cpf ? (
+          <ErrorMessage>
+            CPF é um campo obrigatório e deve ter 11 dígitos, sem pontuações
+          </ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         CEP
@@ -81,6 +132,11 @@ export const ClientRegister = () => {
           value={formValue.cep}
           onChange={(ev) => handleChangeForm("cep", ev)}
         />
+        {errors.cep ? (
+          <ErrorMessage>CEP é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         Selecionar Loja
@@ -88,6 +144,11 @@ export const ClientRegister = () => {
           <option value="" hidden></option>
           {storeList}
         </Select>
+        {errors.store ? (
+          <ErrorMessage>Uma loja deve ser escolhida</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
 
       <Label>
@@ -96,6 +157,13 @@ export const ClientRegister = () => {
           value={formValue.password}
           onChange={(ev) => handleChangeForm("password", ev)}
         />
+        {errors.password ? (
+          <ErrorMessage>
+            Senha é um campo obrigatório e deve ter no mínimo 8 caracteres
+          </ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         Confirmar Senha
@@ -103,24 +171,54 @@ export const ClientRegister = () => {
           value={formValue.confirmPass}
           onChange={(ev) => handleChangeForm("confirmPass", ev)}
         />
+        {errors.confirmPass ? (
+          <ErrorMessage>
+            Campo obrigatório e deve corresponder ao campo senha
+          </ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <RegisterButton
         onClick={async () => {
           setLoading(true);
 
-          if (formValue.password === formValue.confirmPass) {
-            await register(
-              formValue.name,
-              formValue.email,
-              formValue.phone,
-              formValue.cpf,
-              formValue.cep,
-              formValue.store,
-              formValue.password
-            );
+          const isFormValid = await formSchema.isValid(formValue, {
+            abortEarly: false, // Prevent aborting validation after first error
+          });
+
+          if (isFormValid) {
+            if (formValue.password === formValue.confirmPass) {
+              await register(
+                formValue.name,
+                formValue.email,
+                formValue.phone,
+                formValue.cpf,
+                formValue.cep,
+                formValue.store,
+                formValue.password
+              );
+            }
+            navigate(`${app_base_url}/home`);
+            setLoading(false);
+          } else {
+            formSchema
+              .validate(formValue, { abortEarly: false })
+              .catch((err) => {
+                const errors = err.inner.reduce(
+                  (acc: any, error: any) => {
+                    return {
+                      ...acc,
+                      [error.path]: true,
+                    };
+                  },
+
+                  {}
+                );
+
+                setErrors(errors);
+              });
           }
-          navigate(`${app_base_url}/home`);
-          setLoading(false);
         }}
       >
         Cadastrar

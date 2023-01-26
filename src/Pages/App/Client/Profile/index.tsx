@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import * as yup from "yup";
 import {
   Container,
   Title,
   Label,
   Input,
-  Span,
   LoginButton,
-  Subtitle,
-  SpanLabel,
   RegisterButton,
   Select,
+  ErrorMessage,
 } from "./styles";
 import { useCliente } from "../../../../Hooks/cliente";
 import { useNavigate } from "react-router-dom";
@@ -34,6 +33,29 @@ export const Profile = () => {
     store: clienteStore.storeId,
     password: "",
     confirmPass: "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: false,
+    phone: false,
+    cpf: false,
+    cep: false,
+    store: false,
+    password: false,
+    confirmPass: false,
+  });
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required(),
+    phone: yup.string().required(),
+    cpf: yup.string().required().min(11).max(11),
+    cep: yup.string().required(),
+    store: yup.number().required(),
+    password: yup.string().required().min(8),
+    confirmPass: yup
+      .string()
+      .required()
+      .oneOf([yup.ref("password")]),
   });
 
   const storeList = stores.map((store) => {
@@ -61,6 +83,11 @@ export const Profile = () => {
           onChange={(ev) => handleChangeForm("name", ev)}
           disabled={!isEdit}
         />
+        {errors.name ? (
+          <ErrorMessage>Nome é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         Telefone
@@ -69,6 +96,11 @@ export const Profile = () => {
           onChange={(ev) => handleChangeForm("phone", ev)}
           disabled={!isEdit}
         />
+        {errors.phone ? (
+          <ErrorMessage>Telefone é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         CPF
@@ -85,18 +117,30 @@ export const Profile = () => {
           onChange={(ev) => handleChangeForm("cep", ev)}
           disabled={!isEdit}
         />
+        {errors.cep ? (
+          <ErrorMessage>CEP é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       <Label>
         Selecionar Loja
         {!isEdit ? (
           <Input value={store} disabled={!isEdit} />
         ) : (
-          <Select onChange={(ev) => handleChangeForm("store", ev)}>
-            <option value="" hidden>
-              {store}
-            </option>
-            {storeList}
-          </Select>
+          <>
+            <Select onChange={(ev) => handleChangeForm("store", ev)}>
+              <option value="" hidden>
+                {store}
+              </option>
+              {storeList}
+            </Select>
+            {errors.store ? (
+              <ErrorMessage>Uma loja deve ser escolhida</ErrorMessage>
+            ) : (
+              ""
+            )}
+          </>
         )}
       </Label>
 
@@ -104,7 +148,11 @@ export const Profile = () => {
         <>
           <RegisterButton
             onClick={async () => {
-              try {
+              const isFormValid = await formSchema.isValid(formValue, {
+                abortEarly: false,
+              });
+
+              if (isFormValid) {
                 await updateProfile(
                   formValue.name,
                   formValue.phone,
@@ -119,16 +167,25 @@ export const Profile = () => {
                   cep: formValue.cep,
                   storeId: formValue.store,
                 });
-              } catch (error) {
-                enqueueSnackbar(`Erro`, {
-                  variant: "error",
-                  anchorOrigin: {
-                    vertical: "top",
-                    horizontal: "right",
-                  },
-                });
+                setIsEdit(false);
+              } else {
+                formSchema
+                  .validate(formValue, { abortEarly: false })
+                  .catch((err) => {
+                    const errors = err.inner.reduce(
+                      (acc: any, error: any) => {
+                        return {
+                          ...acc,
+                          [error.path]: true,
+                        };
+                      },
+
+                      {}
+                    );
+
+                    setErrors(errors);
+                  });
               }
-              setIsEdit(false);
             }}
           >
             Salvar

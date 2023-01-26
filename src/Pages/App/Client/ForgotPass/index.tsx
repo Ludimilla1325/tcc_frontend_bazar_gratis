@@ -4,21 +4,22 @@ import {
   Title,
   Label,
   Input,
-  Span,
   SpanLabel,
   EditButton,
 } from "./styles";
+import * as yup from "yup";
 import { useCliente } from "../../../../Hooks/cliente";
-import { useNavigate } from "react-router-dom";
-import { app_base_url } from "../../../../Utils/urls";
-import { Alert } from "../../../../components/Modals/Alert";
 export const ForgotPass = () => {
-  const navigate = useNavigate();
   const { sendLinkToResetPass } = useCliente();
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({ title: "", message: "" });
 
+  const [errors, setErrors] = useState({
+    email: false,
+  });
+
+  const formSchema = yup.object().shape({
+    email: yup.string().email().required(),
+  });
   return (
     <Container>
       <Title>Esqueceu a Senha</Title>
@@ -35,12 +36,27 @@ export const ForgotPass = () => {
       </Label>
       <EditButton
         onClick={async () => {
-          try {
+          const isFormValid = await formSchema.isValid(
+            { email },
+            {
+              abortEarly: false,
+            }
+          );
+
+          if (isFormValid) {
             await sendLinkToResetPass(email);
-          } catch (error) {
-            setError({ title: "Ops", message: String(error) });
-          } finally {
-            setLoading(false);
+          } else {
+            formSchema
+              .validate({ email }, { abortEarly: false })
+              .catch((err) => {
+                const errors = err.inner.reduce((acc: any, error: any) => {
+                  return {
+                    ...acc,
+                    [error.path]: true,
+                  };
+                }, {});
+                setErrors(errors);
+              });
           }
         }}
       >

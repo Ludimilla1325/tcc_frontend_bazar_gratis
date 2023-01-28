@@ -45,6 +45,7 @@ export const ForgotPass = () => {
 
           if (isFormValid) {
             await sendLinkToResetPass(email);
+            setEmail("");
           } else {
             formSchema
               .validate({ email }, { abortEarly: false })

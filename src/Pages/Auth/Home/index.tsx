@@ -33,8 +33,7 @@ export const Home = () => {
         <BodyContent>
           <HandleDiv>
             <HelperTitle>
-              <Title>BAZAR</Title>
-              <Title> GRÁTIS</Title>
+              <Title>BAZAR GRÁTIS</Title>
             </HelperTitle>
             <i>
               <FirstSpan>

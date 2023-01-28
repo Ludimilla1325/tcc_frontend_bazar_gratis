@@ -151,6 +151,15 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   async function sendLinkToResetPass(email: string) {
     try {
       const { data } = await api.post("/client/link-to-reset-pass", { email });
+      if (data.sucess) {
+        enqueueSnackbar("Link enviado com sucesso!", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
+      }
     } catch (error) {
       enqueueSnackbar("Não foi possível enviar o token!", {
         variant: "error",

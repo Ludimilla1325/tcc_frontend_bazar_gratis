@@ -7,6 +7,7 @@ import {
   Button,
   Select,
   ErrorMessage,
+  BackButton,
 } from "./styles";
 import { useCooperator } from "../../../../../Hooks/cooperator";
 import { useSnackbar } from "notistack";
@@ -22,6 +23,7 @@ export const CreateAndEditProduct = () => {
     productSelected,
     isEditProduct,
     setIsEditProduct,
+    setProductSelected,
   } = useCooperator();
   const [loading, setLoading] = useState(false);
 
@@ -51,8 +53,6 @@ export const CreateAndEditProduct = () => {
     unityValue: yup.number().required(),
     image: yup.string().required(),
   });
-
-  const { enqueueSnackbar } = useSnackbar();
   const categoryList = categories.map((category) => {
     return <option value={category.id}>{category.name}</option>;
   });
@@ -68,7 +68,11 @@ export const CreateAndEditProduct = () => {
 
   return (
     <Container>
-      <Title>Cadastrar produto</Title>
+      {isEditProduct != 0 ? (
+        <Title>Atualizar produto</Title>
+      ) : (
+        <Title>Cadastrar produto</Title>
+      )}
       <Label>
         Produto
         <Input
@@ -144,94 +148,108 @@ export const CreateAndEditProduct = () => {
       </Label>
 
       {isEditProduct != 0 ? (
-        <Button
-          onClick={async () => {
-            const isFormValid = await formSchema.isValid(formValue, {
-              abortEarly: false,
-            });
-
-            if (isFormValid) {
-              setLoading(true);
-
-              await updateProduct(
-                productSelected.id,
-                formValue.product,
-                formValue.description,
-                formValue.category,
-                formValue.quantity,
-                formValue.unityValue,
-                formValue.image
-              );
-
-              setIsEditProduct(0);
-
-              setFormValue({
-                product: "",
-                description: "",
-                category: "",
-                quantity: "",
-                unityValue: "",
-                image: "",
+        <>
+          <Button
+            onClick={async () => {
+              const isFormValid = await formSchema.isValid(formValue, {
+                abortEarly: false,
               });
-            } else {
-              formSchema
-                .validate(formValue, { abortEarly: false })
-                .catch((err) => {
-                  const errors = err.inner.reduce(
-                    (acc: any, error: any) => {
+
+              if (isFormValid) {
+                setLoading(true);
+
+                await updateProduct(
+                  productSelected.id,
+                  formValue.product,
+                  formValue.description,
+                  formValue.category,
+                  formValue.quantity,
+                  formValue.unityValue,
+                  formValue.image
+                );
+
+                setIsEditProduct(0);
+
+                setFormValue({
+                  product: "",
+                  description: "",
+                  category: "",
+                  quantity: "",
+                  unityValue: "",
+                  image: "",
+                });
+              } else {
+                formSchema
+                  .validate(formValue, { abortEarly: false })
+                  .catch((err) => {
+                    const errors = err.inner.reduce(
+                      (acc: any, error: any) => {
+                        return {
+                          ...acc,
+                          [error.path]: true,
+                        };
+                      },
+
+                      {}
+                    );
+
+                    setErrors(errors);
+                  });
+              }
+            }}
+          >
+            Atualizar
+          </Button>
+
+          <BackButton
+            onClick={async () => {
+              setProductSelected({});
+              setIsEditProduct(0);
+              navigate(`${app_base_url}/produtos`);
+            }}
+          >
+            Voltar
+          </BackButton>
+        </>
+      ) : (
+        <>
+          <Button
+            onClick={async () => {
+              const isFormValid = await formSchema.isValid(formValue, {
+                abortEarly: false,
+              });
+
+              if (isFormValid) {
+                setLoading(true);
+                await createProduct(
+                  formValue.product,
+                  formValue.description,
+                  formValue.category,
+                  formValue.quantity,
+                  formValue.unityValue,
+                  formValue.image
+                );
+
+                setLoading(false);
+              } else {
+                formSchema
+                  .validate(formValue, { abortEarly: false })
+                  .catch((err) => {
+                    const errors = err.inner.reduce((acc: any, error: any) => {
                       return {
                         ...acc,
                         [error.path]: true,
                       };
-                    },
+                    }, {});
 
-                    {}
-                  );
-
-                  setErrors(errors);
-                });
-            }
-          }}
-        >
-          Atualizar
-        </Button>
-      ) : (
-        <Button
-          onClick={async () => {
-            const isFormValid = await formSchema.isValid(formValue, {
-              abortEarly: false,
-            });
-
-            if (isFormValid) {
-              setLoading(true);
-              await createProduct(
-                formValue.product,
-                formValue.description,
-                formValue.category,
-                formValue.quantity,
-                formValue.unityValue,
-                formValue.image
-              );
-
-              setLoading(false);
-            } else {
-              formSchema
-                .validate(formValue, { abortEarly: false })
-                .catch((err) => {
-                  const errors = err.inner.reduce((acc: any, error: any) => {
-                    return {
-                      ...acc,
-                      [error.path]: true,
-                    };
-                  }, {});
-
-                  setErrors(errors);
-                });
-            }
-          }}
-        >
-          Confirmar
-        </Button>
+                    setErrors(errors);
+                  });
+              }
+            }}
+          >
+            Confirmar
+          </Button>
+        </>
       )}
     </Container>
   );

@@ -20,7 +20,13 @@ export interface ICooperator {
 export const Cooperators = () => {
   const [cooperators, setCooperators] = useState({} as ICooperator[]);
   const { cooperator } = useCooperator();
-  const { setIsEditedCooperator, getCooperator } = useMaster();
+  const {
+    setIsEditedCooperator,
+    setSelectedCooperator,
+    selectedCooperator,
+    isEditedCooperator,
+    getCooperator,
+  } = useMaster();
   const { storeId } = useParams();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
@@ -44,9 +50,31 @@ export const Cooperators = () => {
       console.log(err);
     }
   }
+
   useEffect(() => {
     handleData();
+    setSelectedCooperator({});
+    setIsEditedCooperator(0);
   }, []);
+
+  // useEffect(() => {
+  //   setSelectedCooperator({});
+  //   setIsEditedCooperator(0);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (selectedCooperator && !selectedCooperator.id) handleData();
+  // }, [isEditedCooperator]);
+
+  useEffect(() => {
+    getCooperator(isEditedCooperator);
+  }, [isEditedCooperator]);
+
+  useEffect(() => {
+    if (selectedCooperator && selectedCooperator.id) {
+      navigate(`${app_base_url}/create-cooperator`);
+    }
+  }, [selectedCooperator]);
 
   function renderData() {
     if (cooperators && cooperators.length > 0) {
@@ -54,9 +82,9 @@ export const Cooperators = () => {
         return (
           <Body
             onClick={() => {
-              getCooperator(item.id);
-              navigate(`${app_base_url}/create-cooperator`);
-              setIsEditedCooperator(true);
+              // getCooperator(item.id);
+              // navigate(`${app_base_url}/create-cooperator`);
+              setIsEditedCooperator(item.id);
             }}
           >
             <TBody>{item.id}</TBody>

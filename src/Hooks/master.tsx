@@ -81,7 +81,7 @@ function MasterProvider({ children }: IMasterProviderProps) {
   const [selectedStore, setSelectedStore] = useState({});
   const [isEditedStore, setIsEditedStore] = useState(false);
   const [selectedCooperator, setSelectedCooperator] = useState({});
-  const [isEditedCooperator, setIsEditedCooperator] = useState(false);
+  const [isEditedCooperator, setIsEditedCooperator] = useState(0);
   const [pointsSolicitationList, setPointsSolicitation] = useState([]);
   const [purchaseDeliveredList, setPurchaseDelivered] = useState([]);
   const [monthlyPurchaseList, setMonthlyPurchase] = useState([]);

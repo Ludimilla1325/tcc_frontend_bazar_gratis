@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Title,
@@ -10,12 +10,13 @@ import {
   LabelToggle,
   InpuToggle,
   Select,
+  BackButton,
 } from "./styles";
-import { useNavigate } from "react-router-dom";
 import { useGeral } from "../../../../Hooks/geral";
 import { useMaster } from "../../../../Hooks/master";
+import { useNavigate } from "react-router";
+import { app_base_url } from "../../../../Utils/urls";
 export const CooperatorRegister = () => {
-  const navigate = useNavigate();
   const { stores } = useGeral();
   const {
     createCooperator,
@@ -23,25 +24,26 @@ export const CooperatorRegister = () => {
     selectedCooperator,
     updateCooperator,
     setIsEditedCooperator,
+    setSelectedCooperator,
   } = useMaster();
   const [active, setActive] = useState(
-    isEditedCooperator ? selectedCooperator.active : false
+    isEditedCooperator != 0 ? selectedCooperator.active : false
   );
   const [loading, setLoading] = useState(false);
   const [administrator, setAdministrator] = useState(
-    isEditedCooperator ? selectedCooperator.admin : false
+    isEditedCooperator != 0 ? selectedCooperator.admin : false
   );
-
+  const navigate = useNavigate();
   const storeList = stores.map((store) => {
     return <option value={store.id}>{store.name}</option>;
   });
 
   const [formValue, setFormValue] = useState({
-    name: isEditedCooperator ? selectedCooperator.name : "",
-    email: isEditedCooperator ? selectedCooperator.email : "",
-    cpf: isEditedCooperator ? selectedCooperator.cpf : "",
-    store: isEditedCooperator ? selectedCooperator.storeId : "",
-    password: isEditedCooperator ? selectedCooperator.password : "",
+    name: isEditedCooperator != 0 ? selectedCooperator.name : "",
+    email: isEditedCooperator != 0 ? selectedCooperator.email : "",
+    cpf: isEditedCooperator != 0 ? selectedCooperator.cpf : "",
+    store: isEditedCooperator != 0 ? selectedCooperator.storeId : "",
+    password: isEditedCooperator != 0 ? selectedCooperator.password : "",
     confirmPass: "",
   });
 
@@ -52,9 +54,18 @@ export const CooperatorRegister = () => {
     });
   };
 
+  useEffect(() => {}, [isEditedCooperator, selectedCooperator]);
+
+  console.log(isEditedCooperator, selectedCooperator);
+
   return (
     <Container>
-      <Title>Cadastro de Funcionário</Title>
+      {selectedCooperator != 0 ? (
+        <Title>Atualizar Funcionário</Title>
+      ) : (
+        <Title>Cadastro de Funcionário</Title>
+      )}
+
       <Label>
         <SpanLabel>Nome</SpanLabel>
         <Input
@@ -63,7 +74,7 @@ export const CooperatorRegister = () => {
           placeholder="Digite o nome!"
         />
       </Label>
-      {isEditedCooperator ? (
+      {isEditedCooperator != 0 ? (
         " "
       ) : (
         <>
@@ -89,7 +100,7 @@ export const CooperatorRegister = () => {
         Selecionar Loja
         <Select onChange={(ev) => handleChangeForm("store", ev)}>
           <option value="" hidden>
-            {isEditedCooperator
+            {isEditedCooperator != 0
               ? "test"
               : // `${selectedCooperator.Store.name}, ${selectedCooperator.Store.localization}`
                 //
@@ -99,7 +110,7 @@ export const CooperatorRegister = () => {
         </Select>
       </Label>
 
-      {isEditedCooperator ? (
+      {isEditedCooperator != 0 ? (
         " "
       ) : (
         <>
@@ -144,7 +155,7 @@ export const CooperatorRegister = () => {
         </LabelToggle>
       </div>
 
-      {isEditedCooperator ? (
+      {isEditedCooperator != 0 ? (
         <>
           <Button
             onClick={async () => {
@@ -162,13 +173,15 @@ export const CooperatorRegister = () => {
             Atualizar
           </Button>
 
-          <Button
+          <BackButton
             onClick={() => {
-              setIsEditedCooperator(false);
+              setIsEditedCooperator(0);
+              setSelectedCooperator({});
+              navigate(`${app_base_url}/colaboradores`);
             }}
           >
             Voltar
-          </Button>
+          </BackButton>
         </>
       ) : (
         <Button

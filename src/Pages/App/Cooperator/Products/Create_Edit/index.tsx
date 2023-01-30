@@ -16,6 +16,8 @@ import { useNavigate } from "react-router";
 import { app_base_url } from "../../../../../Utils/urls";
 export const CreateAndEditProduct = () => {
   const navigate = useNavigate();
+  const [file, setFile] = useState({} as any);
+  const [fileTeste, setFileTeste] = useState("");
   const {
     createProduct,
     categories,
@@ -58,10 +60,12 @@ export const CreateAndEditProduct = () => {
   });
 
   const handleChangeForm = (name: string, event: any) => {
-    setFormValue({
-      ...formValue,
-      [name]: event.target.value,
-    });
+   
+        setFormValue({
+          ...formValue,
+          [name]: event.target.value,
+        });
+      
   };
 
   useEffect(() => {}, [productSelected]);
@@ -141,8 +145,20 @@ export const CreateAndEditProduct = () => {
       <Label>
         Imagem
         <Input
-          value={formValue.image}
-          onChange={(ev) => handleChangeForm("image", ev)}
+          value={fileTeste}
+          onChange={(ev) => {
+            if (ev.target.files) {
+              if (ev.target.files[0] && ev.target.files[0].size) {
+                setFile(ev.target.files[0]);
+              } else {
+                setFile(null);
+              }
+            }
+            
+            handleChangeForm("image",ev);//verificar se foi preenchido
+            setFileTeste(ev.target.value);
+          }}
+          type={"file"}
         />
         {errors.image ? <ErrorMessage>Campo obrigatório</ErrorMessage> : ""}
       </Label>
@@ -227,7 +243,7 @@ export const CreateAndEditProduct = () => {
                   formValue.category,
                   formValue.quantity,
                   formValue.unityValue,
-                  formValue.image
+                  file
                 );
 
                 setLoading(false);

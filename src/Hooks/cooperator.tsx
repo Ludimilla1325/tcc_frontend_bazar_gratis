@@ -27,7 +27,7 @@ interface ICooperatorContextData {
     category: string,
     quantity: string,
     unityValue: string,
-    image: string
+    image: any
   ) => Promise<void>;
   updateProfile: (name: string) => Promise<any>;
   updatePassword: (oldPass: string, newPass: string) => Promise<void>;
@@ -157,17 +157,19 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
     category: string,
     quantity: string,
     unityValue: string,
-    image: string
+    image: any
   ) {
+    const formData = new FormData();
+    formData.append("file", image);
+     formData.append("name", product);
+     formData.append("categoryId", category);
+     formData.append("value", unityValue);
+     formData.append("description", description);
+     
+     formData.append("quantity", quantity);
+     formData.append("storeId", String(cooperator.storeId));
     try {
-      const { data } = await api.post(`/product/${cooperator.storeId}`, {
-        name: product,
-        description,
-        categoryId: category,
-        quantity,
-        value: unityValue,
-        photo: image,
-      });
+      const { data } = await api.post(`/product/${cooperator.storeId}`, formData);
 
       if (data.sucess) {
         enqueueSnackbar("Produto criado com sucesso", {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCooperator } from "../../../../Hooks/cooperator";
 import { useNavigate } from "react-router-dom";
-import { app_base_url } from "../../../../Utils/urls";
+import { app_base_url, baseUrlApi } from "../../../../Utils/urls";
 import { useParams } from "react-router-dom";
 import {
   Container,
@@ -74,8 +74,12 @@ export const Products = () => {
   }, []);
 
   useEffect(() => {
-    if (productSelected && !productSelected.id) handleData();
+    //if (productSelected && !productSelected.id) handleData();
   }, [isEditProduct]);
+
+  useEffect(() => {
+    handleData();
+  }, []);
 
   useEffect(() => {
     if (products && products.length > 0) {
@@ -112,13 +116,20 @@ export const Products = () => {
     const list = products.filter((item) => item.categoria == category);
     if (list && list.length > 0) {
       return list.map((item) => {
+       
         return (
           <ProductContainer
             onClick={() => {
               setIsEditProduct(item.id);
             }}
           >
-            <ProductImage src={item.photo} />
+            <ProductImage
+              src={
+                item.photo.indexOf("http") == -1
+                  ? baseUrlApi + "/photo/" + item.photo
+                  : item.photo
+              }
+            />
             <ProductSpan>{item.name}</ProductSpan>
 
             <ProductSpan>{item.description}</ProductSpan>

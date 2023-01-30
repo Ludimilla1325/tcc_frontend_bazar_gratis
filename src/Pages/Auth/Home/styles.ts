@@ -91,12 +91,13 @@ export const Logo = styled.img`
 `;
 
 export const SecondTitle = styled.h2`
-  color: ${theme.colors.primary};
+  color: ${theme.colors.light};
 
   font-size: max(2vw, 15px);
   text-align: center;
   padding: 4vw;
-  margin: 1w;
+  margin-bottom: 1vh;
+  margin-top: 1vh;
   /* background-color: blue; */
 `;
 

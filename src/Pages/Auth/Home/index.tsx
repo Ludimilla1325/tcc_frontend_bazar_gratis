@@ -100,9 +100,10 @@ export const Home = () => {
           </HandleDiv>
         </BodyContent2>
         <BodyFooterSimple></BodyFooterSimple>
-        <SecondTitle>PERGUNTAS FREQUENTES</SecondTitle>
+   
+        
       </Body2>
-
+      <SecondTitle>PERGUNTAS FREQUENTES</SecondTitle>
       <Body3>
         <BodyContent2>
           <HandleDiv>

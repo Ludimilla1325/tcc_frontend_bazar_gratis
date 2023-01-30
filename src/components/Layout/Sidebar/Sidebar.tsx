@@ -114,8 +114,8 @@ const HelperIcons = styled.div`
   width: ${window.screen.width > window.screen.height ? "10%" : "30%"};
   width: 100%;
   padding: 0.5vw;
-  font-size: max(12px,1.2vw);
-  color:${theme.colors.light}
+  font-size: max(12px, 1.2vw);
+  color: ${theme.colors.light};
 `;
 
 const SidebarWrap = styled.div``;
@@ -133,44 +133,37 @@ const Sidebar: FC = () => {
   return (
     <IconContext.Provider value={{ color: "white" }}>
       <Nav>
-       
-
         <HelperIcons>
-        <NavIcon to="#" onClick={showSidebar}>
-          <AiOutlineMenu size={"max(18px,2vw)"}/>
-        </NavIcon>
+          <NavIcon to="#" onClick={showSidebar}>
+            <AiOutlineMenu size={"max(18px,2vw)"} />
+          </NavIcon>
           {cooperatorHook.cooperator.id ? (
             <span>{cooperatorHook.cooperator.name}</span>
           ) : (
             ""
           )}
-
           {masterHook.master.id ? <span>{masterHook.master.name}</span> : ""}
           {clienteHook.cliente.id ? (
-            <>
-              <span>SALDO:{clienteHook.cliente.points}</span>
+            <span>Saldo:{clienteHook.cliente.points}</span>
+          ) : (
+            ""
+          )}
+          {clienteHook.cliente.id ? (
+            <span>{clienteHook.cliente.name}</span>
+          ) : (
+            ""
+          )}
 
-              <span>{clienteHook.cliente.name}</span>
+          {clienteHook.cliente.id ? (
+           
+              cartQuantity > 0 && (
+              <div>
+                  <AiOutlineShoppingCart size={"max(18px,2vw)"} onClick={openCart}/>
 
-              {cartQuantity > 0 && (
-                <NavCart className="rounded-circle" to="#" onClick={openCart}>
-                  <AiOutlineShoppingCart />
-
-                  <div
-                    className="rounded-circle white d-flex justify-content-center align-items-center"
-                    style={{
-                      color: "white",
-                      width: "0.3rem",
-                      height: "0.5rem",
-                      bottom: 1,
-                      right: 0,
-                    }}
-                  >
-                    {cartQuantity}
+                  <span>{cartQuantity}</span>
                   </div>
-                </NavCart>
-              )}
-            </>
+              )
+            
           ) : (
             ""
           )}
@@ -184,7 +177,7 @@ const Sidebar: FC = () => {
               navigate(`${app_base_url}/home`);
             }}
           >
-            <FiLogOut size={"max(18px,2vw)"}/>
+            <FiLogOut size={"max(18px,2vw)"} />
           </NavLeft>
         </HelperIcons>
       </Nav>

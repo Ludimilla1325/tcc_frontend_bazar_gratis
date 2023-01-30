@@ -28,7 +28,10 @@ export const CreateAndEditProduct = () => {
     setProductSelected,
   } = useCooperator();
   const [loading, setLoading] = useState(false);
-
+  useEffect(() => {
+    //sem tipagem fica ruim de acessar
+    //setFileTeste(productSelected.photo);
+  }, [productSelected]);
   const [formValue, setFormValue] = useState({
     product: isEditProduct != 0 ? productSelected.name : "",
     description: isEditProduct != 0 ? productSelected.description : "",
@@ -53,19 +56,17 @@ export const CreateAndEditProduct = () => {
     category: yup.string().required(),
     quantity: yup.number().required(),
     unityValue: yup.number().required(),
-    image: yup.string().required(),
+    image: productSelected.id ? yup.string() : yup.string().required(),
   });
   const categoryList = categories.map((category) => {
     return <option value={category.id}>{category.name}</option>;
   });
 
   const handleChangeForm = (name: string, event: any) => {
-   
-        setFormValue({
-          ...formValue,
-          [name]: event.target.value,
-        });
-      
+    setFormValue({
+      ...formValue,
+      [name]: event.target.value,
+    });
   };
 
   useEffect(() => {}, [productSelected]);
@@ -154,9 +155,11 @@ export const CreateAndEditProduct = () => {
                 setFile(null);
               }
             }
+if(ev.target.value){
+  handleChangeForm("image", ev); //verificar se foi preenchido
+  setFileTeste(ev.target.value);
+}
             
-            handleChangeForm("image",ev);//verificar se foi preenchido
-            setFileTeste(ev.target.value);
           }}
           type={"file"}
         />
@@ -181,7 +184,7 @@ export const CreateAndEditProduct = () => {
                   formValue.category,
                   formValue.quantity,
                   formValue.unityValue,
-                  formValue.image
+                  file
                 );
 
                 setIsEditProduct(0);

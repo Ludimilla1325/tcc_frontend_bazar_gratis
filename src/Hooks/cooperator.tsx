@@ -215,16 +215,19 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
     image: string
   ) {
     try {
+      const formData = new FormData();
+    formData.append("file", image);
+     formData.append("name", product);
+     formData.append("categoryId", category);
+     formData.append("value", unityValue);
+     formData.append("description", description);
+     formData.append("productId", String(productId));
+     
+     formData.append("quantity", quantity);
+     formData.append("storeId", String(cooperator.storeId));
       const { data } = await api.put(
         `/product/${cooperator.storeId}/${productId}`,
-        {
-          name: product,
-          description,
-          categoryId: category,
-          quantity,
-          value: unityValue,
-          photo: image,
-        }
+        formData
       );
 
       if (data.sucess) {

@@ -23,6 +23,7 @@ import { useCooperator } from "../../../Hooks/cooperator";
 import { useMaster } from "../../../Hooks/master";
 import Navbar from "../Navbar/Navbar";
 import { app_base_url } from "../../../Utils/urls";
+import theme from "../../../Styles/theme";
 const Nav = styled.div`
   display: flex;
   justify-content: space-between;
@@ -109,8 +110,12 @@ const NavName = styled.span`
 const HelperIcons = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   width: ${window.screen.width > window.screen.height ? "10%" : "30%"};
+  width: 100%;
+  padding: 0.5vw;
+  font-size: max(12px,1.2vw);
+  color:${theme.colors.light}
 `;
 
 const SidebarWrap = styled.div``;
@@ -128,11 +133,12 @@ const Sidebar: FC = () => {
   return (
     <IconContext.Provider value={{ color: "white" }}>
       <Nav>
-        <NavIcon to="#" onClick={showSidebar}>
-          <AiOutlineMenu />
-        </NavIcon>
+       
 
         <HelperIcons>
+        <NavIcon to="#" onClick={showSidebar}>
+          <AiOutlineMenu size={"max(18px,2vw)"}/>
+        </NavIcon>
           {cooperatorHook.cooperator.id ? (
             <span>{cooperatorHook.cooperator.name}</span>
           ) : (
@@ -178,7 +184,7 @@ const Sidebar: FC = () => {
               navigate(`${app_base_url}/home`);
             }}
           >
-            <FiLogOut />
+            <FiLogOut size={"max(18px,2vw)"}/>
           </NavLeft>
         </HelperIcons>
       </Nav>

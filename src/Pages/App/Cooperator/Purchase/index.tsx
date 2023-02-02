@@ -36,6 +36,8 @@ export const Purchase = () => {
   const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
+       //cancelar reservas nao retiradas no prazo
+       await api.get("/appointment-client/cancelReservations");
       const { data } = await api.get(`/appointment-client`);
       console.log(data);
 

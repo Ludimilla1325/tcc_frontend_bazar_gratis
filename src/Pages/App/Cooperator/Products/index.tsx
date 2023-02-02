@@ -104,10 +104,11 @@ export const Products = () => {
     getProduct(isEditProduct);
   }, [isEditProduct]);
 
-  useEffect(() => {
-    console.log("erfer", productSelected.id);
+ 
 
-    if (productSelected && productSelected.id) {
+  useEffect(() => {
+ 
+    if (productSelected && productSelected.id && isEditProduct) {
       navigate(`${app_base_url}/create-products`);
     }
   }, [productSelected]);

@@ -4,6 +4,7 @@ import storeItems from "../../Data/items.json";
 import { formatarDinheiro } from "../../Utils/formatarDinheiro";
 import { useProdutos } from "../../Context/ProdutosContext";
 import { useState } from "react";
+import { baseUrlApi } from "../../Utils/urls";
 
 type CartItemProps = {
   id: number;
@@ -29,7 +30,7 @@ export function CartItem({ id, quantity }: CartItemProps) {
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
-        src={item.photo}
+        src={item.photo.indexOf("http")!=-1? item.photo: baseUrlApi + "/photo/" + item.photo}
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
       />
       <div className="me-auto">

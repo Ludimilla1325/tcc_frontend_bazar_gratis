@@ -117,9 +117,10 @@ function MasterProvider({ children }: IMasterProviderProps) {
   }
 
   function logOut() {
+    deleteLocalStorage();
     setMaster({} as IMaster);
     setLogado(false);
-    deleteLocalStorage();
+
   }
 
   async function createStore(

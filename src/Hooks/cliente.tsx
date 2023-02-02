@@ -114,9 +114,10 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   }
 
   function logOut() {
+      deleteLocalStorage();
     setCliente({} as ICliente);
     setLogado(false);
-    deleteLocalStorage();
+  
   }
 
   useEffect(() => {

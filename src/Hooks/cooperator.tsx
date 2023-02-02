@@ -109,12 +109,14 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   function deleteLocalStorage() {
     localStorage.removeItem(operatorLocalStorage);
     localStorage.removeItem(tokenLocalStorage);
+    
   }
 
   function logOut() {
+        deleteLocalStorage();
     setCooperator({} as ICooperator);
     setLogado(false);
-    deleteLocalStorage();
+
   }
 
   useEffect(() => {

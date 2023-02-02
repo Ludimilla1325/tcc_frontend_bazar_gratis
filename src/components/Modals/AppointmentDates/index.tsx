@@ -48,7 +48,7 @@ export function AppointmentDates({
   const [appointmentDate, setAppointmentDate] = useState(new Date());
   const [dates, setDates] = useState(["2022-12-5"]);
   const [appointments, setAppointments] = useState({} as IAppointment[]);
-  const { cliente } = useCliente();
+  const { cliente ,refreshAccount} = useCliente();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -142,7 +142,9 @@ export function AppointmentDates({
               clientId: cliente.id,
             });
             if (data.sucess) {
+              
               handleSetAgendamentoId(data.data.id);
+         
             } else {
               enqueueSnackbar(`${data.message}`, {
                 variant: "error",

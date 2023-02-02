@@ -60,8 +60,9 @@ export function PointsSolicitationDetails({
 
   useEffect(() => setGiveJustification(false), []);
 
-  async function post() {
+  async function post(confirmar:boolean) {
     try {
+  
       const { data } = await api.put(`/pointsSolicitation/${solicitacao.id}`, {
         status: confirmar ? "APROVADO" : "NEGADO",
         pointsSolicitationId: solicitacao.id,
@@ -136,9 +137,10 @@ export function PointsSolicitationDetails({
             <OperationButton
               focus={confirmar == true}
               onClick={() => {
+                
                 setConfimar(true);
                 setGiveJustification(false);
-                post();
+                post(true);
               }}
             >
               Fornecer
@@ -162,7 +164,7 @@ export function PointsSolicitationDetails({
                   disabled={
                     confirmar == null && justificatiaOperador.length == 0
                   }
-                  onClick={post}
+                  onClick={()=>post(false)}
                 >
                   Enviar
                 </OperationButton>

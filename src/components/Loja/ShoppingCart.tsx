@@ -17,7 +17,7 @@ type ShoppingCartProps = {
 export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const { closeCart, cartItems, removeFromCart } = useShoppingCart();
   const { produtos } = useProdutos();
-  const { cliente, logar } = useCliente();
+  const { cliente, logar,refreshAccount } = useCliente();
   const [agendamentoId, setAgendamentoId] = useState(0);
   const [appointmentModal, setAppointmentModal] = useState(false);
 
@@ -59,6 +59,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
               removeFromCart(element.id);
             });
           }
+          refreshAccount();
         }
       } catch (e) {
         console.log(e);

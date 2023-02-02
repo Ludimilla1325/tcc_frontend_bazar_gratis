@@ -48,6 +48,7 @@ interface IClienteContextData {
   getPointsSolicitationHistoric(): Promise<void>;
   setClienteStore: any;
   logOut(): void;
+  refreshAccount():Promise<void>;
 }
 
 interface ICliente {
@@ -84,12 +85,23 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     {} as IPointsSolicitation[]
   );
 
+  
+
   const { enqueueSnackbar } = useSnackbar();
 
   function saveLocalStorage(cliente: ICliente, token: string) {
     localStorage.setItem(clienteLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);
     localStorage.setItem(tokenTimeLocalStorage, String(Date.now()));
+  }
+
+  async function refreshAccount() {
+  
+    const { data } = await api.get("/client/refresh/client");
+    if (data.sucess) {
+      setCliente(data.data);
+     
+    }
   }
 
   function getLocalStorage() {
@@ -361,6 +373,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         sendLinkToResetPass,
         getPointsSolicitationHistoric,
         setClienteStore,
+        refreshAccount
       }}
     >
       <>{children}</>

@@ -17,7 +17,7 @@ interface IHandleProdutoCard {
 }
 
 export const Home = () => {
-  const { cliente } = useCliente();
+  const { cliente, refreshAccount } = useCliente();
   const { produtos, handleData } = useProdutos();
   const [handleCard, setHandleCard] = useState([] as IHandleProdutoCard[]);
 

@@ -35,6 +35,7 @@ export interface IProduct {
 export const Products = () => {
   const [products, setProducts] = useState({} as IProduct[]);
   const [categories, setCategories] = useState([] as Array<string>);
+  const[firstRender,setFirstRender ] = useState(true);
   const navigate = useNavigate();
   const {
     cooperator,
@@ -71,6 +72,7 @@ export const Products = () => {
   useEffect(() => {
     setProductSelected({});
     setIsEditProduct(0);
+    setFirstRender(false)
   }, []);
 
   useEffect(() => {
@@ -108,7 +110,7 @@ export const Products = () => {
 
   useEffect(() => {
  
-    if (productSelected && productSelected.id && isEditProduct) {
+    if (productSelected && productSelected.id && isEditProduct && !firstRender) {
       navigate(`${app_base_url}/create-products`);
     }
   }, [productSelected]);

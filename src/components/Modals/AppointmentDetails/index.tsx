@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
+import {baseUrlApi} from "../../../Utils/urls";
 
 import Modal from "react-modal";
 import { IAppointement } from "../../../Pages/App/Cooperator/Purchase";
@@ -79,7 +80,7 @@ export function AppointmentDetails({
       return products.map((item) => {
         return (
           <ProductContrainer>
-            <Image src={item.photo} alt="Imagem Produto" />
+            <Image src={item.photo.indexOf("http")!=-1? item.photo: baseUrlApi + "/photo/" + item.photo} alt="Imagem Produto" />
             <ProductsInformationContainer>
               <ProductTitle>
                 {item.name} - {item.description}

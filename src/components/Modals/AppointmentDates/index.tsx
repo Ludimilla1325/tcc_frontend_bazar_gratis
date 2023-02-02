@@ -152,6 +152,7 @@ export function AppointmentDates({
                 },
               });
             }
+            onClose();
           }}
         >
           Confirmar

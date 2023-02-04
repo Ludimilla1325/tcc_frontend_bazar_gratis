@@ -48,9 +48,7 @@ export const PointsSolicitation = () => {
           },
         });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
   useEffect(() => {
     handleData();

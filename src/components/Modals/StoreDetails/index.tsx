@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FiPlus, FiSearch, FiX, FiUser, FiEdit2 } from "react-icons/fi";
+import { FiSearch, FiX, FiUser, FiEdit2 } from "react-icons/fi";
 
 import Modal from "react-modal";
 import { IStore } from "../../../Pages/App/Master/Stores";
@@ -19,6 +19,7 @@ import { ICooperator } from "../../../Pages/App/Cooperator/Cooperators";
 import api from "../../../Services/api";
 import { useNavigate } from "react-router-dom";
 import { app_base_url } from "../../../Utils/urls";
+import { useMaster } from "../../../Hooks/master";
 
 const customStyles = {
   content: {
@@ -43,8 +44,15 @@ interface Props {
 
 export function StoreDetails({ open, onClose, store }: Props) {
   const [cooperators, setCooperators] = useState({} as ICooperator[]);
+  const [firstRender, setFirstRender] = useState(true);
   const navigate = useNavigate();
-
+  const {
+    isEditedStore,
+    setIsEditedStore,
+    getStore,
+    selectedStore,
+    setSelectedStore,
+  } = useMaster();
   async function handleData() {
     const { data } = await api.get(`/cooperator/store/${store.id}`);
     if (data.sucess) {
@@ -55,6 +63,28 @@ export function StoreDetails({ open, onClose, store }: Props) {
   useEffect(() => {
     if (store.id) handleData();
   }, [store.id]);
+
+  useEffect(() => {
+    setSelectedStore({});
+    setIsEditedStore(0);
+    setFirstRender(false);
+  }, []);
+
+  useEffect(() => {}, [isEditedStore]);
+
+  useEffect(() => {
+    handleData();
+  }, []);
+
+  useEffect(() => {
+    getStore(isEditedStore);
+  }, [isEditedStore]);
+
+  useEffect(() => {
+    if (selectedStore && selectedStore.id && isEditedStore && !firstRender) {
+      navigate(`${app_base_url}/create-store`);
+    }
+  }, [selectedStore]);
 
   return (
     <Modal isOpen={open} onRequestClose={onClose} style={customStyles}>
@@ -110,7 +140,9 @@ export function StoreDetails({ open, onClose, store }: Props) {
           <FiEdit2
             size={"max(2vw, 24px)"}
             style={{ cursor: "pointer" }}
-            onClick={() => window.alert("Sem função ainda")}
+            onClick={() => {
+              setIsEditedStore(store.id);
+            }}
           />
         </IconsDiv>
       </Container>

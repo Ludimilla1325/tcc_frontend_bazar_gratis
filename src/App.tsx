@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import GlobalStyles from "./Styles/golbal";
 import { Routes } from "./Routes/Index.routes";

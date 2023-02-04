@@ -1,13 +1,23 @@
 import React, { useState } from "react";
-import { Container, Title, Label, Input, Button, ErrorMessage } from "./styles";
+import {
+  Container,
+  Title,
+  Label,
+  Input,
+  Button,
+  ErrorMessage,
+  BackButton,
+} from "./styles";
 import { useNavigate } from "react-router-dom";
 import { useMaster } from "../../../../Hooks/master";
 import * as yup from "yup";
+import { app_base_url } from "../../../../Utils/urls";
 export const CreateAndEditStore = () => {
   const navigate = useNavigate();
   const {
     isEditedStore,
     selectedStore,
+    setSelectedStore,
     updateStore,
     setIsEditedStore,
     createStore,
@@ -15,9 +25,9 @@ export const CreateAndEditStore = () => {
   const [loading, setLoading] = useState(false);
 
   const [formValue, setFormValue] = useState({
-    name: isEditedStore ? selectedStore.name : "",
-    localization: isEditedStore ? selectedStore.description : "",
-    maxPoints: isEditedStore ? selectedStore.quantity : "",
+    name: isEditedStore != 0 ? selectedStore.name : "",
+    localization: isEditedStore != 0 ? selectedStore.localization : "",
+    maxPoints: isEditedStore != 0 ? selectedStore.maxPoints : "",
   });
 
   const [errors, setErrors] = useState({
@@ -41,7 +51,12 @@ export const CreateAndEditStore = () => {
 
   return (
     <Container>
-      <Title>Cadastrar loja</Title>
+      {isEditedStore != 0 ? (
+        <Title>Atualizar loja</Title>
+      ) : (
+        <Title>Cadastrar loja</Title>
+      )}
+
       <Label>
         Nome
         <Input
@@ -72,54 +87,70 @@ export const CreateAndEditStore = () => {
         {errors.maxPoints ? <ErrorMessage>Campo obrigatório</ErrorMessage> : ""}
       </Label>
 
-      {isEditedStore ? (
-        <Button
-          onClick={async () => {
-            const isFormValid = await formSchema.isValid(formValue, {
-              abortEarly: false,
-            });
-
-            if (isFormValid) {
-              setLoading(true);
-
-              await updateStore(
-                selectedStore.id,
-                formValue.name,
-                formValue.localization,
-                formValue.maxPoints
-              );
-              setErrors({
-                name: false,
-                localization: false,
-                maxPoints: false,
+      {isEditedStore != 0 ? (
+        <>
+          <Button
+            onClick={async () => {
+              const isFormValid = await formSchema.isValid(formValue, {
+                abortEarly: false,
               });
-              setFormValue({
-                name: "",
-                localization: "",
-                maxPoints: "",
-              });
-            } else {
-              formSchema
-                .validate(formValue, { abortEarly: false })
-                .catch((err) => {
-                  const errors = err.inner.reduce(
-                    (acc: any, error: any) => {
-                      return {
-                        ...acc,
-                        [error.path]: true,
-                      };
-                    },
 
-                    {}
-                  );
+              if (isFormValid) {
+                setLoading(true);
 
-                  setErrors(errors);
+                await updateStore(
+                  selectedStore.id,
+                  formValue.name,
+                  formValue.localization,
+                  formValue.maxPoints
+                );
+
+                setIsEditedStore(0);
+                setSelectedStore({});
+
+                setErrors({
+                  name: false,
+                  localization: false,
+                  maxPoints: false,
                 });
-            }
-          }}
-        >
-          Atualizar
-        </Button>
+                setFormValue({
+                  name: "",
+                  localization: "",
+                  maxPoints: "",
+                });
+              } else {
+                formSchema
+                  .validate(formValue, { abortEarly: false })
+                  .catch((err) => {
+                    const errors = err.inner.reduce(
+                      (acc: any, error: any) => {
+                        return {
+                          ...acc,
+                          [error.path]: true,
+                        };
+                      },
+
+                      {}
+                    );
+
+                    setErrors(errors);
+                  });
+              }
+            }}
+          >
+            Atualizar
+          </Button>
+
+          <BackButton
+            onClick={async () => {
+              setSelectedStore({});
+              setIsEditedStore(0);
+              navigate(`${app_base_url}/lojas`);
+            }}
+          >
+            Voltar
+          </BackButton>
+        </>
       ) : (
         <Button
           onClick={async () => {
@@ -145,6 +176,8 @@ export const CreateAndEditStore = () => {
                 localization: "",
                 maxPoints: "",
               });
+
+              navigate(`${app_base_url}/lojas`);
             } else {
               formSchema
                 .validate(formValue, { abortEarly: false })

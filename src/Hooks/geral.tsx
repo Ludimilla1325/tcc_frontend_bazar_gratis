@@ -13,6 +13,7 @@ interface IGeralProviderProps {
 
 interface IGeralContextData {
   stores: Array<any>;
+  getStores: any;
 }
 
 const GeralContext = createContext({} as IGeralContextData);
@@ -31,12 +32,8 @@ function GeralProvider({ children }: IGeralProviderProps) {
         });
 
         return data;
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -47,6 +44,7 @@ function GeralProvider({ children }: IGeralProviderProps) {
     <GeralContext.Provider
       value={{
         stores,
+        getStores,
       }}
     >
       <>{children}</>

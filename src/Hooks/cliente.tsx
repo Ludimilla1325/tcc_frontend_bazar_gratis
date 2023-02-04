@@ -48,7 +48,7 @@ interface IClienteContextData {
   getPointsSolicitationHistoric(): Promise<void>;
   setClienteStore: any;
   logOut(): void;
-  refreshAccount():Promise<void>;
+  refreshAccount(): Promise<void>;
 }
 
 interface ICliente {
@@ -85,8 +85,6 @@ function ClienteProvider({ children }: IClienteProviderProps) {
     {} as IPointsSolicitation[]
   );
 
-  
-
   const { enqueueSnackbar } = useSnackbar();
 
   function saveLocalStorage(cliente: ICliente, token: string) {
@@ -96,11 +94,9 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   }
 
   async function refreshAccount() {
-  
     const { data } = await api.get("/client/refresh/client");
     if (data.sucess) {
       setCliente(data.data);
-     
     }
   }
 
@@ -126,10 +122,9 @@ function ClienteProvider({ children }: IClienteProviderProps) {
   }
 
   function logOut() {
-      deleteLocalStorage();
+    deleteLocalStorage();
     setCliente({} as ICliente);
     setLogado(false);
-  
   }
 
   useEffect(() => {
@@ -270,9 +265,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         setPointsSolicitationList(data.data);
         return data;
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function updateProfile(
@@ -347,9 +340,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         setClienteStore(data.data);
         return data;
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {
@@ -373,7 +364,7 @@ function ClienteProvider({ children }: IClienteProviderProps) {
         sendLinkToResetPass,
         getPointsSolicitationHistoric,
         setClienteStore,
-        refreshAccount
+        refreshAccount,
       }}
     >
       <>{children}</>

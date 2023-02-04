@@ -36,7 +36,6 @@ ChartJS.register(
 const DashboardAdmin = () => {
   const { pointsSolicitationByStoreId } = useCooperator();
 
-  console.log("test", pointsSolicitationByStoreId);
   return (
     <DashboardWrapper>
       <DashboardWrapperMain>
@@ -82,14 +81,7 @@ const DashboardAdmin = () => {
 export default DashboardAdmin;
 
 const RevenueByMonthsChart = () => {
-  const { pointsSolicitationByStoreId, monthlyPurchaseByStoreId } =
-    useCooperator();
-
-  console.log(
-    "bwekbfewjl",
-    pointsSolicitationByStoreId,
-    monthlyPurchaseByStoreId
-  );
+  const { monthlyPurchaseByStoreId } = useCooperator();
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,

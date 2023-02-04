@@ -109,14 +109,12 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   function deleteLocalStorage() {
     localStorage.removeItem(operatorLocalStorage);
     localStorage.removeItem(tokenLocalStorage);
-    
   }
 
   function logOut() {
-        deleteLocalStorage();
+    deleteLocalStorage();
     setCooperator({} as ICooperator);
     setLogado(false);
-
   }
 
   useEffect(() => {
@@ -163,15 +161,18 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   ) {
     const formData = new FormData();
     formData.append("file", image);
-     formData.append("name", product);
-     formData.append("categoryId", category);
-     formData.append("value", unityValue);
-     formData.append("description", description);
-     
-     formData.append("quantity", quantity);
-     formData.append("storeId", String(cooperator.storeId));
+    formData.append("name", product);
+    formData.append("categoryId", category);
+    formData.append("value", unityValue);
+    formData.append("description", description);
+
+    formData.append("quantity", quantity);
+    formData.append("storeId", String(cooperator.storeId));
     try {
-      const { data } = await api.post(`/product/${cooperator.storeId}`, formData);
+      const { data } = await api.post(
+        `/product/${cooperator.storeId}`,
+        formData
+      );
 
       if (data.sucess) {
         enqueueSnackbar("Produto criado com sucesso", {
@@ -202,9 +203,7 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
       if (data.sucess) {
         setProductSelected(data.data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function updateProduct(
@@ -218,15 +217,15 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   ) {
     try {
       const formData = new FormData();
-    formData.append("file", image);
-     formData.append("name", product);
-     formData.append("categoryId", category);
-     formData.append("value", unityValue);
-     formData.append("description", description);
-     formData.append("productId", String(productId));
-     
-     formData.append("quantity", quantity);
-     formData.append("storeId", String(cooperator.storeId));
+      formData.append("file", image);
+      formData.append("name", product);
+      formData.append("categoryId", category);
+      formData.append("value", unityValue);
+      formData.append("description", description);
+      formData.append("productId", String(productId));
+
+      formData.append("quantity", quantity);
+      formData.append("storeId", String(cooperator.storeId));
       const { data } = await api.put(
         `/product/${cooperator.storeId}/${productId}`,
         formData
@@ -320,15 +319,9 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
 
         setCategories(categories);
         return data;
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
-
-  ////////////////
 
   async function pointsSolicitationByStore() {
     try {
@@ -338,12 +331,8 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
 
       if (data.sucess) {
         setPointsSolicitationByStoreId(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function purchaseDeliveredByStore() {
@@ -354,12 +343,8 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
 
       if (data.sucess) {
         setPurchaseDeliveredByStoreId(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function monthlyPurchaseByStore() {
@@ -370,12 +355,8 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
 
       if (data.sucess) {
         setMonthlyPurchaseByStoreId(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function totalNumClient() {
@@ -386,12 +367,8 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
 
       if (data.sucess) {
         setTotalNumClientByStoreId(+data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function topProducts() {
@@ -400,12 +377,8 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
 
       if (data.sucess) {
         setTopProductsList(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {

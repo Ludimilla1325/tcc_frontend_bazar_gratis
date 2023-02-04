@@ -20,6 +20,7 @@ import {
 import api from "../../../../Services/api";
 import { FiPlus } from "react-icons/fi";
 import { useSnackbar } from "notistack";
+import { useMaster } from "../../../../Hooks/master";
 export interface IProduct {
   id: number;
   name: string;
@@ -35,7 +36,7 @@ export interface IProduct {
 export const Products = () => {
   const [products, setProducts] = useState({} as IProduct[]);
   const [categories, setCategories] = useState([] as Array<string>);
-  const[firstRender,setFirstRender ] = useState(true);
+  const [firstRender, setFirstRender] = useState(true);
   const navigate = useNavigate();
   const {
     cooperator,
@@ -45,6 +46,7 @@ export const Products = () => {
     setIsEditProduct,
     setProductSelected,
   } = useCooperator();
+  const masterHook = useMaster();
   const { storeId } = useParams();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -64,15 +66,13 @@ export const Products = () => {
           },
         });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
 
   useEffect(() => {
     setProductSelected({});
     setIsEditProduct(0);
-    setFirstRender(false)
+    setFirstRender(false);
   }, []);
 
   useEffect(() => {
@@ -106,11 +106,13 @@ export const Products = () => {
     getProduct(isEditProduct);
   }, [isEditProduct]);
 
- 
-
   useEffect(() => {
- 
-    if (productSelected && productSelected.id && isEditProduct && !firstRender) {
+    if (
+      productSelected &&
+      productSelected.id &&
+      isEditProduct &&
+      !firstRender
+    ) {
       navigate(`${app_base_url}/create-products`);
     }
   }, [productSelected]);
@@ -119,7 +121,6 @@ export const Products = () => {
     const list = products.filter((item) => item.categoria == category);
     if (list && list.length > 0) {
       return list.map((item) => {
-       
         return (
           <ProductContainer
             onClick={() => {
@@ -165,14 +166,16 @@ export const Products = () => {
       <Wrapper>
         <Body>{renderCategory()}</Body>
       </Wrapper>
-      <PlusButton
-        onClick={() => {
-          setIsEditProduct(0);
-          navigate(`${app_base_url}/create-products`);
-        }}
-      >
-        <FiPlus size={"max(20px,2vw)"} />
-      </PlusButton>
+      {!masterHook.master.id ?? (
+        <PlusButton
+          onClick={() => {
+            setIsEditProduct(0);
+            navigate(`${app_base_url}/create-products`);
+          }}
+        >
+          <FiPlus size={"max(20px,2vw)"} />
+        </PlusButton>
+      )}
     </Container>
   );
 };

@@ -7,7 +7,6 @@ import { useCliente } from "../../Hooks/cliente";
 import api from "../../Services/api";
 import { useState } from "react";
 import { AppointmentDates } from "../Modals/AppointmentDates";
-import DatePicker from "react-datepicker";
 import { useSnackbar } from "notistack";
 
 type ShoppingCartProps = {
@@ -17,8 +16,7 @@ type ShoppingCartProps = {
 export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const { closeCart, cartItems, removeFromCart } = useShoppingCart();
   const { produtos } = useProdutos();
-  const { cliente, logar,refreshAccount } = useCliente();
-  const [agendamentoId, setAgendamentoId] = useState(0);
+  const { cliente, refreshAccount } = useCliente();
   const [appointmentModal, setAppointmentModal] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -62,9 +60,13 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
           refreshAccount();
         }
       } catch (e) {
-        console.log(e);
-      } finally {
-        console.log("ACABOU!");
+        enqueueSnackbar("Erro ao realizar compra!", {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
       }
   }
 

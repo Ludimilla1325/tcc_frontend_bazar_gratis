@@ -80,13 +80,14 @@ function MasterProvider({ children }: IMasterProviderProps) {
   const [master, setMaster] = useState({} as IMaster);
   const [selectedStore, setSelectedStore] = useState({});
   const [isEditedStore, setIsEditedStore] = useState(false);
-  const [selectedCooperator, setSelectedCooperator] = useState({});
+  const [selectedCooperator, setSelectedCooperator] = useState({ id: 0 });
   const [isEditedCooperator, setIsEditedCooperator] = useState(0);
   const [pointsSolicitationList, setPointsSolicitation] = useState([]);
   const [purchaseDeliveredList, setPurchaseDelivered] = useState([]);
   const [monthlyPurchaseList, setMonthlyPurchase] = useState([]);
   const [totalNumberClient, setTotalNumClient] = useState(0);
   const [topProductsList, setTopProductsList] = useState([]);
+
   function saveLocalStorage(cliente: IMaster, token: string) {
     localStorage.setItem(masterLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);
@@ -120,7 +121,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
     deleteLocalStorage();
     setMaster({} as IMaster);
     setLogado(false);
-
   }
 
   async function createStore(
@@ -160,12 +160,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
       const { data } = await api.get(`/store/${storeId}`);
       if (data.sucess) {
         setSelectedStore(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function updateStore(
@@ -175,8 +171,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
     maxPoints: string
   ) {
     try {
-      const { data } = await api.patch(`/store/`, {
-        storeId,
+      const { data } = await api.put(`/store/${master.id}`, {
+        id: isEditedStore,
         name,
         localization,
         maxPoints,
@@ -275,12 +271,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
       const { data } = await api.get(`/cooperator/by_id/${operatorId}`);
       if (data.sucess) {
         setSelectedCooperator(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function updateCooperator(
@@ -292,7 +284,7 @@ function MasterProvider({ children }: IMasterProviderProps) {
     storeId: number
   ) {
     try {
-      const { data } = await api.patch(`/cooperator/`, {
+      const { data } = await api.put(`/cooperator/`, {
         id: cooperatorId,
         name,
         active,
@@ -330,12 +322,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
 
       if (data.sucess) {
         setPointsSolicitation(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function purchaseDelivered() {
@@ -346,12 +334,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
 
       if (data.sucess) {
         setPurchaseDelivered(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function monthlyPurchase() {
@@ -360,12 +344,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
 
       if (data.sucess) {
         setMonthlyPurchase(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function totalNumClient() {
@@ -374,12 +354,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
 
       if (data.sucess) {
         setTotalNumClient(+data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   async function topProducts() {
@@ -388,12 +364,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
 
       if (data.sucess) {
         setTopProductsList(data.data);
-      } else {
-        console.log(data);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {}, []);

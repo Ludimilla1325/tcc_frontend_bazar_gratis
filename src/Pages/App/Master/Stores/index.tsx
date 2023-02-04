@@ -17,7 +17,7 @@ export interface IStore {
 export const Stores = () => {
   const [stores, setStores] = useState({} as IStore[]);
   const [storeFocus, setStoreFocus] = useState({} as IStore);
-  const { master } = useMaster();
+  const { master, setSelectedStore } = useMaster();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   async function handleData() {
@@ -34,9 +34,7 @@ export const Stores = () => {
           },
         });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
   useEffect(() => {
     handleData();
@@ -48,6 +46,7 @@ export const Stores = () => {
         return (
           <Body
             onClick={() => {
+              setSelectedStore(item.id);
               setStoreFocus(item);
             }}
           >

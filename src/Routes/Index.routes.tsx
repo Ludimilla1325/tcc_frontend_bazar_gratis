@@ -14,7 +14,6 @@ export function Routes() {
   const { cooperator, logado } = useCooperator();
   const master = useMaster();
   const client = useCliente();
-  console.log("Client", client);
 
   const cooperatorLogado = logado;
 

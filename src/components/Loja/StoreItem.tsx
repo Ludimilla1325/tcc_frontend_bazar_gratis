@@ -2,8 +2,7 @@ import { Button, Card } from "react-bootstrap";
 import { StoreItemProps } from "../../Context/ProdutosContext";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
 import { formatarDinheiro } from "../../Utils/formatarDinheiro";
-import {baseUrlApi} from "../../Utils/urls";
-
+import { baseUrlApi } from "../../Utils/urls";
 
 export function StoreItem({ id, name, photo, value }: StoreItemProps) {
   const {
@@ -14,12 +13,13 @@ export function StoreItem({ id, name, photo, value }: StoreItemProps) {
   } = useShoppingCart();
 
   const quantity = getItemQuantity(id);
-  console.log(quantity);
   return (
     <Card className="h-100">
       <Card.Img
         variant="top"
-        src={photo.indexOf("http")==-1?baseUrlApi+"/photo/"+photo:photo}
+        src={
+          photo.indexOf("http") == -1 ? baseUrlApi + "/photo/" + photo : photo
+        }
         height="200px"
         style={{ objectFit: "cover" }}
       />

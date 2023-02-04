@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./picker.css";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 import Modal from "react-modal";
 import theme from "../../../Styles/theme";
-import { Button, Container, DivX, Label, Message, Title } from "./styles";
+import { Button, Container, DivX, Label, Title } from "./styles";
 import pt_BR from "date-fns/locale/pt-BR"; // the locale you want
 import api from "../../../Services/api";
 import { useCliente } from "../../../Hooks/cliente";
@@ -48,7 +48,7 @@ export function AppointmentDates({
   const [appointmentDate, setAppointmentDate] = useState(new Date());
   const [dates, setDates] = useState(["2022-12-5"]);
   const [appointments, setAppointments] = useState({} as IAppointment[]);
-  const { cliente ,refreshAccount} = useCliente();
+  const { cliente } = useCliente();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -66,9 +66,7 @@ export function AppointmentDates({
           },
         });
       }
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }
   useEffect(() => {
     handleData();
@@ -142,9 +140,7 @@ export function AppointmentDates({
               clientId: cliente.id,
             });
             if (data.sucess) {
-              
               handleSetAgendamentoId(data.data.id);
-         
             } else {
               enqueueSnackbar(`${data.message}`, {
                 variant: "error",

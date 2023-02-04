@@ -23,8 +23,6 @@ export const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
-  console.log("test", clienteStore, cliente);
-
   const [formValue, setFormValue] = useState({
     name: clienteStore.name,
     phone: clienteStore.phone,

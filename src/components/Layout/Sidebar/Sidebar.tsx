@@ -154,29 +154,25 @@ const Sidebar: FC = () => {
             ""
           )}
 
-          {clienteHook.cliente.id ? (
-           
-              cartQuantity > 0 && (
-              <div>
-                  <AiOutlineShoppingCart size={"max(18px,2vw)"} onClick={openCart}/>
+          {clienteHook.cliente.id
+            ? cartQuantity > 0 && (
+                <div>
+                  <AiOutlineShoppingCart
+                    size={"max(18px,2vw)"}
+                    onClick={openCart}
+                  />
 
                   <span>{cartQuantity}</span>
-                  </div>
+                </div>
               )
-            
-          ) : (
-            ""
-          )}
+            : ""}
 
           <NavLeft
             to="#"
             onClick={() => {
-              if(clienteHook.logado)
-              clienteHook.logOut();
-              if(masterHook.logado)
-              masterHook.logOut();
-              if(cooperatorHook.logado)
-              cooperatorHook.logOut();
+              if (clienteHook.logado) clienteHook.logOut();
+              if (masterHook.logado) masterHook.logOut();
+              if (cooperatorHook.logado) cooperatorHook.logOut();
               navigate(`${app_base_url}/home`);
             }}
           >

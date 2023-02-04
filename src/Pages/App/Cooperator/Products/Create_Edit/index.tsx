@@ -155,11 +155,10 @@ export const CreateAndEditProduct = () => {
                 setFile(null);
               }
             }
-if(ev.target.value){
-  handleChangeForm("image", ev); //verificar se foi preenchido
-  setFileTeste(ev.target.value);
-}
-            
+            if (ev.target.value) {
+              handleChangeForm("image", ev); //verificar se foi preenchido
+              setFileTeste(ev.target.value);
+            }
           }}
           type={"file"}
         />

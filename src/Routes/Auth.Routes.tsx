@@ -18,16 +18,10 @@ export function AuthRoutes() {
   return (
     <Router>
       <Navbar />
-      
       <Routes>
-        
-        <Route
-          path={`${app_base_url}/Home`}
-          element={<Home />}
-        ></Route>
+        <Route path={`${app_base_url}/Home`} element={<Home />}></Route>
       </Routes>
       <Routes>
-        
         <Route
           path={`${app_base_url}/register`}
           element={<ClientRegister />}

@@ -19,6 +19,7 @@ import { CooperatorRegister } from "../Pages/App/Master/Employee";
 import Dashboard from "../Pages/App/Master/Dashboard/Dashboard";
 import { Profile } from "../Pages/App/Cooperator/Profile";
 import { CreateAndEditStore } from "../Pages/App/Master/Create_Edit_Store";
+import { CreateAndEditProduct } from "../Pages/App/Cooperator/Products/Create_Edit";
 
 const MasterRoutes: FC = () => {
   return (

@@ -34,6 +34,7 @@ export const CooperatorRegister = () => {
     isEditedCooperator != 0 ? selectedCooperator.admin : false
   );
   const navigate = useNavigate();
+
   const storeList = stores.map((store) => {
     return <option value={store.id}>{store.name}</option>;
   });
@@ -47,6 +48,11 @@ export const CooperatorRegister = () => {
     confirmPass: "",
   });
 
+  const store =
+    isEditedCooperator != 0
+      ? `${selectedCooperator.Store.name}, ${selectedCooperator.Store.localization}`
+      : "";
+
   const handleChangeForm = (name: string, event: any) => {
     setFormValue({
       ...formValue,
@@ -56,11 +62,9 @@ export const CooperatorRegister = () => {
 
   useEffect(() => {}, [isEditedCooperator, selectedCooperator]);
 
-  console.log(isEditedCooperator, selectedCooperator);
-
   return (
     <Container>
-      {selectedCooperator != 0 ? (
+      {isEditedCooperator != 0 ? (
         <Title>Atualizar Funcionário</Title>
       ) : (
         <Title>Cadastro de Funcionário</Title>
@@ -100,11 +104,7 @@ export const CooperatorRegister = () => {
         Selecionar Loja
         <Select onChange={(ev) => handleChangeForm("store", ev)}>
           <option value="" hidden>
-            {isEditedCooperator != 0
-              ? "test"
-              : // `${selectedCooperator.Store.name}, ${selectedCooperator.Store.localization}`
-                //
-                ""}
+            {isEditedCooperator != 0 ? store : ""}
           </option>
           {storeList}
         </Select>
@@ -137,7 +137,6 @@ export const CooperatorRegister = () => {
             checked={active}
             type="checkbox"
             onChange={(ev) => {
-              console.log("ev", ev.target.checked);
               setActive(ev.target.checked);
             }}
           />
@@ -168,6 +167,10 @@ export const CooperatorRegister = () => {
                 administrator,
                 formValue.store
               );
+
+              setIsEditedCooperator(0);
+              setSelectedCooperator({});
+              navigate(`${app_base_url}/colaboradores`);
             }}
           >
             Atualizar
@@ -184,25 +187,38 @@ export const CooperatorRegister = () => {
           </BackButton>
         </>
       ) : (
-        <Button
-          onClick={async () => {
-            setLoading(true);
-            if (formValue.password === formValue.confirmPass) {
-              await createCooperator(
-                formValue.name,
-                formValue.email,
-                formValue.cpf,
-                active,
-                administrator,
-                formValue.store,
-                formValue.password
-              );
-            }
-            setLoading(false);
-          }}
-        >
-          Confirmar
-        </Button>
+        <>
+          <Button
+            onClick={async () => {
+              setLoading(true);
+              if (formValue.password === formValue.confirmPass) {
+                await createCooperator(
+                  formValue.name,
+                  formValue.email,
+                  formValue.cpf,
+                  active,
+                  administrator,
+                  formValue.store,
+                  formValue.password
+                );
+              }
+              setLoading(false);
+              navigate(`${app_base_url}/colaboradores`);
+            }}
+          >
+            Confirmar
+          </Button>
+
+          <BackButton
+            onClick={() => {
+              setIsEditedCooperator(0);
+              setSelectedCooperator({});
+              navigate(`${app_base_url}/colaboradores`);
+            }}
+          >
+            Voltar
+          </BackButton>
+        </>
       )}
     </Container>
   );

@@ -5,9 +5,7 @@ import DashboardWrapper, {
   DashboardWrapperMain,
   DashboardWrapperRight,
 } from "../../../../components/Dashboard/dashboard-wrapper/DashboardWrapper";
-import SummaryBox, {
-  SummaryBoxSpecial,
-} from "../../../../components/Dashboard/summary-box/SummaryBox";
+import SummaryBox from "../../../../components/Dashboard/summary-box/SummaryBox";
 import { colors, data } from "../../../../constants";
 import {
   Chart as ChartJS,
@@ -39,7 +37,7 @@ const Dashboard = () => {
     <DashboardWrapper>
       <DashboardWrapperMain>
         <div className="row">
-          <div className="col-12 col-md-12">
+          <div className="col-8 col-md-12">
             <div className="row">
               {pointsSolicitationList.map((item, index) => (
                 <div
@@ -61,12 +59,12 @@ const Dashboard = () => {
         </div>
       </DashboardWrapperMain>
       <DashboardWrapperRight>
-        <div className="title mb">Overall</div>
+        <div className="title mb">Cestas entregues</div>
         <div className="mb">
           <OverallList />
         </div>
 
-        <div className="title mb">Lista de Alimentos</div>
+        <div className="title mb">Top alimentos que mais são retirados</div>
         <div className="mb">
           <RevenueList />
         </div>
@@ -124,7 +122,9 @@ const RevenueByMonthsChart = () => {
   };
   return (
     <>
-      <div className="title mb">Revenue by months</div>
+      <div className="title mb">
+        Gráfico por mês das cestas entregues nos últimos 365 dias
+      </div>
       <div>
         <Bar options={chartOptions} data={chartData} height={`300px`} />
       </div>

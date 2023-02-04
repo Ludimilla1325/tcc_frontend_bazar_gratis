@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  IndexRouteProps,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "../components/Layout/Navbar/Navbar";
 import { ForgotPass } from "../Pages/App/Client/ForgotPass";
 import { ClientLogin } from "../Pages/Auth/ClientLogin";

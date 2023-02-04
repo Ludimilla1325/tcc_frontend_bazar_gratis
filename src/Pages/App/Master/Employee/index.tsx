@@ -11,7 +11,9 @@ import {
   InpuToggle,
   Select,
   BackButton,
+  ErrorMessage,
 } from "./styles";
+import * as yup from "yup";
 import { useGeral } from "../../../../Hooks/geral";
 import { useMaster } from "../../../../Hooks/master";
 import { useNavigate } from "react-router";
@@ -53,6 +55,27 @@ export const CooperatorRegister = () => {
       ? `${selectedCooperator.Store.name}, ${selectedCooperator.Store.localization}`
       : "";
 
+  const [errors, setErrors] = useState({
+    name: false,
+    email: false,
+    cpf: false,
+    store: false,
+    password: false,
+    confirmPass: false,
+  });
+
+  const formSchema = yup.object().shape({
+    name: yup.string().required(),
+    email: yup.string().email().required(),
+    cpf: yup.string().required().min(11).max(11),
+    store: yup.number().required(),
+    password: yup.string().required().min(8),
+    confirmPass: yup
+      .string()
+      .required()
+      .oneOf([yup.ref("password")]),
+  });
+
   const handleChangeForm = (name: string, event: any) => {
     setFormValue({
       ...formValue,
@@ -77,6 +100,11 @@ export const CooperatorRegister = () => {
           onChange={(ev) => handleChangeForm("name", ev)}
           placeholder="Digite o nome!"
         />
+        {errors.name ? (
+          <ErrorMessage>Nome é um campo obrigatório</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
       {isEditedCooperator != 0 ? (
         " "
@@ -89,6 +117,14 @@ export const CooperatorRegister = () => {
               onChange={(ev) => handleChangeForm("email", ev)}
               placeholder="Digite o email!"
             />
+            {errors.email ? (
+              <>
+                <ErrorMessage>Campo obrigatório</ErrorMessage>
+                <ErrorMessage>Digite um email válido</ErrorMessage>
+              </>
+            ) : (
+              ""
+            )}
           </Label>
           <Label>
             <SpanLabel>CPF</SpanLabel>
@@ -97,6 +133,14 @@ export const CooperatorRegister = () => {
               onChange={(ev) => handleChangeForm("cpf", ev)}
               placeholder="Digite o cpf!"
             />
+            {errors.cpf ? (
+              <>
+                <ErrorMessage>Campo obrigatório</ErrorMessage>
+                <ErrorMessage>Deve ter 11 dígitos, sem pontuações</ErrorMessage>
+              </>
+            ) : (
+              ""
+            )}
           </Label>
         </>
       )}
@@ -108,6 +152,11 @@ export const CooperatorRegister = () => {
           </option>
           {storeList}
         </Select>
+        {errors.store ? (
+          <ErrorMessage>Uma loja deve ser escolhida</ErrorMessage>
+        ) : (
+          ""
+        )}
       </Label>
 
       {isEditedCooperator != 0 ? (
@@ -120,6 +169,14 @@ export const CooperatorRegister = () => {
               value={formValue.password}
               onChange={(ev) => handleChangeForm("password", ev)}
             />
+            {errors.password ? (
+              <>
+                <ErrorMessage>Campo obrigatório</ErrorMessage>
+                <ErrorMessage>Deve ter no mínimo 8 caracteres</ErrorMessage>
+              </>
+            ) : (
+              ""
+            )}
           </Label>
           <Label>
             Confirmar Senha
@@ -128,6 +185,13 @@ export const CooperatorRegister = () => {
               onChange={(ev) => handleChangeForm("confirmPass", ev)}
             />
           </Label>
+          {errors.confirmPass ? (
+            <ErrorMessage>
+              Campo obrigatório e deve corresponder ao campo senha
+            </ErrorMessage>
+          ) : (
+            ""
+          )}
         </>
       )}
       <div>
@@ -158,19 +222,42 @@ export const CooperatorRegister = () => {
         <>
           <Button
             onClick={async () => {
-              setLoading(true);
-              await updateCooperator(
-                selectedCooperator.id,
-                formValue.name,
-                formValue.email,
-                active,
-                administrator,
-                formValue.store
-              );
+              const isFormValid = await formSchema.isValid(formValue, {
+                abortEarly: false, // Prevent aborting validation after first error
+              });
 
-              setIsEditedCooperator(0);
-              setSelectedCooperator({});
-              navigate(`${app_base_url}/colaboradores`);
+              if (isFormValid) {
+                setLoading(true);
+                await updateCooperator(
+                  selectedCooperator.id,
+                  formValue.name,
+                  formValue.email,
+                  active,
+                  administrator,
+                  formValue.store
+                );
+
+                setIsEditedCooperator(0);
+                setSelectedCooperator({});
+                navigate(`${app_base_url}/colaboradores`);
+              } else {
+                formSchema
+                  .validate(formValue, { abortEarly: false })
+                  .catch((err) => {
+                    const errors = err.inner.reduce(
+                      (acc: any, error: any) => {
+                        return {
+                          ...acc,
+                          [error.path]: true,
+                        };
+                      },
+
+                      {}
+                    );
+
+                    setErrors(errors);
+                  });
+              }
             }}
           >
             Atualizar
@@ -190,20 +277,43 @@ export const CooperatorRegister = () => {
         <>
           <Button
             onClick={async () => {
-              setLoading(true);
-              if (formValue.password === formValue.confirmPass) {
-                await createCooperator(
-                  formValue.name,
-                  formValue.email,
-                  formValue.cpf,
-                  active,
-                  administrator,
-                  formValue.store,
-                  formValue.password
-                );
+              const isFormValid = await formSchema.isValid(formValue, {
+                abortEarly: false, // Prevent aborting validation after first error
+              });
+
+              if (isFormValid) {
+                setLoading(true);
+                if (formValue.password === formValue.confirmPass) {
+                  await createCooperator(
+                    formValue.name,
+                    formValue.email,
+                    formValue.cpf,
+                    active,
+                    administrator,
+                    formValue.store,
+                    formValue.password
+                  );
+                }
+                setLoading(false);
+                navigate(`${app_base_url}/colaboradores`);
+              } else {
+                formSchema
+                  .validate(formValue, { abortEarly: false })
+                  .catch((err) => {
+                    const errors = err.inner.reduce(
+                      (acc: any, error: any) => {
+                        return {
+                          ...acc,
+                          [error.path]: true,
+                        };
+                      },
+
+                      {}
+                    );
+
+                    setErrors(errors);
+                  });
               }
-              setLoading(false);
-              navigate(`${app_base_url}/colaboradores`);
             }}
           >
             Confirmar

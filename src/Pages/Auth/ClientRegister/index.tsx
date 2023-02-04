@@ -93,9 +93,10 @@ export const ClientRegister = () => {
           onChange={(ev) => handleChangeForm("email", ev)}
         />
         {errors.email ? (
-          <ErrorMessage>
-            Email é um campo obrigatório e deve ser um email válido
-          </ErrorMessage>
+          <>
+            <ErrorMessage>Campo obrigatório</ErrorMessage>
+            <ErrorMessage>Digite um email válido</ErrorMessage>
+          </>
         ) : (
           ""
         )}
@@ -119,9 +120,10 @@ export const ClientRegister = () => {
           onChange={(ev) => handleChangeForm("cpf", ev)}
         />
         {errors.cpf ? (
-          <ErrorMessage>
-            CPF é um campo obrigatório e deve ter 11 dígitos, sem pontuações
-          </ErrorMessage>
+          <>
+            <ErrorMessage>Campo obrigatório</ErrorMessage>
+            <ErrorMessage>Deve ter 11 dígitos, sem pontuações</ErrorMessage>
+          </>
         ) : (
           ""
         )}
@@ -158,9 +160,10 @@ export const ClientRegister = () => {
           onChange={(ev) => handleChangeForm("password", ev)}
         />
         {errors.password ? (
-          <ErrorMessage>
-            Senha é um campo obrigatório e deve ter no mínimo 8 caracteres
-          </ErrorMessage>
+          <>
+            <ErrorMessage>Campo obrigatório</ErrorMessage>
+            <ErrorMessage>Deve ter no mínimo 8 caracteres</ErrorMessage>
+          </>
         ) : (
           ""
         )}

@@ -136,3 +136,7 @@ export const Select = styled.select`
     padding: 0px 2px 1px;
   }
 `;
+export const ErrorMessage = styled.span`
+  color: #d8000c;
+  background-color: #ffbaba;
+`;

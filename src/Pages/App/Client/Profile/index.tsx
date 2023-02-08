@@ -29,8 +29,6 @@ export const Profile = () => {
     cpf: clienteStore.cpf,
     cep: clienteStore.cep,
     store: clienteStore.storeId,
-    password: "",
-    confirmPass: "",
   });
 
   const [errors, setErrors] = useState({
@@ -39,8 +37,6 @@ export const Profile = () => {
     cpf: false,
     cep: false,
     store: false,
-    password: false,
-    confirmPass: false,
   });
 
   const formSchema = yup.object().shape({
@@ -49,11 +45,6 @@ export const Profile = () => {
     cpf: yup.string().required().min(11).max(11),
     cep: yup.string().required(),
     store: yup.number().required(),
-    password: yup.string().required().min(8),
-    confirmPass: yup
-      .string()
-      .required()
-      .oneOf([yup.ref("password")]),
   });
 
   const storeList = stores.map((store) => {

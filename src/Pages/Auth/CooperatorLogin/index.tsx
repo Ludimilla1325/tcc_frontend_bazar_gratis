@@ -37,8 +37,6 @@ export const CooperatorLogin = () => {
         />
       </Label>
 
-      <Span>Esqueceu a Senha?</Span>
-
       <LoginButton
         onClick={async () => {
           try {

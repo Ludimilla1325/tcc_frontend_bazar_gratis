@@ -36,8 +36,6 @@ export const MasterLogin = () => {
         />
       </Label>
 
-      <Span>Esqueceu a Senha?</Span>
-
       <LoginButton
         onClick={async () => {
           try {

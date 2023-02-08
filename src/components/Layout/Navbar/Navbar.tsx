@@ -39,7 +39,7 @@ const Navbar: FC = () => {
             color: "white",
           }}
         >
-          <a href="url">
+          <a href="home">
             <p style={{ margin: "8px", color: "white" }}>Home</p>
           </a>
           <a href="login">

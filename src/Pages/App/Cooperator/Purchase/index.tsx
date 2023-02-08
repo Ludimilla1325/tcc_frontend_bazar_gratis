@@ -1,6 +1,7 @@
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { AppointmentDetails } from "../../../../components/Modals/AppointmentDetails";
+import { useCooperator } from "../../../../Hooks/cooperator";
 import api from "../../../../Services/api";
 import theme from "../../../../Styles/theme";
 import {
@@ -30,13 +31,14 @@ export const Purchase = () => {
   const [appointementsFocus, setAppointementFocus] = useState(
     {} as IAppointement
   );
+  const{cooperator} = useCooperator();
 
   const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
       //cancelar reservas nao retiradas no prazo
       await api.get("/appointment-client/cancelReservations");
-      const { data } = await api.get(`/appointment-client`);
+      const { data } = await api.get(`/appointment-client/byStore/${cooperator.storeId}`);
 
       console.log("dat", data);
 

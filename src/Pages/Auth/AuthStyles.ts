@@ -31,10 +31,10 @@ export const Input = styled.input`
   border: none;
   border-radius: 0.25rem;
   color: ${theme.colors.light};
-  font-size: max(1vw, 10px);
+  font-size: max(1vw, 14px);
   padding: max(0.4vw, 8px);
 
-  min-width: 20vw;
+  min-width: max(20vw,300px);
   margin-bottom: 1vh;
 `;
 export const Span = styled.div`
@@ -49,14 +49,15 @@ export const LoginButton = styled.button`
   background-color: ${theme.colors.secondary};
   color: ${theme.colors.light};
   min-width: 20vw;
-  padding: 0.6vw;
+  padding: max(0.6vw,6px);
   border-radius: 0.25rem;
   margin-bottom: 2vh;
-  font-size: max(1.2vw, 12px);
-  margin-top: 0.5ch;
+  font-size: max(1.2vw, 14px);
+  margin-top: max(0.5vh,15px);
 `;
 
 export const SpanLabel = styled.span`
   margin-left: 0.8vw;
   padding-bottom: 0.2vh;
+   font-size: max(1.2vw, 14px);
 `;

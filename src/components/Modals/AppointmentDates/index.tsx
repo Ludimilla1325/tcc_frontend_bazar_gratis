@@ -138,6 +138,7 @@ export function AppointmentDates({
                   }-${appointmentDate.getDate()}`
               )[0].id,
               clientId: cliente.id,
+              storeId: cliente.storeId,
             });
             if (data.sucess) {
               handleSetAgendamentoId(data.data.id);

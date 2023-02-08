@@ -12,6 +12,7 @@ import {
   tokenLocalStorage,
   tokenTimeLocalStorage,
 } from "../Utils/localStorage";
+import { useGeral } from "./geral";
 
 interface ICooperatorProviderProps {
   children: ReactNode;
@@ -78,12 +79,12 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
   const [purchaseDeliveredByStoreId, setPurchaseDeliveredByStoreId] = useState(
     []
   );
+
   const [monthlyPurchaseByStoreId, setMonthlyPurchaseByStoreId] = useState([]);
   const [totalNumClientStoreId, setTotalNumClientByStoreId] = useState(0);
   const [topProductsList, setTopProductsList] = useState([]);
 
   const { enqueueSnackbar } = useSnackbar();
-
   function saveLocalStorage(cliente: ICooperator, token: string) {
     localStorage.setItem(operatorLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);

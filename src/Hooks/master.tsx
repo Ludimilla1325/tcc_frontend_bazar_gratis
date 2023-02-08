@@ -12,6 +12,7 @@ import {
   tokenLocalStorage,
   tokenTimeLocalStorage,
 } from "../Utils/localStorage";
+import { useGeral } from "./geral";
 
 interface IMasterProviderProps {
   children: ReactNode;
@@ -87,7 +88,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
   const [monthlyPurchaseList, setMonthlyPurchase] = useState([]);
   const [totalNumberClient, setTotalNumClient] = useState(0);
   const [topProductsList, setTopProductsList] = useState([]);
-
   function saveLocalStorage(cliente: IMaster, token: string) {
     localStorage.setItem(masterLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);

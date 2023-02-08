@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import {
   Container,
@@ -19,10 +19,10 @@ import { useGeral } from "../../../Hooks/geral";
 export const ClientRegister = () => {
   const navigate = useNavigate();
   const { register } = useCliente();
-  const { stores } = useGeral();
+  const { storeList } = useGeral();
   const [loading, setLoading] = useState(false);
 
-  const storeList = stores.map((store) => {
+  const storeListReturned = storeList.map((store) => {
     return <option value={store.id}>{store.name}</option>;
   });
 
@@ -144,7 +144,7 @@ export const ClientRegister = () => {
         Selecionar Loja
         <Select onChange={(ev) => handleChangeForm("store", ev)}>
           <option value="" hidden></option>
-          {storeList}
+          {storeListReturned}
         </Select>
         {errors.store ? (
           <ErrorMessage>Uma loja deve ser escolhida</ErrorMessage>

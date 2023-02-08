@@ -1,7 +1,6 @@
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { AppointmentDetails } from "../../../../components/Modals/AppointmentDetails";
-import { useCooperator } from "../../../../Hooks/cooperator";
 import api from "../../../../Services/api";
 import theme from "../../../../Styles/theme";
 import {
@@ -28,7 +27,6 @@ export interface IAppointement {
 export const Purchase = () => {
   const [appointements, setAppointements] = useState({} as IAppointement[]);
   const [statusList, setStatusList] = useState(1 as 1 | 2);
-  const { cooperator } = useCooperator();
   const [appointementsFocus, setAppointementFocus] = useState(
     {} as IAppointement
   );
@@ -39,6 +37,9 @@ export const Purchase = () => {
       //cancelar reservas nao retiradas no prazo
       await api.get("/appointment-client/cancelReservations");
       const { data } = await api.get(`/appointment-client`);
+
+      console.log("dat", data);
+
       if (data.sucess) {
         setAppointements(data.data);
       } else {
@@ -55,6 +56,8 @@ export const Purchase = () => {
   useEffect(() => {
     handleData();
   }, [appointementsFocus]);
+
+  console.log("app", appointements);
 
   function renderData() {
     if (appointements && appointements.length > 0) {

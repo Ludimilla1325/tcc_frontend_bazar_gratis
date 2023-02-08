@@ -17,7 +17,7 @@ import { useGeral } from "../../../../Hooks/geral";
 import { useSnackbar } from "notistack";
 export const Profile = () => {
   const navigate = useNavigate();
-  const { stores } = useGeral();
+  const { storeList } = useGeral();
   const { updateProfile, clienteStore, cliente, setClienteStore } =
     useCliente();
   const [loading, setLoading] = useState(false);
@@ -47,7 +47,7 @@ export const Profile = () => {
     store: yup.number().required(),
   });
 
-  const storeList = stores.map((store) => {
+  const storeListReturned = storeList.map((store) => {
     return <option value={store.id}>{store.name}</option>;
   });
 
@@ -122,7 +122,7 @@ export const Profile = () => {
               <option value="" hidden>
                 {store}
               </option>
-              {storeList}
+              {storeListReturned}
             </Select>
             {errors.store ? (
               <ErrorMessage>Uma loja deve ser escolhida</ErrorMessage>

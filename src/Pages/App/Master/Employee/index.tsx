@@ -19,7 +19,7 @@ import { useMaster } from "../../../../Hooks/master";
 import { useNavigate } from "react-router";
 import { app_base_url } from "../../../../Utils/urls";
 export const CooperatorRegister = () => {
-  const { stores } = useGeral();
+  const { storeList } = useGeral();
   const {
     createCooperator,
     isEditedCooperator,
@@ -37,7 +37,9 @@ export const CooperatorRegister = () => {
   );
   const navigate = useNavigate();
 
-  const storeList = stores.map((store) => {
+  console.log("hehe", storeList);
+
+  const storeListReturned = storeList.map((store) => {
     return <option value={store.id}>{store.name}</option>;
   });
 
@@ -150,7 +152,7 @@ export const CooperatorRegister = () => {
           <option value="" hidden>
             {isEditedCooperator != 0 ? store : ""}
           </option>
-          {storeList}
+          {storeListReturned}
         </Select>
         {errors.store ? (
           <ErrorMessage>Uma loja deve ser escolhida</ErrorMessage>

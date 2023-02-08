@@ -12,30 +12,29 @@ interface IGeralProviderProps {
 }
 
 interface IGeralContextData {
-  stores: Array<any>;
+  storeList: Array<any>;
   getStores: any;
 }
 
 const GeralContext = createContext({} as IGeralContextData);
 
 function GeralProvider({ children }: IGeralProviderProps) {
-  const [stores, setStores] = useState([]);
+  const [storeList, setStoreList] = useState([]);
 
   async function getStores() {
     try {
       const { data } = await api.get(`/store/`);
 
       if (data.sucess) {
-        const stores = data.data.map((store: any) => {
-          setStores(stores);
+        const storeList = data.data.map((store: any) => {
           return { id: store.id, name: `${store.name}, ${store.localization}` };
         });
+        setStoreList(storeList);
 
         return data;
       }
     } catch (error) {}
   }
-
   useEffect(() => {
     getStores();
   }, []);
@@ -43,7 +42,7 @@ function GeralProvider({ children }: IGeralProviderProps) {
   return (
     <GeralContext.Provider
       value={{
-        stores,
+        storeList,
         getStores,
       }}
     >

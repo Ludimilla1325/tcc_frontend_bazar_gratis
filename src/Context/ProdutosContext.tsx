@@ -1,5 +1,6 @@
 import { useSnackbar } from "notistack";
 import { createContext, ReactNode, useContext, useState } from "react";
+import { useCliente } from "../Hooks/cliente";
 
 import api from "../Services/api";
 
@@ -36,10 +37,11 @@ export function useProdutos() {
 
 export function ProdutosProvider({ children }: ShoppingCartProviderProps) {
   const [produtos, setProdutos] = useState({} as StoreItemProps[]);
+  const{cliente} = useCliente();
   const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
-      const { data } = await api.get("/product/1");
+      const { data } = await api.get("/product/"+cliente.storeId);
 
       setProdutos(data.data);
     } catch (e) {

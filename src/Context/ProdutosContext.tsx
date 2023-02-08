@@ -1,5 +1,11 @@
 import { useSnackbar } from "notistack";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useCliente } from "../Hooks/cliente";
 
 import api from "../Services/api";
@@ -16,6 +22,8 @@ type CartItem = {
 type ProdutosContext = {
   produtos: StoreItemProps[];
   handleData: () => Promise<void>;
+  handlefirstRender:()=>void;
+  firstRender:boolean;
 };
 
 export type StoreItemProps = {
@@ -37,13 +45,20 @@ export function useProdutos() {
 
 export function ProdutosProvider({ children }: ShoppingCartProviderProps) {
   const [produtos, setProdutos] = useState({} as StoreItemProps[]);
-  const{cliente} = useCliente();
+  const { cliente } = useCliente();
   const { enqueueSnackbar } = useSnackbar();
+  const[firstRender, setFirstRender] = useState(false);
+
+function  handlefirstRender(){
+  setFirstRender(!firstRender);
+}
+
   async function handleData() {
     try {
-      const { data } = await api.get("/product/"+cliente.storeId);
+      const { data } = await api.get("/product/" + cliente.storeId);
 
       setProdutos(data.data);
+      handlefirstRender();
     } catch (e) {
       enqueueSnackbar(`Erro`, {
         variant: "error",
@@ -55,11 +70,17 @@ export function ProdutosProvider({ children }: ShoppingCartProviderProps) {
     }
   }
 
+  useEffect(() => {
+   // handleData();
+  }, []);
+
   return (
     <ProdutosContext.Provider
       value={{
         produtos,
         handleData,
+        handlefirstRender,
+        firstRender
       }}
     >
       {children}

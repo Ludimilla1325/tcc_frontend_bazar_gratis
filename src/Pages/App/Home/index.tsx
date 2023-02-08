@@ -18,11 +18,12 @@ interface IHandleProdutoCard {
 
 export const Home = () => {
   const { cliente, refreshAccount } = useCliente();
-  const { produtos, handleData } = useProdutos();
+  const { produtos, handleData, firstRender, handlefirstRender } =
+    useProdutos();
   const [handleCard, setHandleCard] = useState([] as IHandleProdutoCard[]);
+  const [categorias, setCategorias] = useState(0);
 
   useEffect(() => {
-    if( produtos)
     handleData();
   }, []);
 
@@ -48,8 +49,10 @@ export const Home = () => {
     if (produtos) {
       if (produtos.length > 0) {
         produtos.forEach((element) => {
-          if (element.categoria != aux_categoria) {
+          if (element.categoria != aux_categoria && firstRender) {
+            handlefirstRender();
             aux_categorias.push(element.categoria);
+            setCategorias((prev) => prev++);
             aux_categoria = element.categoria;
           }
         });
@@ -62,7 +65,7 @@ export const Home = () => {
           );
         });
     }
-  }, [produtos.length]);
+  }, [produtos.length,firstRender]);
 
   useEffect(() => {}, [handleCard]);
 
@@ -84,8 +87,8 @@ export const Home = () => {
         return handleCard.map((item) => {
           return (
             <>
-              <h2 style={{padding:"1.5vw"}}>{item.categoria} </h2>
-              <Row md={2} xs={1} lg={4} className="g-3" >
+              <h2 style={{ padding: "1.5vw" }}>{item.categoria} </h2>
+              <Row md={2} xs={1} lg={4} className="g-3">
                 {renderItens(item.produtos)}
               </Row>
             </>

@@ -14,7 +14,7 @@ export function AuthRoutes() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path={`${app_base_url}/Home`} element={<Home />}></Route>
+        <Route path={`${app_base_url}/home`} element={<Home />}></Route>
       </Routes>
       <Routes>
         <Route

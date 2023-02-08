@@ -33,7 +33,10 @@ export const Input = styled.input`
   color: ${theme.colors.light};
   font-size: max(1vw, 10px);
   padding: 0.4vw;
+  font-size: max(1vw, 14px);
+  padding: max(0.4vw,15px);
 
+  min-width: max(30vw,300px);
   min-width: 36vw;
   min-height: 2vw;
   margin-bottom: 1vh;

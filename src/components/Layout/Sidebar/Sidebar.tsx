@@ -171,16 +171,19 @@ const Sidebar: FC = () => {
             to="#"
             onClick={() => {
               if (clienteHook.logado) {
-                clienteHook.logOut();
                 navigate(`${app_base_url}/home`);
+                clienteHook.logOut();
+               
               }
               if (masterHook.logado) {
-                masterHook.logOut();
                 navigate(`${app_base_url}/master-login`);
+                masterHook.logOut();
+               
               }
               if (cooperatorHook.logado) {
-                cooperatorHook.logOut();
                 navigate(`${app_base_url}/cooperator-login`);
+                cooperatorHook.logOut();
+              
               }
               navigate(`${app_base_url}/home`);
             }}

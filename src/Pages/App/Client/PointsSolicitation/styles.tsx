@@ -62,24 +62,36 @@ export const Input = styled.input`
   border: none;
   border-radius: 0.25rem;
   color: ${theme.colors.light};
-  font-size: max(1vw, 10px);
-  padding: 0.4vw;
+  font-size: max(1vw, 14px);
+  padding: max(0.4vw,15px);
 
-  min-width: 30vw;
+  min-width: max(30vw,300px);
   min-height: 2vw;
   margin-bottom: 1vh;
 `;
 
 export const InputJustification = styled.input`
-  background-color: ${theme.colors.primary};
+  /* background-color: ${theme.colors.primary};
   border: none;
   border-radius: 0.25rem;
   color: ${theme.colors.light};
-  font-size: max(1vw, 10px);
+  font-size: max(1vw, 14px);
+  min-width: max(30vw,300px);
   padding: 0.4vw;
 
   min-width: 30vw;
   min-height: 10vw;
+  margin-bottom: 1vh; */
+
+  background-color: ${theme.colors.primary};
+  border: none;
+  border-radius: 0.25rem;
+  color: ${theme.colors.light};
+  font-size: max(1vw, 14px);
+  padding: max(0.4vw,15px);
+
+  min-width: max(30vw,300px);
+  min-height: 2vw;
   margin-bottom: 1vh;
 `;
 export const Span = styled.div`
@@ -94,11 +106,11 @@ export const LoginButton = styled.button`
   background-color: ${theme.colors.secondary};
   color: ${theme.colors.light};
   min-width: 20vw;
-  padding: 0.6vw;
+  padding: max(0.6vw,10px);
   border-radius: 0.25rem;
   margin-bottom: 2vh;
-  font-size: max(1.2vw, 12px);
-  margin-top: 2ch;
+  font-size: max(1.2vw, 14px);
+  margin-top: 5vh;
 `;
 
 export const SpanLabel = styled.span`

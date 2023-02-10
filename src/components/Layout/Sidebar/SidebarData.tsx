@@ -108,6 +108,14 @@ export const SidebarDataAdmin: SidebarItem[] = [
     iconOpened: <AiFillCaretUp />,
     iconClosed: <AiFillCaretDown />,
   },
+
+  {
+    title: "Horários disponíveis",
+    path: "/appointments",
+    icon: <RiHistoryFill />,
+    iconOpened: <AiFillCaretUp />,
+    iconClosed: <AiFillCaretDown />,
+  },
 ];
 
 export const SidebarDataMaster: SidebarItem[] = [

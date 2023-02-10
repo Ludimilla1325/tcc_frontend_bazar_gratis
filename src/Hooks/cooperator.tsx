@@ -54,6 +54,7 @@ interface ICooperatorContextData {
   monthlyPurchaseByStoreId: any;
   totalNumClientStoreId: any;
   topProductsList: any;
+  deleteAppointment: any;
 }
 
 interface ICooperator {
@@ -138,6 +139,8 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         errorMessage = data.message;
       }
     } catch (error) {
+      console.log(error);
+
       enqueueSnackbar("Não foi possível realizar o login!", {
         variant: "error",
         anchorOrigin: {
@@ -382,6 +385,40 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
     } catch (error) {}
   }
 
+  async function deleteAppointment(appointmentId: number) {
+    try {
+      const { data } = await api.delete(`/appointment/${appointmentId}/`);
+
+      if (data.sucess) {
+        enqueueSnackbar("Apagado com sucesso", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
+      } else {
+        enqueueSnackbar(`${data.message}`, {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      enqueueSnackbar("Erro ao apagar", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
+    }
+  }
+
   useEffect(() => {
     getCategories();
     pointsSolicitationByStore();
@@ -414,6 +451,7 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         monthlyPurchaseByStoreId,
         totalNumClientStoreId,
         topProductsList,
+        deleteAppointment,
       }}
     >
       <>{children}</>

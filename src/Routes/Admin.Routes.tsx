@@ -16,6 +16,7 @@ import { Profile } from "../Pages/App/Cooperator/Profile";
 import { EditPass } from "../Pages/App/Cooperator/EditPass";
 import DashboardAdmin from "../Pages/App/Cooperator/Dashboard/Dashboard";
 import { CooperatorRegister } from "../Pages/App/Master/Employee";
+import { Appointment } from "../Pages/App/Cooperator/HorariosDisponíveis";
 const AppRoutes: FC = () => {
   return (
     <ProdutosProvider>
@@ -78,6 +79,12 @@ const AppRoutes: FC = () => {
               <Route
                 path={`${app_base_url}/create-cooperator`}
                 element={<CooperatorRegister />}
+              ></Route>
+            </Routes>
+            <Routes>
+              <Route
+                path={`${app_base_url}/appointments`}
+                element={<Appointment />}
               ></Route>
             </Routes>
           </Container>

@@ -8,24 +8,24 @@ import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router";
 import { app_base_url } from "../../../../Utils/urls";
 import { RiDeleteBin6Line } from "react-icons/ri";
-export interface IStore {
+import { useCooperator } from "../../../../Hooks/cooperator";
+export interface IAppointment {
   id: number;
-  name: string;
-  localization: string;
-  creation_date: Date;
-  maxPoints: number;
+  appointment_date: string;
+  spots: number;
 }
-export const Stores = () => {
-  const [stores, setStores] = useState({} as IStore[]);
-  const [storeFocus, setStoreFocus] = useState({} as IStore);
-  const { master, setSelectedStore, deleteStore } = useMaster();
+export const Appointment = () => {
+  const [appointments, setAppointments] = useState({} as IAppointment[]);
+  const [storeFocus, setStoreFocus] = useState({} as IAppointment);
+  const { cooperator } = useCooperator();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const { deleteAppointment } = useCooperator();
   async function handleData() {
     try {
-      const { data } = await api.get(`/store/`);
+      const { data } = await api.get(`/appointment/${cooperator.storeId}`);
       if (data.sucess) {
-        setStores(data.data);
+        setAppointments(data.data);
       } else {
         enqueueSnackbar(`${data.message}`, {
           variant: "error",
@@ -42,22 +42,17 @@ export const Stores = () => {
   }, []);
 
   function renderData() {
-    if (stores && stores.length > 0) {
-      return stores.map((item) => {
+    if (appointments && appointments.length > 0) {
+      return appointments.map((item) => {
         return (
-          <Body
-            onClick={() => {
-              setSelectedStore(item.id);
-              setStoreFocus(item);
-            }}
-          >
+          <Body>
             <TBody>{item.id}</TBody>
-            <TBody>{item.name}</TBody>
-            <TBody>{item.localization}</TBody>
+
             <TBody>
-              {new Date(item.creation_date).toLocaleDateString("pt-BR")}
+              {new Date(item.appointment_date).toLocaleDateString("pt-BR")}
             </TBody>
-            <TBody onClick={() => deleteStore(item.id)}>
+            <TBody>{item.spots}</TBody>
+            <TBody onClick={() => deleteAppointment(item.id)}>
               <RiDeleteBin6Line />
             </TBody>
           </Body>
@@ -68,26 +63,15 @@ export const Stores = () => {
 
   return (
     <Container>
-      <Title>Lojas</Title>
+      <Title>Horários Disponíveis</Title>
       <Table>
         <Header>
           <THead>CÓDIGO</THead>
-          <THead>NOME</THead>
-          <THead>LOCALIZAÇÃO</THead>
           <THead>DATA</THead>
+          <THead>VAGAS</THead>
         </Header>
         {renderData()}
       </Table>
-      <StoreDetails
-        open={storeFocus.id != undefined}
-        onClose={() => setStoreFocus({} as IStore)}
-        store={storeFocus}
-      />
-      <AiOutlinePlus
-        onClick={() => navigate(`${app_base_url}/create-store`)}
-        style={{ cursor: "pointer" }}
-        size={"max(2vw,24px)"}
-      />
     </Container>
   );
 };

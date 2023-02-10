@@ -66,6 +66,7 @@ interface IMasterContextData {
   monthlyPurchaseList: any;
   totalNumberClient: any;
   topProductsList: any;
+  deleteStore: any;
 }
 
 interface IMaster {
@@ -368,6 +369,40 @@ function MasterProvider({ children }: IMasterProviderProps) {
     } catch (error) {}
   }
 
+  async function deleteStore(storeId: number) {
+    try {
+      const { data } = await api.delete(`/store/${storeId}/`);
+
+      if (data.sucess) {
+        enqueueSnackbar("Apagado com sucesso", {
+          variant: "success",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
+      } else {
+        enqueueSnackbar(`${data.message}`, {
+          variant: "error",
+          anchorOrigin: {
+            vertical: "top",
+            horizontal: "right",
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      enqueueSnackbar("Erro ao apagar", {
+        variant: "error",
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "right",
+        },
+      });
+    }
+  }
+
   useEffect(() => {}, []);
 
   useEffect(() => {
@@ -403,6 +438,7 @@ function MasterProvider({ children }: IMasterProviderProps) {
         monthlyPurchaseList,
         totalNumberClient,
         topProductsList,
+        deleteStore,
       }}
     >
       <>{children}</>

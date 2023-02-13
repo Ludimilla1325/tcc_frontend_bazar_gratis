@@ -41,6 +41,8 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
               horizontal: "right",
             },
           });
+
+          await api.delete(`/appointment-client/${appointmentId}`)
           return;
         }
 

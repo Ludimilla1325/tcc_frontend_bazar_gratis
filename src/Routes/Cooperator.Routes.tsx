@@ -71,6 +71,9 @@ const AppRoutes: FC = () => {
                 element={<EditPass />}
               ></Route>
             </Routes>
+            <Routes>
+           
+            </Routes>
           </Container>
         </Router>
       </ShoppingCartProvider>

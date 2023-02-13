@@ -9,6 +9,8 @@ import { useNavigate } from "react-router";
 import { app_base_url } from "../../../../Utils/urls";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useCooperator } from "../../../../Hooks/cooperator";
+import { FiPlus } from "react-icons/fi";
+import { AddAppointmentsModal } from "./AddAppointmentsModal";
 export interface IAppointment {
   id: number;
   appointment_date: string;
@@ -16,11 +18,12 @@ export interface IAppointment {
 }
 export const Appointment = () => {
   const [appointments, setAppointments] = useState({} as IAppointment[]);
-  const [storeFocus, setStoreFocus] = useState({} as IAppointment);
+  const [appointmentFocus, setAppointmentFocus] = useState({} as IAppointment);
   const { cooperator } = useCooperator();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const { deleteAppointment } = useCooperator();
+  const [openDatesModal, setOpenDatesModal] = useState(false);
   async function handleData() {
     try {
       const { data } = await api.get(`/appointment/${cooperator.storeId}`);
@@ -46,13 +49,37 @@ export const Appointment = () => {
       return appointments.map((item) => {
         return (
           <Body>
-            <TBody>{item.id}</TBody>
-
-            <TBody>
+            <TBody
+              onClick={() => {
+                setAppointmentFocus(item);
+                setOpenDatesModal(true);
+              }}
+            >
+              {item.id}
+            </TBody>
+            <TBody
+              onClick={() => {
+                setAppointmentFocus(item);
+                setOpenDatesModal(true);
+              }}
+            >
               {new Date(item.appointment_date).toLocaleDateString("pt-BR")}
             </TBody>
-            <TBody>{item.spots}</TBody>
-            <TBody onClick={() => deleteAppointment(item.id)}>
+            <TBody
+              onClick={() => {
+                setAppointmentFocus(item);
+                setOpenDatesModal(true);
+              }}
+            >
+              {item.spots}
+            </TBody>
+            
+            <TBody
+              onClick={async () => {
+                await deleteAppointment(item.id);
+                handleData();
+              }}
+            >
               <RiDeleteBin6Line />
             </TBody>
           </Body>
@@ -72,6 +99,23 @@ export const Appointment = () => {
         </Header>
         {renderData()}
       </Table>
+      <FiPlus
+        size={"max(2vw,22px)"}
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          setAppointmentFocus({} as IAppointment);
+          setOpenDatesModal(true);
+        }}
+      />
+
+      <AddAppointmentsModal
+        open={openDatesModal}
+        onClose={() => {
+          handleData();
+          setOpenDatesModal(false);
+        }}
+        appointmentFocus={appointmentFocus}
+      />
     </Container>
   );
 };

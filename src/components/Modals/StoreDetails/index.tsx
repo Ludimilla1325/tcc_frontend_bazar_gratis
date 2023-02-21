@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import { IStore } from "../../../Pages/App/Master/Stores";
 import theme from "../../../Styles/theme";
 import { FiShoppingCart } from "react-icons/fi";
+import { RxDashboard } from "react-icons/rx";
 import {
   Container,
   ContainerData,
@@ -143,6 +144,11 @@ export function StoreDetails({ open, onClose, store }: Props) {
             onClick={() => {
               setIsEditedStore(store.id);
             }}
+          />
+          <RxDashboard
+            size={"max(2vw, 24px)"}
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate(`${app_base_url}/dashboard/${store.id}`)}
           />
         </IconsDiv>
       </Container>

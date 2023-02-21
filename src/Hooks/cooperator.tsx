@@ -377,7 +377,9 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
 
   async function topProducts() {
     try {
-      const { data } = await api.get(`/dashboard/top-selling-products/`);
+      const { data } = await api.get(
+        `/dashboard/top-selling-products/${cooperator.storeId}`
+      );
 
       if (data.sucess) {
         setTopProductsList(data.data);

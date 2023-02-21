@@ -17,9 +17,11 @@ import { Products } from "../Pages/App/Cooperator/Products";
 import { Stores } from "../Pages/App/Master/Stores";
 import { CooperatorRegister } from "../Pages/App/Master/Employee";
 import Dashboard from "../Pages/App/Master/Dashboard/Dashboard";
+import DashboardStore from "../Pages/App/Master/Dashboard-store/Dashboard";
 import { Profile } from "../Pages/App/Cooperator/Profile";
 import { CreateAndEditStore } from "../Pages/App/Master/Create_Edit_Store";
 import { CreateAndEditProduct } from "../Pages/App/Cooperator/Products/Create_Edit";
+import DashboardAdmin from "../Pages/App/Cooperator/Dashboard/Dashboard";
 
 const MasterRoutes: FC = () => {
   return (
@@ -80,6 +82,12 @@ const MasterRoutes: FC = () => {
               <Route
                 path={`${app_base_url}/produtos/:storeId`}
                 element={<Products />}
+              ></Route>
+            </Routes>
+            <Routes>
+              <Route
+                path={`${app_base_url}/dashboard/:storeId`}
+                element={<DashboardStore />}
               ></Route>
             </Routes>
           </Container>

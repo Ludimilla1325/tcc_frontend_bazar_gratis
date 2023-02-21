@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Line } from "react-chartjs-2";
 import Box from "../../../../components/Dashboard/box/Box";
 import DashboardWrapper, {
   DashboardWrapperMain,
@@ -30,32 +30,46 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+export const optionsPointsSolicitation = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "Número de solicitações de pontos nos últimos 3 meses",
+    },
+  },
+};
+
+export const optionsPurchase = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "Número de compras nos últimos 3 meses",
+    },
+  },
+};
 
 const Dashboard = () => {
-  const { pointsSolicitationList } = useMaster();
+  const { pointsSolicitationPerStoreList, purchasePerStoreList } = useMaster();
   return (
     <DashboardWrapper>
       <DashboardWrapperMain>
         <div className="row">
-          <div className="col-8 col-md-12">
-            <div className="row">
-              {pointsSolicitationList.map((item, index) => (
-                <div
-                  key={`summary-${index}`}
-                  className="col-6 col-md-6 col-sm-12 mb"
-                >
-                  <SummaryBox item={item} />
-                </div>
-              ))}
-            </div>
-          </div>
+          <Line options={optionsPurchase} data={purchasePerStoreList} />
         </div>
         <div className="row">
-          <div className="col-12">
-            <Box>
-              <RevenueByMonthsChart />
-            </Box>
-          </div>
+          <Bar
+            options={optionsPointsSolicitation}
+            data={pointsSolicitationPerStoreList}
+          />
+          ;
         </div>
       </DashboardWrapperMain>
       <DashboardWrapperRight>
@@ -74,60 +88,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-const RevenueByMonthsChart = () => {
-  const { monthlyPurchaseList } = useMaster();
-  const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      xAxes: {
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-      yAxes: {
-        grid: {
-          display: false,
-          drawBorder: false,
-        },
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-      },
-    },
-    elements: {
-      bar: {
-        backgroundColor: colors.blue,
-        borderRadius: 20,
-        borderSkipped: "bottom",
-      },
-    },
-  };
-
-  const chartData = {
-    labels: monthlyPurchaseList.labels,
-    datasets: [
-      {
-        label: "Revenue",
-        data: monthlyPurchaseList.data,
-      },
-    ],
-  };
-  return (
-    <>
-      <div className="title mb">
-        Gráfico por mês das cestas entregues nos últimos 365 dias
-      </div>
-      <div>
-        <Bar options={chartOptions} data={chartData} height={`300px`} />
-      </div>
-    </>
-  );
-};

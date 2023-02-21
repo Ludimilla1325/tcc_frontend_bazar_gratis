@@ -67,6 +67,8 @@ interface IMasterContextData {
   totalNumberClient: any;
   topProductsList: any;
   deleteStore: any;
+  pointsSolicitationPerStoreList: any;
+  purchasePerStoreList: any;
 }
 
 interface IMaster {
@@ -89,6 +91,9 @@ function MasterProvider({ children }: IMasterProviderProps) {
   const [monthlyPurchaseList, setMonthlyPurchase] = useState([]);
   const [totalNumberClient, setTotalNumClient] = useState(0);
   const [topProductsList, setTopProductsList] = useState([]);
+  const [pointsSolicitationPerStoreList, setPointsSolicitationPerStore] =
+    useState([]);
+  const [purchasePerStoreList, setPurchasePerStore] = useState([]);
   function saveLocalStorage(cliente: IMaster, token: string) {
     localStorage.setItem(masterLocalStorage, JSON.stringify(cliente));
     localStorage.setItem(tokenLocalStorage, token);
@@ -369,6 +374,26 @@ function MasterProvider({ children }: IMasterProviderProps) {
     } catch (error) {}
   }
 
+  async function pointsSolicitationPerStore() {
+    try {
+      const { data } = await api.get(`/dashboard/points-solicitation/perStore`);
+
+      if (data.sucess) {
+        setPointsSolicitationPerStore(data.data);
+      }
+    } catch (error) {}
+  }
+
+  async function purchasePerStore() {
+    try {
+      const { data } = await api.get(`/dashboard/purchase-delivered/perStore`);
+
+      if (data.sucess) {
+        setPurchasePerStore(data.data);
+      }
+    } catch (error) {}
+  }
+
   async function deleteStore(storeId: number) {
     try {
       const { data } = await api.delete(`/store/${storeId}/`);
@@ -411,6 +436,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
     monthlyPurchase();
     totalNumClient();
     topProducts();
+    pointsSolicitationPerStore();
+    purchasePerStore();
   }, [master]);
   return (
     <MasterContext.Provider
@@ -439,6 +466,8 @@ function MasterProvider({ children }: IMasterProviderProps) {
         totalNumberClient,
         topProductsList,
         deleteStore,
+        pointsSolicitationPerStoreList,
+        purchasePerStoreList,
       }}
     >
       <>{children}</>

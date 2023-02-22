@@ -16,6 +16,7 @@
 Esse projeto foi desenvolvido com as seguintes tecnologias:
 
 - REACT JS
+-TypeScript
 - CSS
 
 ## 💻 Projeto

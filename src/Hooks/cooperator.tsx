@@ -139,8 +139,6 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         errorMessage = data.message;
       }
     } catch (error) {
-      console.log(error);
-
       enqueueSnackbar("Não foi possível realizar o login!", {
         variant: "error",
         anchorOrigin: {
@@ -409,8 +407,6 @@ function CooperatorProvider({ children }: ICooperatorProviderProps) {
         });
       }
     } catch (error) {
-      console.log(error);
-
       enqueueSnackbar("Erro ao apagar", {
         variant: "error",
         anchorOrigin: {

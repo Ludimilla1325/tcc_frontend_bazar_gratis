@@ -31,17 +31,15 @@ export const Purchase = () => {
   const [appointementsFocus, setAppointementFocus] = useState(
     {} as IAppointement
   );
-  const{cooperator} = useCooperator();
+  const { cooperator } = useCooperator();
 
   const { enqueueSnackbar } = useSnackbar();
   async function handleData() {
     try {
-      //cancelar reservas nao retiradas no prazo
       await api.get("/appointment-client/cancelReservations");
-      const { data } = await api.get(`/appointment-client/byStore/${cooperator.storeId}`);
-
-      console.log("dat", data);
-
+      const { data } = await api.get(
+        `/appointment-client/byStore/${cooperator.storeId}`
+      );
       if (data.sucess) {
         setAppointements(data.data);
       } else {
@@ -58,8 +56,6 @@ export const Purchase = () => {
   useEffect(() => {
     handleData();
   }, [appointementsFocus]);
-
-  console.log("app", appointements);
 
   function renderData() {
     if (appointements && appointements.length > 0) {

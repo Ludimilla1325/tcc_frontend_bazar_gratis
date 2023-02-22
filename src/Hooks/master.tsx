@@ -416,8 +416,6 @@ function MasterProvider({ children }: IMasterProviderProps) {
         });
       }
     } catch (error) {
-      console.log(error);
-
       enqueueSnackbar("Erro ao apagar", {
         variant: "error",
         anchorOrigin: {

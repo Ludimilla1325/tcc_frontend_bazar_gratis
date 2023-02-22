@@ -37,8 +37,6 @@ export const CooperatorRegister = () => {
   );
   const navigate = useNavigate();
 
-  console.log("hehe", storeList);
-
   const storeListReturned = storeList.map((store) => {
     return <option value={store.id}>{store.name}</option>;
   });

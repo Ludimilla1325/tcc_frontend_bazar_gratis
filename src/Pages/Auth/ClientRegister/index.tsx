@@ -158,6 +158,7 @@ export const ClientRegister = () => {
         <Input
           value={formValue.password}
           onChange={(ev) => handleChangeForm("password", ev)}
+          type={"password"}
         />
         {errors.password ? (
           <>
@@ -173,6 +174,7 @@ export const ClientRegister = () => {
         <Input
           value={formValue.confirmPass}
           onChange={(ev) => handleChangeForm("confirmPass", ev)}
+          type={"password"}
         />
         {errors.confirmPass ? (
           <ErrorMessage>

@@ -38,6 +38,7 @@ export const ClientLogin = () => {
           value={password}
           onChange={(ev) => setPassword(ev.target.value)}
           placeholder="Digite sua senha!"
+          type={"password"}
         />
       </Label>
 

@@ -33,6 +33,7 @@ export const MasterLogin = () => {
         <Input
           value={password}
           onChange={(ev) => setPassword(ev.target.value)}
+          type={"password"}
         />
       </Label>
 

@@ -34,6 +34,7 @@ export const CooperatorLogin = () => {
         <Input
           value={password}
           onChange={(ev) => setPassword(ev.target.value)}
+          type={"password"}
         />
       </Label>
 

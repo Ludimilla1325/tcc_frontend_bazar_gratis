@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FiPlus, FiX } from "react-icons/fi";
 
 import Modal from "react-modal";
-import { IPointsSolicitation } from "../../../Hooks/cliente";
+import { IPointsSolicitation, useCliente } from "../../../Hooks/cliente";
 import { useCooperator } from "../../../Hooks/cooperator";
 import api from "../../../Services/api";
 import theme from "../../../Styles/theme";
@@ -48,6 +48,7 @@ export function PointsSolicitationDetails({
   const [justificatiaOperador, setJustificativaOperador] = useState("");
   const [confirmar, setConfimar] = useState(null as null | false | true);
   const { cooperator, logado } = useCooperator();
+  const clienteHook= useCliente();
   const [giveJustification, setGiveJustification] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -58,11 +59,12 @@ export function PointsSolicitationDetails({
     }
   }, [solicitacao]);
 
-  useEffect(() => setGiveJustification(false), []);
+  useEffect(() => {
+  setGiveJustification(false);
+  }, []);
 
-  async function post(confirmar:boolean) {
+  async function post(confirmar: boolean) {
     try {
-  
       const { data } = await api.put(`/pointsSolicitation/${solicitacao.id}`, {
         status: confirmar ? "APROVADO" : "NEGADO",
         pointsSolicitationId: solicitacao.id,
@@ -121,6 +123,12 @@ export function PointsSolicitationDetails({
             value={solicitacao.client_justification}
             disabled={true}
           ></Textarea>
+          {solicitacao.employee_justification?  <Textarea
+            value={solicitacao.employee_justification}
+            disabled={true}
+          ></Textarea>: ""}
+          
+
           <HandleButtonsDiv
             hidden={!logado || solicitacao.employeeId != undefined}
           >
@@ -137,7 +145,6 @@ export function PointsSolicitationDetails({
             <OperationButton
               focus={confirmar == true}
               onClick={() => {
-                
                 setConfimar(true);
                 setGiveJustification(false);
                 post(true);
@@ -164,7 +171,7 @@ export function PointsSolicitationDetails({
                   disabled={
                     confirmar == null && justificatiaOperador.length == 0
                   }
-                  onClick={()=>post(false)}
+                  onClick={() => post(false)}
                 >
                   Enviar
                 </OperationButton>

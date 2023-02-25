@@ -46,7 +46,7 @@ const ClientRoutes: FC = () => {
               
            
             </Routes>
-            <Routes>
+          <Routes>
               <Route
                 path={`${app_base_url}/historico-de-compras`}
                 element={<PurchasesHistoric />}

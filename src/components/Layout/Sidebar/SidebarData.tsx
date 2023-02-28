@@ -91,7 +91,7 @@ export const SidebarDataAdmin: SidebarItem[] = [
     icon: <TbFilePlus />,
   },
   {
-    title: "Criar Funcionário",
+    title: "Cadastrar Funcionário",
     path: "/create-cooperator",
     icon: <AiOutlineUser />,
   },
@@ -125,7 +125,7 @@ export const SidebarDataMaster: SidebarItem[] = [
     icon: <AiOutlineUser />,
   },
   {
-    title: "Criar Funcionário",
+    title: "Cadastrar Funcionário",
     path: "/create-cooperator",
     icon: <AiOutlineUser />,
   },

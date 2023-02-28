@@ -61,6 +61,7 @@ export function PointsSolicitationDetails({
 
   useEffect(() => {
   setGiveJustification(false);
+
   }, []);
 
   async function post(confirmar: boolean) {
@@ -69,7 +70,7 @@ export function PointsSolicitationDetails({
         status: confirmar ? "APROVADO" : "NEGADO",
         pointsSolicitationId: solicitacao.id,
         employeeId: cooperator.id,
-        employee_justification: justificatiaOperador,
+        employee_justification: giveJustification? justificatiaOperador:"",
       });
       if (data.status) {
         onClose();

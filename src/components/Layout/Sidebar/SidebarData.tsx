@@ -46,7 +46,7 @@ export const SidebarDataOperator: SidebarItem[] = [
     icon: <MdOutlineLocalGroceryStore />,
   },
   {
-    title: "Criar Produtos",
+    title: "Cadastrar Produtos",
     path: "/create-products",
     icon: <MdOutlineLocalGroceryStore />,
   },
@@ -81,7 +81,7 @@ export const SidebarDataAdmin: SidebarItem[] = [
     icon: <MdOutlineLocalGroceryStore />,
   },
   {
-    title: "Criar Produtos",
+    title: "Cadastrar Produtos",
     path: "/create-products",
     icon: <MdOutlineLocalGroceryStore />,
   },
@@ -91,7 +91,7 @@ export const SidebarDataAdmin: SidebarItem[] = [
     icon: <TbFilePlus />,
   },
   {
-    title: "Criar Cooperador",
+    title: "Criar Funcionário",
     path: "/create-cooperator",
     icon: <AiOutlineUser />,
   },
@@ -125,7 +125,7 @@ export const SidebarDataMaster: SidebarItem[] = [
     icon: <AiOutlineUser />,
   },
   {
-    title: "Criar Cooperador",
+    title: "Criar Funcionário",
     path: "/create-cooperator",
     icon: <AiOutlineUser />,
   },

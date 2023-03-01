@@ -38,7 +38,7 @@ export const optionsPointsSolicitation = {
     },
     title: {
       display: true,
-      text: "Número de solicitações de pontos nos últimos 3 meses",
+      text: "Número de solicitações de pontos nos últimos 90 dias",
     },
   },
 };
@@ -51,7 +51,7 @@ export const optionsPurchase = {
     },
     title: {
       display: true,
-      text: "Número de compras nos últimos 3 meses",
+      text: "Número de compras nos últimos 90 dias",
     },
   },
 };

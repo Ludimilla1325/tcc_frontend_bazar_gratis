@@ -79,7 +79,7 @@ export const Home = () => {
         return handleCard.map((item) => {
           return (
             <>
-              <h2 style={{ padding: "1.5vw" }}>{item.categoria} </h2>
+              <h2 style={{ padding: "0.5vw" }}>{item.categoria} </h2>
               <Row md={2} xs={1} lg={4} className="g-3">
                 {renderItens(item.produtos)}
               </Row>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "./overall-list.scss";
-import { useCooperator } from "../../../../Hooks/cooperator";
 import { BiPurchaseTagAlt } from "react-icons/bi";
 import { useParams } from "react-router";
 import api from "../../../../Services/api";
@@ -24,7 +23,6 @@ const OverallList = () => {
     purchaseDeliveredByStore();
   }, []);
 
-  //const { purchaseDeliveredByStoreId } = useCooperator();
   return (
     <ul className="overall-list">
       {purchaseDelivered.map((item, index) => (

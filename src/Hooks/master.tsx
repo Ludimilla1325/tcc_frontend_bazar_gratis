@@ -253,7 +253,7 @@ function MasterProvider({ children }: IMasterProviderProps) {
       });
 
       if (data.sucess) {
-        enqueueSnackbar("Cooperador criado com sucesso", {
+        enqueueSnackbar("Funcionário criado com sucesso", {
           variant: "success",
           anchorOrigin: {
             vertical: "top",
@@ -262,7 +262,7 @@ function MasterProvider({ children }: IMasterProviderProps) {
         });
       }
     } catch (error) {
-      enqueueSnackbar(`Falha em cadastrar o cooperador`, {
+      enqueueSnackbar(`Falha em cadastrar o funcionário`, {
         variant: "error",
         anchorOrigin: {
           vertical: "top",

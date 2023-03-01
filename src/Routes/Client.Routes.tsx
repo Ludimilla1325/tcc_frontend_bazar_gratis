@@ -1,11 +1,6 @@
 import { FC } from "react";
 import { Container } from "react-bootstrap";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  IndexRouteProps,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Layout/Sidebar/Sidebar";
 import { ProdutosProvider } from "../Context/ProdutosContext";
 import { ShoppingCartProvider } from "../Context/ShoppingCartContext";
@@ -43,19 +38,15 @@ const ClientRoutes: FC = () => {
                 path={`${app_base_url}/profile`}
                 element={<Profile />}
               ></Route>
-              
-           
             </Routes>
-          <Routes>
+            <Routes>
               <Route
                 path={`${app_base_url}/historico-de-compras`}
                 element={<PurchasesHistoric />}
               ></Route>
-           
             </Routes>
             <Routes>
-               
-            <Route path={`${app_base_url}/loja`} element={<Home />}></Route>
+              <Route path={`${app_base_url}/loja`} element={<Home />}></Route>
             </Routes>
           </Container>
         </Router>

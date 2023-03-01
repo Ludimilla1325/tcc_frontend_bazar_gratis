@@ -1,11 +1,6 @@
 import React, { FC } from "react";
 import { Container } from "react-bootstrap";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  IndexRouteProps,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Layout/Sidebar/Sidebar";
 import { ShoppingCartProvider } from "../Context/ShoppingCartContext";
 import { Home } from "../Pages/App/Cooperator/Home";
@@ -71,9 +66,7 @@ const AppRoutes: FC = () => {
                 element={<EditPass />}
               ></Route>
             </Routes>
-            <Routes>
-           
-            </Routes>
+            <Routes></Routes>
           </Container>
         </Router>
       </ShoppingCartProvider>

@@ -68,24 +68,9 @@ export const Cooperators = () => {
     setIsEditedCooperator(0);
   }, []);
 
-  // useEffect(() => {
-  //   if (selectedCooperator && !selectedCooperator.id) handleData();
-  // }, [isEditedCooperator]);
-
   useEffect(() => {
     getCooperator(isEditedCooperator);
   }, [isEditedCooperator]);
-
-  // useEffect(() => {
-  //   if (selectedCooperator && selectedCooperator.id) {
-  //     navigate(`${app_base_url}/create-cooperator`);
-  //   }
-  // }, [selectedCooperator]);
-
-  // useEffect(() => {
-  //   if (cooperator.id) handleData();
-  // }, [cooperator.id]);
-  //
 
   useEffect(() => {}, [isEditedCooperator]);
 

@@ -1,10 +1,10 @@
 import React from "react";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 
 import Modal from "react-modal";
 import api from "../../../Services/api";
 import theme from "../../../Styles/theme";
-import { Button, Container, DivX, Title,  } from "./styles";
+import { Button, Container, DivX, Title } from "./styles";
 
 const customStyles = {
   content: {
@@ -22,12 +22,11 @@ const customStyles = {
 };
 
 interface Props {
-    open: boolean;
-    onClose(): void;
-    id:number;
-  }
-  
- 
+  open: boolean;
+  onClose(): void;
+  id: number;
+}
+
 export function CancelPurschase({ open, onClose, id }: Props) {
   return (
     <Modal isOpen={open} onRequestClose={onClose} style={customStyles}>
@@ -42,13 +41,14 @@ export function CancelPurschase({ open, onClose, id }: Props) {
         </DivX>
         <Title>Tem certeza que deseja cancelar a compra?</Title>
 
-        <Button onClick={async() =>{
-           await api.delete(`/appointment-client/${id}`)
-           onClose();
-        }}>
+        <Button
+          onClick={async () => {
+            await api.delete(`/appointment-client/${id}`);
+            onClose();
+          }}
+        >
           CONFIRMAR
         </Button>
-        
       </Container>
     </Modal>
   );

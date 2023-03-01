@@ -12,7 +12,6 @@ import {
   tokenLocalStorage,
   tokenTimeLocalStorage,
 } from "../Utils/localStorage";
-import { useGeral } from "./geral";
 
 interface ICooperatorProviderProps {
   children: ReactNode;

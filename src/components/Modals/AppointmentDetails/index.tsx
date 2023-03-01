@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 import { baseUrlApi } from "../../../Utils/urls";
 
 import Modal from "react-modal";
@@ -9,7 +9,6 @@ import theme from "../../../Styles/theme";
 import {
   Container,
   DivX,
-  Message,
   Title,
   Header,
   ProductContrainer,

@@ -1,6 +1,6 @@
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 
 import Modal from "react-modal";
 import { IPointsSolicitation, useCliente } from "../../../Hooks/cliente";
@@ -48,7 +48,7 @@ export function PointsSolicitationDetails({
   const [justificatiaOperador, setJustificativaOperador] = useState("");
   const [confirmar, setConfimar] = useState(null as null | false | true);
   const { cooperator, logado } = useCooperator();
-  const clienteHook= useCliente();
+  const clienteHook = useCliente();
   const [giveJustification, setGiveJustification] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -60,8 +60,7 @@ export function PointsSolicitationDetails({
   }, [solicitacao]);
 
   useEffect(() => {
-  setGiveJustification(false);
-
+    setGiveJustification(false);
   }, []);
 
   async function post(confirmar: boolean) {
@@ -70,7 +69,7 @@ export function PointsSolicitationDetails({
         status: confirmar ? "APROVADO" : "NEGADO",
         pointsSolicitationId: solicitacao.id,
         employeeId: cooperator.id,
-        employee_justification: giveJustification? justificatiaOperador:"",
+        employee_justification: giveJustification ? justificatiaOperador : "",
       });
       if (data.status) {
         onClose();
@@ -124,11 +123,14 @@ export function PointsSolicitationDetails({
             value={solicitacao.client_justification}
             disabled={true}
           ></Textarea>
-          {solicitacao.employee_justification?  <Textarea
-            value={solicitacao.employee_justification}
-            disabled={true}
-          ></Textarea>: ""}
-          
+          {solicitacao.employee_justification ? (
+            <Textarea
+              value={solicitacao.employee_justification}
+              disabled={true}
+            ></Textarea>
+          ) : (
+            ""
+          )}
 
           <HandleButtonsDiv
             hidden={!logado || solicitacao.employeeId != undefined}

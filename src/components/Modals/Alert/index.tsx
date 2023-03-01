@@ -1,5 +1,5 @@
 import React from "react";
-import { FiPlus, FiX } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 
 import Modal from "react-modal";
 import theme from "../../../Styles/theme";
@@ -21,12 +21,11 @@ const customStyles = {
 };
 
 interface Props {
-    open: boolean;
-    onClose(): void;
-    error:{title:string, message:string}
-  }
-  
- 
+  open: boolean;
+  onClose(): void;
+  error: { title: string; message: string };
+}
+
 export function Alert({ open, onClose, error }: Props) {
   return (
     <Modal isOpen={open} onRequestClose={onClose} style={customStyles}>

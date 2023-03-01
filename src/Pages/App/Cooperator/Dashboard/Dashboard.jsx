@@ -5,10 +5,8 @@ import DashboardWrapper, {
   DashboardWrapperMain,
   DashboardWrapperRight,
 } from "../../../../components/Dashboard/dashboard-wrapper/DashboardWrapper";
-import SummaryBox, {
-  SummaryBoxSpecial,
-} from "../../../../components/Dashboard/summary-box/SummaryBox";
-import { colors, data } from "../../../../constants";
+import SummaryBox from "../../../../components/Dashboard/summary-box/SummaryBox";
+import { colors } from "../../../../constants";
 import {
   Chart as ChartJS,
   CategoryScale,

@@ -1,9 +1,7 @@
 import { Button, Stack } from "react-bootstrap";
 import { useShoppingCart } from "../../Context/ShoppingCartContext";
-import storeItems from "../../Data/items.json";
 import { formatarDinheiro } from "../../Utils/formatarDinheiro";
 import { useProdutos } from "../../Context/ProdutosContext";
-import { useState } from "react";
 import { baseUrlApi } from "../../Utils/urls";
 
 type CartItemProps = {
@@ -21,7 +19,7 @@ export function CartItem({ id, quantity }: CartItemProps) {
   function handleFindProduto() {
     if (produtos) {
       if (produtos.length > 0) {
-        return  Array.from(produtos).find((i) => i.id === id);
+        return Array.from(produtos).find((i) => i.id === id);
       }
     }
     return null;
@@ -30,7 +28,11 @@ export function CartItem({ id, quantity }: CartItemProps) {
   return (
     <Stack direction="horizontal" gap={2} className="d-flex align-items-center">
       <img
-        src={item.photo.indexOf("http")!=-1? item.photo: baseUrlApi + "/photo/" + item.photo}
+        src={
+          item.photo.indexOf("http") != -1
+            ? item.photo
+            : baseUrlApi + "/photo/" + item.photo
+        }
         style={{ width: "125px", height: "75px", objectFit: "cover" }}
       />
       <div className="me-auto">

@@ -1,11 +1,6 @@
 import React, { FC } from "react";
 import { Container } from "react-bootstrap";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  IndexRouteProps,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Sidebar from "../components/Layout/Sidebar/Sidebar";
 import { ShoppingCartProvider } from "../Context/ShoppingCartContext";
 import { Home } from "../Pages/App/Cooperator/Home";
@@ -18,10 +13,7 @@ import { Stores } from "../Pages/App/Master/Stores";
 import { CooperatorRegister } from "../Pages/App/Master/Employee";
 import Dashboard from "../Pages/App/Master/Dashboard/Dashboard";
 import DashboardStore from "../Pages/App/Master/Dashboard-store/Dashboard";
-import { Profile } from "../Pages/App/Cooperator/Profile";
 import { CreateAndEditStore } from "../Pages/App/Master/Create_Edit_Store";
-import { CreateAndEditProduct } from "../Pages/App/Cooperator/Products/Create_Edit";
-import DashboardAdmin from "../Pages/App/Cooperator/Dashboard/Dashboard";
 
 const MasterRoutes: FC = () => {
   return (

@@ -1,15 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
-import Sidebar from "../../../components/Layout/Sidebar/Sidebar";
-import { Container, Title } from "./styles";
-import storeItems from "../../../Data/items.json";
 import { StoreItem } from "../../../components/Loja/StoreItem";
-import api from "../../../Services/api";
-import { AiFillExperiment } from "react-icons/ai";
-import { Prev } from "react-bootstrap/esm/PageItem";
 import { StoreItemProps } from "../../../Context/ProdutosContext";
 import { useProdutos } from "../../../Context/ProdutosContext";
-import { useCliente } from "../../../Hooks/cliente";
 
 interface IHandleProdutoCard {
   categoria: string;
@@ -17,7 +10,6 @@ interface IHandleProdutoCard {
 }
 
 export const Home = () => {
-  const { cliente, refreshAccount } = useCliente();
   const { produtos, handleData, firstRender, handlefirstRender } =
     useProdutos();
   const [handleCard, setHandleCard] = useState([] as IHandleProdutoCard[]);
@@ -65,7 +57,7 @@ export const Home = () => {
           );
         });
     }
-  }, [produtos.length,firstRender]);
+  }, [produtos.length, firstRender]);
 
   useEffect(() => {}, [handleCard]);
 

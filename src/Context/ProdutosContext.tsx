@@ -14,16 +14,11 @@ type ShoppingCartProviderProps = {
   children: ReactNode;
 };
 
-type CartItem = {
-  id: number;
-  quantity: number;
-};
-
 type ProdutosContext = {
   produtos: StoreItemProps[];
   handleData: () => Promise<void>;
-  handlefirstRender:()=>void;
-  firstRender:boolean;
+  handlefirstRender: () => void;
+  firstRender: boolean;
 };
 
 export type StoreItemProps = {
@@ -47,11 +42,11 @@ export function ProdutosProvider({ children }: ShoppingCartProviderProps) {
   const [produtos, setProdutos] = useState({} as StoreItemProps[]);
   const { cliente } = useCliente();
   const { enqueueSnackbar } = useSnackbar();
-  const[firstRender, setFirstRender] = useState(false);
+  const [firstRender, setFirstRender] = useState(false);
 
-function  handlefirstRender(){
-  setFirstRender(!firstRender);
-}
+  function handlefirstRender() {
+    setFirstRender(!firstRender);
+  }
 
   async function handleData() {
     try {
@@ -71,7 +66,7 @@ function  handlefirstRender(){
   }
 
   useEffect(() => {
-   // handleData();
+    // handleData();
   }, []);
 
   return (
@@ -80,7 +75,7 @@ function  handlefirstRender(){
         produtos,
         handleData,
         handlefirstRender,
-        firstRender
+        firstRender,
       }}
     >
       {children}
